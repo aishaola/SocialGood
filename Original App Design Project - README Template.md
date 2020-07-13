@@ -38,18 +38,33 @@ An social media app that gives people a space to promote their social justice in
 **Optional Nice-to-have Stories**
 
 * Users can make mixed media posts
+* New users are taken to a page that prompts them to follow accounts listed under categorires they are interested in 
 * Users can fundraise through the app
 * User bio can be built on to include more types of information
 * Protest map 
 
 ### 2. Screen Archetypes
 
-* [list first screen here]
-   * [list associated required story here]
-   * ...
-* [list second screen here]
-   * [list associated required story here]
-   * ...
+* Introduction, Sign in or log-in screen
+* Sign in activity
+   * Sign-in functionality
+* Login activity
+   * Login functionalities
+* Homepage
+   * most recent posts that people you follow have posted
+   * If username is pressed user can see poster's account
+   * Links are clickable and lanches the url
+* Profile Fragment
+   * Edit profile pic
+   * Edit profile categories of interest
+   * See posts they've created
+* Create post Fragment
+   * Attatch topic post falls under
+   * post an image with camera
+   * post an image from gallery picker
+   * post and link and link desciption
+* Detail View for each post
+   *  Allows user to reshare post
 
 ### 3. Navigation
 
@@ -65,8 +80,8 @@ An social media app that gives people a space to promote their social justice in
    * [list screen navigation here]
    * ...
 * [list second screen here]
-   * [list screen navigation here]
-   * ...
+   * [list screen  here]
+   * ...navigation
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
@@ -79,7 +94,8 @@ An social media app that gives people a space to promote their social justice in
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+* Posts class
+* Users class
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
