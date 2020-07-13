@@ -20,7 +20,7 @@ An social media app that gives people a space to promote their social justice in
 - **Story:** Creates a space where people can be vocal about the issues they care about. Allows people to flexibly share various forms of media together in a way they feel most fitting. In a country where people of feeling the need to be more political, an app that highlights activism could be helpful.
 - **Market:** Any one who is interested in activism or wants to learn more about what they can do to help other people. Organizations can also use the app to promote themselves and bring more awareness for the issues they seek to solve. 
 - **Habit:** People might check in daily on the categories they follow. Activists may make a habit out of updating their resources. The social aspect to the app is also habit inducing, people may log in to check what they're friends are sharing. 
-- **Scope:**
+- **Scope:** Location services can be used so users can tune in to issues that are solely community wide and/or look for nearby protests.
 
 ## Product Spec
 
@@ -58,6 +58,7 @@ An social media app that gives people a space to promote their social justice in
    * Edit profile pic
    * Edit profile categories of interest
    * See posts they've created
+   * Display how many other users 'tune in' to each account
 * Create post Fragment
    * Attatch topic post falls under
    * post an image with camera
