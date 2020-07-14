@@ -98,7 +98,11 @@ An social media app that gives people a space to promote their social justice in
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="https://github.com/aishaola/SocialGood/blob/master/IMG_3455.jpeg" width=600>
+<img src="https://github.com/aishaola/SocialGood/blob/master/IMG_3456.jpeg" width=600>
+<img src="https://github.com/aishaola/SocialGood/blob/master/IMG_3457.jpeg" width=600>
+<img src="https://github.com/aishaola/SocialGood/blob/master/IMG_3458.jpeg" width=600>
+<img src="https://github.com/aishaola/SocialGood/blob/master/IMG_3459.jpeg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
 
