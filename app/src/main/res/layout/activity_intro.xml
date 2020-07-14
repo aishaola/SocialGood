@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    tools:context=".IntroActivity">
+
+
+    <TextView
+        android:id="@+id/tvAppIntro"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:text="Social Good is an app that people can use to change the world. "
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAppIntro"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:text="Sign up" />
+
+    <TextView
+        android:id="@+id/tvOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSignUp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="OR" />
+
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvOr"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Already have an account?" />
+
+    <TextView
+        android:id="@+id/tvLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvQuestion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:text="login"
+        android:textAllCaps="true"
+        android:textColor="#040000" />
+
+</RelativeLayout>

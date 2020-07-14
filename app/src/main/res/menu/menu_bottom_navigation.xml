@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@drawable/action_home"
+        android:title="Home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_compose"
+        android:enabled="true"
+        android:icon="@drawable/action_compose"
+        android:title="Create Post"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_profile"
+        android:enabled="true"
+        android:icon="@drawable/action_profile"
+        android:title="Profile"
+        app:showAsAction="always" />
+
+</menu>
