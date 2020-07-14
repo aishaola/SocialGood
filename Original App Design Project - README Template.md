@@ -31,17 +31,25 @@ An social media app that gives people a space to promote their social justice in
 * Users can post pictures
 * Users can post links
 * Users can subscribe to categories of interest
-* User can create profiles and follow other
+* User can create profiles and follow others
+* Users can edit their profiles
 * Profiles will have bio
+* User can add bio and categories of interest to display on profile
 * Users can 'reshare' posts
+* Profiles followed will show up on their feed
+* Algorithm: Search for posts based on categories/interests 
+* Algorithm: Search for profiles based on category/interests
 
 **Optional Nice-to-have Stories**
 
 * Users can make mixed media posts
+* Users can have pinned content
+* Users can save posts to refer back to later
 * New users are taken to a page that prompts them to follow accounts listed under categorires they are interested in 
 * Users can fundraise through the app
 * User bio can be built on to include more types of information
-* Protest map 
+* Google maps API can be used to find issues local to user's area 
+* Google maps API can be used to create protest map/create events  
 
 ### 2. Screen Archetypes
 
@@ -59,13 +67,17 @@ An social media app that gives people a space to promote their social justice in
    * Edit profile categories of interest
    * See posts they've created
    * Display how many other users 'tune in' to each account
+* Detail View for each post
+   * Allows user to reshare post
 * Create post Fragment
-   * Attatch topic post falls under
+   * Attach topic post falls under
    * post an image with camera
    * post an image from gallery picker
    * post and link and link desciption
-* Detail View for each post
-   *  Allows user to reshare post
+* Search fragment
+   * Algorithm: Search for posts based on categories/interests 
+   * Algorithm: Search for profiles based on category/interest
+   
 
 ### 3. Navigation
 
