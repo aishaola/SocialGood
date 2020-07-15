@@ -7,11 +7,14 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.socialgood.fragments.CreateFragment;
 import com.example.socialgood.fragments.FeedFragment;
 import com.example.socialgood.fragments.ProfileFragment;
+import com.example.socialgood.models.ParseUserSocial;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,5 +50,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigationView.setSelectedItemId(R.id.action_home);
+
+        if(ParseUser.getCurrentUser() != null){
+            ParseUserSocial user = ParseUserSocial.getCurrentUser();
+            String categories = user.getCategories();
+            Toast.makeText(this, "User is logged in! Categories: " + categories, Toast.LENGTH_SHORT).show();
+        }
     }
 }

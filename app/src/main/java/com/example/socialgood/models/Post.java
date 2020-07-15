@@ -30,11 +30,6 @@ public class Post extends ParseObject {
 
     public JSONArray jsonArrayCategories;
 
-    public Post(){
-        super();
-        jsonArrayCategories = new JSONArray();
-    }
-
     public String getCategories(){
         JSONArray json = getJSONArray(KEY_CATEGORIES);
         String categories = "";
@@ -46,6 +41,11 @@ public class Post extends ParseObject {
             }
         }
         return categories;
+    }
+
+    public Post(){
+        super();
+        jsonArrayCategories = new JSONArray();
     }
 
     public void addCategory(String category){
