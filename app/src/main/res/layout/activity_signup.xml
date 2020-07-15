@@ -9,7 +9,7 @@
 
 
     <EditText
-        android:id="@+id/tvUsername"
+        android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -19,22 +19,68 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/tvPassword"
+        android:id="@+id/etPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvUsername"
+        android:layout_below="@id/etUsername"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword" />
 
+    <TextView
+        android:id="@+id/tvPick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Please pick up to three categories of interest:"></TextView>
+
+
+
+    <RelativeLayout
+        android:id="@+id/cbCategories"
+        android:layout_below="@id/tvPick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <CheckBox
+            android:id="@+id/cbCat1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            tools:text="Racial Justice" />
+
+        <CheckBox
+            android:id="@+id/cbCat2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cbCat1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            tools:text="Yemen Crisis" />
+
+        <CheckBox
+            android:id="@+id/cbCat3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cbCat2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            tools:text="General" />
+
+    </RelativeLayout>
+
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvPassword"
-        android:layout_marginTop="50dp"
+        android:layout_below="@id/cbCategories"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:text="Sign Up" />
+
 </RelativeLayout>
