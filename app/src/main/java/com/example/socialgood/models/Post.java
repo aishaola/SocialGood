@@ -1,5 +1,4 @@
-package com.example.parsegram;
-
+package com.example.socialgood.models;
 import android.text.format.DateUtils;
 
 import com.parse.ParseClassName;

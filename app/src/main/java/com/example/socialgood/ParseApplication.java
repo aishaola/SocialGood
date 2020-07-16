@@ -3,6 +3,7 @@ package com.example.socialgood;
 import android.app.Application;
 
 import com.example.socialgood.models.ParseUserSocial;
+import com.example.socialgood.models.Post;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -27,7 +28,7 @@ public class ParseApplication extends Application {
         builder.networkInterceptors().add(httpLoggingInterceptor);
 
         // Register your parse models
-        ParseObject.registerSubclass(com.example.parsegram.Post.class);
+        ParseObject.registerSubclass(Post.class);
         ParseObject.registerSubclass(ParseUserSocial.class);
         ParseUser.registerSubclass(ParseUserSocial.class);
 
