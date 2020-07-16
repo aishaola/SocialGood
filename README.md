@@ -41,13 +41,14 @@ An social media app that gives people a space to promote their social justice in
    * Users can follow other accounts
    * Posts from categories subscibed and followed will show up on feed
    * Pinch to scale images
+   * Users can add comments
    * Links launch the url in a browser
 * Users can 'reshare' posts onto their own profile
 * Profiles followed will show up on their feed
 * Google Maps SDK allows for users to add location to their profile, allowong people who are close who care about local issues to organize
 * Algorithm: Search for posts based on categories/interests 
 * App uses an animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
-* App incorporates an external library to add visual polish
+* App incorporates an external library to add visual polish (Gideon)
 
 **Optional Nice-to-have Stories**
 
