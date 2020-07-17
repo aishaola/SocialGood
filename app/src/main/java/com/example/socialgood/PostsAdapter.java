@@ -111,6 +111,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
 
             // If there is an object in the link field, show link button that launches new activity
+            // of the url in the browser
             if(link != null){
                 String title = link[0];
                 final String urlLink = link[1];
@@ -118,9 +119,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 linkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(urlLink));
-                        context.startActivity(i);
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlLink)));
                     }
                 });
             } else {

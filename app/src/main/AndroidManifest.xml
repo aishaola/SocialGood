@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PostDetailActivity"></activity>
+        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".PostDetailActivity" />
         <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
