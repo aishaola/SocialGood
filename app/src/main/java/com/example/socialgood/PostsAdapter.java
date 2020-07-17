@@ -1,6 +1,7 @@
 package com.example.socialgood;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvCategories = itemView.findViewById(R.id.tvCategories);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+
+            ivImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(getAdapterPosition() > -1)
+                        goPostDetailsActivity(posts.get(getAdapterPosition()));
+                }
+            });
+        }
+
+        private void goPostDetailsActivity(Post post) {
+            Intent i = new Intent(context, PostDetailActivity.class);
+            i.putExtra("Post", post);
+            context.startActivity(i);
         }
 
         public void bind(Post post) {

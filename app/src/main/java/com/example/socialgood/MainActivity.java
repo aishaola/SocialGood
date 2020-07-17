@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.socialgood.fragments.CreateFragment;
 import com.example.socialgood.fragments.FeedFragment;
 import com.example.socialgood.fragments.ProfileFragment;
+import com.example.socialgood.fragments.SearchFragment;
 import com.example.socialgood.models.ParseUserSocial;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_compose:
                         fragment = new CreateFragment();
+                        break;
+                    case R.id.action_search:
+                        fragment = new SearchFragment();
                         break;
                     default:
                     case R.id.action_profile:

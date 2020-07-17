@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
+@Parcel(analyze ={Post.class})
 @ParseClassName("Post")
 public class Post extends ParseObject {
     public static final String KEY_CATEGORIES = "categoriesPost";
@@ -27,7 +28,12 @@ public class Post extends ParseObject {
     public static final String KEY_CAPTION = "caption";
     public static final String KEY_USER = "user";
 
-    public JSONArray jsonArrayCategories;
+    public List<String> listCategories;
+
+    public Post(){
+        super();
+        listCategories = new ArrayList<>();
+    }
 
     public String getCategories(){
         JSONArray json = getJSONArray(KEY_CATEGORIES);
@@ -42,22 +48,23 @@ public class Post extends ParseObject {
         return categories;
     }
 
-    public Post(){
-        super();
-        jsonArrayCategories = new JSONArray();
-    }
-
     public void addCategory(String category){
-        JSONObject categoriesObj = new JSONObject();
-        try {
-            categoriesObj.put("category", category);
-            jsonArrayCategories.put(categoriesObj);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        listCategories.add(category);
     }
 
     public void saveCategories(){
+        JSONArray jsonArrayCategories = new JSONArray();
+        for (int i = 0; i < listCategories.size(); i++) {
+            String category = listCategories.get(i);
+
+            JSONObject categoriesObj = new JSONObject();
+            try {
+                categoriesObj.put("category", category);
+                jsonArrayCategories.put(categoriesObj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         put(KEY_CATEGORIES, jsonArrayCategories);
     }
 
