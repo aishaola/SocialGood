@@ -1,6 +1,3 @@
-Original App Design Project - README Template
-===
-
 # SocialGood
 
 ## Table of Contents
@@ -28,17 +25,30 @@ An social media app that gives people a space to promote their social justice in
 
 **Required Must-have Stories**
 
-* Users can post pictures
-* Users can post links
-* Users can subscribe to categories of interest
-* User can create profiles and follow others
-* Users can edit their profiles
-* Profiles will have bio
-* User can add bio and categories of interest to display on profile
-* Users can 'reshare' posts
+* User can create accounts/profiles and customize it to their liking
+   * User can add profile picture
+   * Can add affiliation between profile and certain social justice categories and be display on profile page
+   * User can add bio
+   * User can delete posts from profile
+   * User stays logged in once app terminates
+* Users can create posts
+   * Users can post images or links, and add a caption to the post
+   * Users can add categories to associate post with
+   * Posts show username, categories associated, timestamp, caption, and pictures/clickable links
+   * Clicking on posts will launch A PostDetail Activity.
+* Users can view posts on their homepage feed that they've subscribed to
+   * Users can subscribe to categories of interest
+   * Users can follow other accounts
+   * Posts from categories subscibed and followed will show up on feed
+   * Pinch to scale images
+   * Users can add comments
+   * Links launch the url in a browser
+* Users can 'reshare' posts onto their own profile
 * Profiles followed will show up on their feed
+* Google Maps SDK allows for users to add location to their profile, allowong people who are close who care about local issues to organize
 * Algorithm: Search for posts based on categories/interests 
-* Algorithm: Search for profiles based on category/interests
+* App uses an animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
+* App incorporates an external library to add visual polish (Gideon)
 
 **Optional Nice-to-have Stories**
 
@@ -48,6 +58,7 @@ An social media app that gives people a space to promote their social justice in
 * New users are taken to a page that prompts them to follow accounts listed under categorires they are interested in 
 * Users can fundraise through the app
 * User bio can be built on to include more types of information
+* Fundraising type of post can be created
 * Google maps API can be used to find issues local to user's area 
 * Google maps API can be used to create protest map/create events  
 
