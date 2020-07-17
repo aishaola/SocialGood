@@ -13,11 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.socialgood.EditProfileActivity;
-import com.example.socialgood.IntroActivity;
+import com.example.socialgood.activities.EditProfileActivity;
+import com.example.socialgood.activities.IntroActivity;
 import com.example.socialgood.R;
 import com.parse.LogOutCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 

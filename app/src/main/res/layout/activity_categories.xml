@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.CategoriesActivity"
+    android:id="@+id/cbCategories"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvPick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        android:text="Which social justice issues would you like to associate your account with? OR What social justice issues are you interested in subscribing to?" />
+
+    <CheckBox
+        android:id="@+id/cbCat1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPick"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        tools:text="Racial Justice" />
+
+    <CheckBox
+        android:id="@+id/cbCat2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cbCat1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        tools:text="Yemen Crisis" />
+
+    <CheckBox
+        android:id="@+id/cbCat3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cbCat2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        tools:text="General" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSaveCategories"
+        android:text="Save Categories"
+        android:layout_below="@id/cbCat3"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

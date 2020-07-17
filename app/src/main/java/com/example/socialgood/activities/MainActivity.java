@@ -1,4 +1,4 @@
-package com.example.socialgood;
+package com.example.socialgood.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.socialgood.R;
 import com.example.socialgood.fragments.CreateFragment;
 import com.example.socialgood.fragments.FeedFragment;
 import com.example.socialgood.fragments.ProfileFragment;

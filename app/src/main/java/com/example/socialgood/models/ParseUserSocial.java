@@ -1,10 +1,15 @@
 package com.example.socialgood.models;
 
 import android.os.FileUtils;
+import android.util.Log;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -12,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 @ParseClassName("User")
 public class ParseUserSocial extends ParseUser {
@@ -21,6 +27,7 @@ public class ParseUserSocial extends ParseUser {
     public static final String JSON_KEY_CATEGORY = "category";
     public JSONArray jsonArrayCategories;
     public ParseFile profilePic;
+    public ParseUser user;
 
     public ParseUserSocial(){
         super();
@@ -35,10 +42,19 @@ public class ParseUserSocial extends ParseUser {
     }
 
     public static ParseUserSocial getCurrentUser(){
+        final ParseUserSocial[] userSocial = {null};
         ParseUser user = ParseUser.getCurrentUser();
-        if(user == null)
-            return null;
-        return new ParseUserSocial(user);
+        ParseQuery<ParseUserSocial> query = ParseQuery.getQuery(ParseUserSocial.class);
+        query.whereEqualTo(KEY_OBJECT_ID, ParseUser.getCurrentUser().getObjectId());
+        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseUserSocial>() {
+            @Override
+            public void done(ParseUserSocial object, ParseException e) {
+                if(e != null)
+                    Log.e("getCurrentUser:", "Error with converting user", e);
+                userSocial[0] = object;
+            }
+        });
+        return userSocial[0];
     }
 
     public void setProfilePic(File file){
@@ -51,6 +67,9 @@ public class ParseUserSocial extends ParseUser {
     }
 
     public void addCategory(String category){
+        if(jsonArrayCategories == null)
+            jsonArrayCategories = new JSONArray();
+
         JSONObject categoriesObj = new JSONObject();
         try {
             categoriesObj.put(JSON_KEY_CATEGORY, category);
@@ -62,6 +81,7 @@ public class ParseUserSocial extends ParseUser {
 
     public void saveCategories(){
         put(KEY_CATEGORIES, jsonArrayCategories);
+        saveInBackground();
     }
 
     public String getCategories(){

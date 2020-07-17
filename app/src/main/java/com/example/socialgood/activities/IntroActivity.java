@@ -1,4 +1,4 @@
-package com.example.socialgood;
+package com.example.socialgood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.socialgood.models.ParseUserSocial;
+import com.example.socialgood.R;
 import com.parse.ParseUser;
 
 public class IntroActivity extends AppCompatActivity {
@@ -31,7 +30,7 @@ public class IntroActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(IntroActivity.this, Signup.class);
+                Intent i = new Intent(IntroActivity.this, SignUpActivity.class);
                 startActivity(i);
             }
         });

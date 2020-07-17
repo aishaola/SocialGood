@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.socialgood.activities.PostDetailActivity;
 import com.example.socialgood.models.Post;
 import com.parse.ParseFile;
 import com.parse.ParseUser;

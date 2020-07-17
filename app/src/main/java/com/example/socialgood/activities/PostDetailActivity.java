@@ -1,8 +1,10 @@
-package com.example.socialgood;
+package com.example.socialgood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.socialgood.R;
 
 public class PostDetailActivity extends AppCompatActivity {
 

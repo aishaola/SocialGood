@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".activities.LoginActivity">
 
 
     <EditText
@@ -40,45 +40,13 @@
 
 
 
-    <RelativeLayout
-        android:id="@+id/cbCategories"
-        android:layout_below="@id/tvPick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
 
-        <CheckBox
-            android:id="@+id/cbCat1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            tools:text="Racial Justice" />
-
-        <CheckBox
-            android:id="@+id/cbCat2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cbCat1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            tools:text="Yemen Crisis" />
-
-        <CheckBox
-            android:id="@+id/cbCat3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cbCat2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            tools:text="General" />
-
-    </RelativeLayout>
 
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cbCategories"
+        android:layout_below="@id/etPassword"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:text="Sign Up" />
