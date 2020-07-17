@@ -2,9 +2,11 @@ package com.example.socialgood;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,12 +60,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView ivImage;
         TextView tvUsername;
         TextView tvCaption;
         TextView tvCategories;
         TextView tvTimestamp;
+        Button linkButton;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -74,6 +76,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvCategories = itemView.findViewById(R.id.tvCategories);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            linkButton = itemView.findViewById(R.id.linkButton);
 
             ivImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,15 +93,39 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             context.startActivity(i);
         }
 
-        public void bind(Post post) {
+        public void bind(final Post post) {
             tvUsername.setText(post.getUser().getUsername());
             tvCategories.setText(post.getCategories());
             tvTimestamp.setText(post.getRelativeTimeAgo());
             tvCaption.setText(post.getCaption());
 
             ParseFile image = post.getImage();
-            if(image != null)
+            String[] link = post.getLink();
+
+            // If there is an image in the Image field, show image
+            if(image != null) {
                 Glide.with(context).load(image.getUrl()).into(ivImage);
+            }
+            else {
+                ivImage.setVisibility(View.GONE);
+            }
+
+            // If there is an object in the link field, show link button that launches new activity
+            if(link != null){
+                String title = link[0];
+                final String urlLink = link[1];
+                linkButton.setText(title);
+                linkButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(urlLink));
+                        context.startActivity(i);
+                    }
+                });
+            } else {
+                linkButton.setVisibility(View.GONE);
+            }
         }
     }
 }

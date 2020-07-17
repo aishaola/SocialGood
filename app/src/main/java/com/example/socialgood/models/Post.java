@@ -83,8 +83,10 @@ public class Post extends ParseObject {
         put(KEY_IMAGE, image);
     }
 
-    public String getLink(){
+    public String[] getLink(){
         JSONObject linkPost = getJSONObject(KEY_LINK);
+        if(linkPost == null)
+            return null;
         String title = "";
         String url = "";
         try {
@@ -93,7 +95,8 @@ public class Post extends ParseObject {
         } catch(JSONException e){
             e.printStackTrace();
         }
-        return title + ", " + url;
+        String[] link = {title, url};
+        return link;
     }
 
     public ParseUser getUser(){

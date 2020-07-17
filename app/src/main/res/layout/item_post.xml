@@ -50,12 +50,21 @@
         android:layout_below="@id/postHeader"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <Button
+        android:id="@+id/linkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivPostImage"
+        android:layout_centerHorizontal="true"
+        tools:text="Petition to get justice"
+        android:clickable="true"></Button>
+
     <TextView
         android:id="@+id/tvCaption"
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivPostImage"
+        android:layout_below="@id/linkButton"
         android:layout_centerHorizontal="true"
         tools:text="Look at this freaking graphic up here woooo!" />
     <TextView
