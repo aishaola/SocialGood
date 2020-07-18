@@ -31,30 +31,20 @@ public class ParseUserSocial extends ParseUser {
 
     public ParseUserSocial(){
         super();
+        user = new ParseUser();
         jsonArrayCategories = new JSONArray();
     }
 
     // Initialize ParseUserSocial with existing user, allows for qu
     public ParseUserSocial(ParseUser user){
         super();
+        this.user = user;
         jsonArrayCategories = user.getJSONArray(KEY_CATEGORIES);
         profilePic = user.getParseFile(KEY_PROFILE_PIC);
     }
 
     public static ParseUserSocial getCurrentUser(){
-        final ParseUserSocial[] userSocial = {null};
-        ParseUser user = ParseUser.getCurrentUser();
-        ParseQuery<ParseUserSocial> query = ParseQuery.getQuery(ParseUserSocial.class);
-        query.whereEqualTo(KEY_OBJECT_ID, ParseUser.getCurrentUser().getObjectId());
-        query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseUserSocial>() {
-            @Override
-            public void done(ParseUserSocial object, ParseException e) {
-                if(e != null)
-                    Log.e("getCurrentUser:", "Error with converting user", e);
-                userSocial[0] = object;
-            }
-        });
-        return userSocial[0];
+        return new ParseUserSocial(ParseUser.getCurrentUser());
     }
 
     public void setProfilePic(File file){
@@ -80,8 +70,7 @@ public class ParseUserSocial extends ParseUser {
     }
 
     public void saveCategories(){
-        put(KEY_CATEGORIES, jsonArrayCategories);
-        saveInBackground();
+        user.put(KEY_CATEGORIES, jsonArrayCategories);
     }
 
     public String getCategories(){

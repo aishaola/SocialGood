@@ -24,14 +24,16 @@ public class CategoriesActivity extends AppCompatActivity {
     CheckBox cb3;
     List<CheckBox> checkBoxes;
     Button btnSaveCategories;
-    ParseUserSocial user;
+    ParseUserSocial helper;
+    ParseUser user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
-        user = ParseUserSocial.getCurrentUser();
+        user = ParseUser.getCurrentUser();
+        helper = new ParseUserSocial(user);
 
         // Add the checkboxes into a list so they can be accessed easily
         cb1 = findViewById(R.id.cbCat1);
@@ -61,9 +63,9 @@ public class CategoriesActivity extends AppCompatActivity {
         for (int i = 0; i < checkBoxes.size(); i++) {
             CheckBox cb = checkBoxes.get(i);
             if(cb.isChecked())
-                user.addCategory(cb.getText().toString());
+                helper.addCategory(cb.getText().toString());
         }
-        user.saveCategories();
+        helper.saveCategories();
         user.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
