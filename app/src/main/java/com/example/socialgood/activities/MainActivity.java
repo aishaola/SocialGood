@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.socialgood.R;
 import com.example.socialgood.fragments.CreateFragment;
 import com.example.socialgood.fragments.FeedFragment;
+import com.example.socialgood.fragments.LinkEntryDialogFragment;
 import com.example.socialgood.fragments.ProfileFragment;
 import com.example.socialgood.fragments.SearchFragment;
 import com.example.socialgood.models.ParseUserSocial;
@@ -61,5 +62,12 @@ public class MainActivity extends AppCompatActivity {
             String categories = user.getCategories();
             Toast.makeText(this, "User is logged in! Categories: " + categories, Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        LinkEntryDialogFragment linkEntryDialogFragment = LinkEntryDialogFragment.newInstance("Some Title");
+        linkEntryDialogFragment.show(fm, "fragment_edit_name");
     }
 }

@@ -36,12 +36,12 @@
     </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/addPicFromGalleryView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_below="@id/addPicView"
             android:layout_marginTop="30dp"
-            android:id="@+id/addPicFromGalleryView"
-            android:layout_below="@id/addPicView">
+            android:layout_centerHorizontal="true">
 
             <ImageView
                 android:id="@+id/ivAdd2"
@@ -54,37 +54,36 @@
                 android:id="@+id/tvAddPicFromGallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_toRightOf="@id/ivAdd2"
-                android:text="Add From Gallery"
+                android:text="Add Pic from Gallery"
                 android:textSize="36sp"></TextView>
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/addLinkView"
+    <RelativeLayout
+        android:id="@+id/addLinkView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addPicFromGalleryView"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/ivAdd3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/addPicFromGalleryView"
-            android:layout_marginTop="30dp"
-            android:layout_centerHorizontal="true">
+            android:layout_marginTop="10dp"
+            app:srcCompat="@android:drawable/ic_input_add"></ImageView>
 
-            <ImageView
-                android:id="@+id/ivAdd3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:srcCompat="@android:drawable/ic_input_add"></ImageView>
+        <TextView
+            android:id="@+id/tvAddLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ivAdd3"
+            android:text="Add Link"
+            android:textSize="36sp"></TextView>
 
-            <TextView
-                android:id="@+id/tvAddLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/ivAdd3"
-                android:text="Add Link"
-                android:textSize="36sp"></TextView>
-
-        </RelativeLayout>
+    </RelativeLayout>
 
         <ImageView
             android:id="@+id/ivImage"
@@ -98,12 +97,18 @@
             android:layout_marginEnd="0dp"
             tools:srcCompat="@tools:sample/avatars"></ImageView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLinkView"
+            tools:text="title: amazon, url: https://www.amazon.com"
+            android:layout_below="@id/ivImage"/>
+
         <EditText
             android:id="@+id/etCaption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnCreatePost"
-            android:layout_below="@+id/ivImage"
+            android:layout_below="@+id/tvLinkView"
             android:layout_marginTop="27dp"
             android:ems="10"
             android:hint="Enter description...."
@@ -113,10 +118,10 @@
             android:id="@+id/btnCreatePost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/etCaption"
+            android:layout_alignParentBottom="false"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginTop="5dp"
             android:text="Create Post">
 
         </Button>

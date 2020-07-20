@@ -1,0 +1,42 @@
+<!-- fragment_link_entry.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_gravity="center" android:orientation="vertical"
+    android:background="@drawable/customborder"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/lbl_your_name" android:text="Add Link"
+        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <EditText
+        android:id="@+id/etLinkTitle"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Enter link title..."
+        android:imeOptions="actionDone" />
+
+    <EditText
+        android:id="@+id/etLinkUrl"
+        android:layout_width="match_parent"
+        android:hint="Enter link url..."
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:imeOptions="actionDone" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/btnAddLink"
+        android:text="Add Link"/>
+</LinearLayout>

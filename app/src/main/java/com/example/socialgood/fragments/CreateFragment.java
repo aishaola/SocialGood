@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -42,7 +43,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link CreateFragment} factory method to
  * create an instance of this fragment.
  */
-public class CreateFragment extends Fragment {
+public class CreateFragment extends Fragment implements LinkEntryDialogFragment.LinkEntryDialogListener {
 
     public static final String TAG = CreateFragment.class.getSimpleName();
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 43;
@@ -98,12 +99,26 @@ public class CreateFragment extends Fragment {
         addLinkView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //launchCreateLink();
+                showLinkEditDialog();
             }
         });
 
 
 
+    }
+
+    private void showLinkEditDialog() {
+        FragmentManager fm = getFragmentManager();
+        LinkEntryDialogFragment linkEntryDialogFragment = LinkEntryDialogFragment.newInstance("Some Title");
+        // SETS the target fragment for use later when sending results
+        linkEntryDialogFragment.setTargetFragment(CreateFragment.this, 300);
+        linkEntryDialogFragment.show(fm, "fragment_edit_name");
+    }
+
+    // This is called when the dialog is completed and the results have been passed
+    @Override
+    public void onFinishEditDialog(String title, String url) {
+        Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();
     }
 
     // Returns the File for a photo stored on disk given the fileName
