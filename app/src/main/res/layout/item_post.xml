@@ -18,37 +18,42 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
 
-    <LinearLayout
+
+    <ImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/postHeader"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical">
+        android:layout_toEndOf="@id/ivProfilePic"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        tools:text="ayisatpade" />
 
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textStyle="bold"
-            tools:text="ayisatpade" />
 
-        <TextView
-            android:id="@+id/tvCategories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            tools:text="Racial Justice, Global Warming" />
+    <TextView
+        android:id="@+id/tvCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tvUsername"
+        tools:text="Racial Justice, Global Warming" />
 
-    </LinearLayout>
 
     <ImageView
         android:id="@+id/ivPostImage"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/postHeader"
+        android:layout_below="@id/tvCategories"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -58,7 +63,7 @@
         android:layout_below="@id/ivPostImage"
         android:layout_centerHorizontal="true"
         tools:text="Petition to get justice"
-        android:clickable="true"></Button>
+        android:clickable="true" />
 
     <TextView
         android:id="@+id/tvCaption"

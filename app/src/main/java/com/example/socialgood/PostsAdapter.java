@@ -2,6 +2,7 @@ package com.example.socialgood;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
@@ -67,12 +70,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvCategories;
         TextView tvTimestamp;
         Button linkButton;
+        ImageView ivProfileImage;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ivImage = itemView.findViewById(R.id.ivPostImage);
+            ivProfileImage = itemView.findViewById(R.id.ivProfilePic);
             tvCaption = itemView.findViewById(R.id.tvCaption);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvCategories = itemView.findViewById(R.id.tvCategories);
@@ -96,12 +101,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         public void bind(final Post post) {
             tvUsername.setText(post.getUser().getUsername());
-            tvCategories.setText(post.getCategories());
+            tvCategories.setText(post.getCategoriesDisplay());
             tvTimestamp.setText(post.getRelativeTimeAgo());
             tvCaption.setText(post.getCaption());
 
             ParseFile image = post.getImage();
             String[] link = post.getLink();
+
+            ParseFile profileImage = post.getUserSocial().getProfilePic();
 
             // If there is an image in the Image field, show image
             if(image != null) {
@@ -109,6 +116,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
             else {
                 ivImage.setVisibility(View.GONE);
+            }
+
+            if(profileImage != null) {
+                int radius = 5; // corner radius, higher value = more rounded
+                int margin = 0; // crop margin, set to 0 for corners with no crop
+
+                Glide.with(context).load(profileImage.getUrl()).transform(new RoundedCornersTransformation(radius, margin))
+                        .placeholder(R.drawable.profile_pic_default).into(ivProfileImage);
+            }
+            else {
+                ivProfileImage.setImageResource(R.drawable.action_profile);
             }
 
             // If there is an object in the link field, show link button that launches new activity

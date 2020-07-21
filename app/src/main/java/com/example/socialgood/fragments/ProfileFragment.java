@@ -16,16 +16,23 @@ import android.widget.Button;
 import com.example.socialgood.activities.EditProfileActivity;
 import com.example.socialgood.activities.IntroActivity;
 import com.example.socialgood.R;
+import com.example.socialgood.models.ParseUserSocial;
+import com.example.socialgood.models.Post;
+import com.parse.FindCallback;
 import com.parse.LogOutCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends FeedFragment {
 
     public static final String TAG = ProfileFragment.class.getSimpleName();
     Button btnLogout;
@@ -35,6 +42,43 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public ProfileFragment(ParseUser user) {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void queryPosts(){
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.include(Post.KEY_USER);
+        query.include(Post.KEY_CREATED_AT);
+        query.include(Post.KEY_CAPTION);
+        query.include(Post.KEY_CATEGORIES);
+        query.include(Post.KEY_IMAGE);
+        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
+        query.setLimit(5);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
+
+
+
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Network error: Issue with getting posts!", e);
+                    return;
+                }
+                adapter.clear();
+                for(Post post: objects){
+                    posts.add(post);
+                }
+                adapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    /*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,4 +119,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+    */
+
 }

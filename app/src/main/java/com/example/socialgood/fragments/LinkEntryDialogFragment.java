@@ -58,6 +58,8 @@ public class LinkEntryDialogFragment extends DialogFragment implements View.OnCl
         etLinkTitle.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+
     }
 
     public interface LinkEntryDialogListener {

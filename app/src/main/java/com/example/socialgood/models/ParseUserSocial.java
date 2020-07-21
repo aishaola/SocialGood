@@ -49,11 +49,11 @@ public class ParseUserSocial extends ParseUser {
 
     public void setProfilePic(File file){
         ParseFile pf = new ParseFile(file);
-        put(KEY_PROFILE_PIC, pf);
+        user.put(KEY_PROFILE_PIC, pf);
     }
 
     public ParseFile getProfilePic(){
-        return profilePic;
+        return user.getParseFile(KEY_PROFILE_PIC);
     }
 
     public void addCategory(String category){

@@ -37,6 +37,7 @@ import com.example.socialgood.R;
 import com.example.socialgood.models.Link;
 import com.example.socialgood.models.Post;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -56,6 +57,8 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     public static final String TAG = CreateFragment.class.getSimpleName();
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 43;
     public final static int PICK_PHOTO_CODE = 1046;
+    public static final int TYPE_LINK = 1;
+    public static final int TYPE_IMAGE = 0;
 
     public String photoFileName = "photo.jpg";
 
@@ -68,7 +71,8 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     ImageView ivImage;
     EditText etCaption;
     Button btnSubmit;
-    TextView
+    TextView tvLinkDisplay;
+    int postType;
     private File photoFile;
 
 
@@ -94,6 +98,8 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         addLinkView = view.findViewById(R.id.addLinkView);
         btnSubmit = view.findViewById(R.id.btnCreatePost);
         etCaption = view.findViewById(R.id.etCaption);
+        tvLinkDisplay = view.findViewById(R.id.tvLinkView);
+        postType = TYPE_IMAGE;
 
         addPicView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +134,11 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     }
 
     private void onSubmitPost() {
-        if(link == null) {
+        if(postType == TYPE_IMAGE && photoFile == null) {
+            Toast.makeText(getContext(), "Photo is null!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(postType == TYPE_LINK && link == null) {
             Toast.makeText(getContext(), "Link is null!!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -137,10 +147,19 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             Toast.makeText(getContext(), "Caption is null!!", Toast.LENGTH_SHORT).show();
             return;
         }
-        post.setLink(link.toJSON());
+        savePost(link, photoFile, ParseUser.getCurrentUser(), "Racial Justice", caption);
+
+    }
+
+    public void savePost(Link link, File photo, ParseUser user, String category, String caption){
+        if(postType == TYPE_LINK)
+            post.setLink(link.toJSON());
+        else
+            post.setImage(new ParseFile(photoFile));
+
         post.setCaption(caption);
         post.setUser(ParseUser.getCurrentUser());
-        post.addCategory("World Hunger");
+        post.addCategory(category);
         post.saveCategories();
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -153,6 +172,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                 goFeedFragment();
             }
         });
+
     }
 
     private void goFeedFragment() {
@@ -181,8 +201,11 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     // This is called when the dialog is completed and the results have been passed
     @Override
     public void onFinishEditDialog(String title, String url) {
+        postType = TYPE_LINK;
         link = new Link(title, url);
-        Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();
+        tvLinkDisplay.setText("Title: " + title + ", Url: " + url);
+        ivImage.setVisibility(View.GONE);
+        //Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();
     }
 
     // Returns the File for a photo stored on disk given the fileName
@@ -229,6 +252,14 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+        photoFile = getPhotoFileUri(photoFileName);
+
+        // wrap File object into a content provider
+        // required for API >= 24
+        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getContext().getPackageManager()) != null) {
@@ -259,7 +290,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                 // Load the selected image into a preview
                 ivImage.setImageBitmap(selectedImage);
             } else { // Result was a failure
-                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Picture wasn't chosen!", Toast.LENGTH_SHORT).show();
             }
         }
     }

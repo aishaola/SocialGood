@@ -7,12 +7,25 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="What are you looking for..."/>
+        android:layout_height="match_parent">
 
+        <EditText
+            android:id="@+id/etSearchQuery"
+            android:inputType="textPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:ems="10"
+            android:hint="What are you looking for..."
+        />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rvPosts"
+            android:layout_below="@id/etSearchQuery"/>
+
+    </RelativeLayout>
 </FrameLayout>

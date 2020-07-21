@@ -35,7 +35,7 @@ public class Post extends ParseObject {
         listCategories = new ArrayList<>();
     }
 
-    public String getCategories(){
+    public String getCategoriesDisplay(){
         JSONArray json = getJSONArray(KEY_CATEGORIES);
         String categories = "";
         for (int i = 0; i < json.length(); i++) {
@@ -46,6 +46,19 @@ public class Post extends ParseObject {
             }
         }
         return categories;
+    }
+
+    public List<String> getListCategories(){
+        JSONArray json = getJSONArray(KEY_CATEGORIES);
+        List<String> listCat = new ArrayList<>();
+        for (int i = 0; i < json.length(); i++) {
+            try {
+                listCat.add(json.getJSONObject(i).getString("category"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return listCat;
     }
 
     public void addCategory(String category){
@@ -106,6 +119,8 @@ public class Post extends ParseObject {
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
+
+    public ParseUserSocial getUserSocial(){ return new ParseUserSocial(getUser());}
 
     public void setUser(ParseUser user){
         put(KEY_USER, user);
