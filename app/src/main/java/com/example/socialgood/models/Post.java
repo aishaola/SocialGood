@@ -83,6 +83,10 @@ public class Post extends ParseObject {
         put(KEY_IMAGE, image);
     }
 
+    public void setLink(JSONObject link){
+        put(KEY_LINK, link);
+    }
+
     public String[] getLink(){
         JSONObject linkPost = getJSONObject(KEY_LINK);
         if(linkPost == null)

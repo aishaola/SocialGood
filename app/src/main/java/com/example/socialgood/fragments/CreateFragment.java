@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.socialgood.R;
@@ -32,9 +34,15 @@ import java.io.File;
 // PICK_PHOTO_CODE is a constant integer
 
 import com.example.socialgood.R;
+import com.example.socialgood.models.Link;
+import com.example.socialgood.models.Post;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,9 +63,12 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     View addPickFromGalleryView;
     View addLinkView;
 
+    Post post;
+    Link link;
     ImageView ivImage;
     EditText etCaption;
     Button btnSubmit;
+    TextView
     private File photoFile;
 
 
@@ -81,6 +92,8 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         addPicView = view.findViewById(R.id.addPicView);
         addPickFromGalleryView = view.findViewById(R.id.addPicFromGalleryView);
         addLinkView = view.findViewById(R.id.addLinkView);
+        btnSubmit = view.findViewById(R.id.btnCreatePost);
+        etCaption = view.findViewById(R.id.etCaption);
 
         addPicView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +116,58 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             }
         });
 
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSubmitPost();
+            }
+        });
 
+        post = new Post();
 
+    }
+
+    private void onSubmitPost() {
+        if(link == null) {
+            Toast.makeText(getContext(), "Link is null!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String caption = etCaption.getText().toString();
+        if(caption == null){
+            Toast.makeText(getContext(), "Caption is null!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        post.setLink(link.toJSON());
+        post.setCaption(caption);
+        post.setUser(ParseUser.getCurrentUser());
+        post.addCategory("World Hunger");
+        post.saveCategories();
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Post save error: post couldn't save", e);
+                    return;
+                }
+                Toast.makeText(getContext(), "Post Created!", Toast.LENGTH_SHORT).show();
+                goFeedFragment();
+            }
+        });
+    }
+
+    private void goFeedFragment() {
+        // Create new fragment and transaction
+        Fragment newFragment = new FeedFragment();
+        // consider using Java coding conventions (upper first char class names!!!)
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.frame_holder, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     private void showLinkEditDialog() {
@@ -118,6 +181,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     // This is called when the dialog is completed and the results have been passed
     @Override
     public void onFinishEditDialog(String title, String url) {
+        link = new Link(title, url);
         Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();
     }
 
