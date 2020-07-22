@@ -9,32 +9,90 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPosts"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/btnLogout"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/profileHeader">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                tools:srcCompat="@tools:sample/avatars"
+                android:layout_centerHorizontal="true"
+                android:foreground="@drawable/customborder"
+                android:id="@+id/ivProfilePic"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/ivProfilePic"
+                android:id="@+id/tvUsername"
+                tools:text="ayisatpade"
+                android:textSize="30dp"
+                android:fontFamily="sans-serif-condensed-medium"/>
+
+            <TextView
+                android:id="@+id/tvCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvUsername"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="17sp"
+                tools:text="Racial Justice, General" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttons"
+            android:layout_below="@id/profileHeader"
+            android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="95dp"
-            android:layout_marginBottom="169dp"
+            android:layout_toRightOf="@id/btnEditProfile"
             android:text="Logout" />
 
         <Button
             android:id="@+id/btnEditProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="102dp"
-            android:layout_marginBottom="169dp"
             android:text="Edit Profile" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/buttons"
+            android:background="?android:attr/listDivider"
+            android:layout_marginTop="10dp"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/divider2">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPosts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="6dp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
     </RelativeLayout>
 </FrameLayout>
