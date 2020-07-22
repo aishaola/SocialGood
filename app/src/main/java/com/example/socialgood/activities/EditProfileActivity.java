@@ -11,6 +11,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Edit Profile");
         setContentView(R.layout.activity_edit_profile);
     }
 }

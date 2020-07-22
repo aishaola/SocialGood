@@ -1,5 +1,6 @@
 package com.example.socialgood.fragments;
 
+import android.app.MediaRouteButton;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -32,6 +33,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +48,15 @@ public class ProfileFragment extends FeedFragment {
     public static final String TAG = ProfileFragment.class.getSimpleName();
     Button btnLogout;
     Button btnEditProfile;
+    Button btnFollow;
     TextView tvUsername;
     TextView tvCategories;
     ImageView ivProfilePic;
     ParseUser profileUser;
     View buttons;
+    View buttonsForOtherProfiles;
     boolean isCurrentUser;
+    boolean isFollowing;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -60,6 +65,7 @@ public class ProfileFragment extends FeedFragment {
     public ProfileFragment(ParseUser user) {
         profileUser = user;
         isCurrentUser = user.getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
+        isFollowing = ParseUserSocial.getCurrentUser().userIsFollowing(user);
     }
 
     @Override
@@ -72,6 +78,7 @@ public class ProfileFragment extends FeedFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Profile Page");
 
         btnLogout = view.findViewById(R.id.btnLogout);
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
@@ -79,8 +86,14 @@ public class ProfileFragment extends FeedFragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         tvCategories = view.findViewById(R.id.tvCategories);
         buttons = view.findViewById(R.id.buttons);
-
+        buttonsForOtherProfiles = view.findViewById(R.id.buttonsForOtherProfiles);
+        btnFollow = view.findViewById(R.id.btnFollow);
+        
         ParseUserSocial userSocial = new ParseUserSocial(profileUser);
+
+        // Initialize follow button
+        if(!isCurrentUser)
+            updateFollowButton();
 
         // fill in username and category textViews
         tvUsername.setText(profileUser.getUsername());
@@ -89,6 +102,8 @@ public class ProfileFragment extends FeedFragment {
         // hide edit profile buttons if profile isn't current User's
         if(!isCurrentUser)
             buttons.setVisibility(View.GONE);
+        else
+            buttonsForOtherProfiles.setVisibility(View.GONE);
 
         // log out when logout button pressed
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +131,64 @@ public class ProfileFragment extends FeedFragment {
 
     }
 
+    public void updateFollowButton(){
+        if(isFollowing){
+            btnFollow.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            btnFollow.setText("Unfollow");
+            btnFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    unfollowUser();
+                }
+            });
+        } else {
+            btnFollow.setTextColor(getResources().getColor(R.color.design_default_color_primary));
+            btnFollow.setText("Follow");
+            btnFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    followUser();
+                }
+            });
+        }
+
+    }
+
+    private void followUser() {
+        final ParseUser currUser = ParseUser.getCurrentUser();
+        ParseUserSocial helper = new ParseUserSocial(currUser);
+        helper.addProfileFollowing(profileUser);
+        currUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Error saving follow", e);
+                    return;
+                }
+                Log.i(TAG, "Profile Followed: " + currUser.getUsername() + " followed " + profileUser.getUsername() );
+                isFollowing = !isFollowing;
+                updateFollowButton();
+            }
+        });
+    }
+
+    private void unfollowUser() {
+        final ParseUser currUser = ParseUser.getCurrentUser();
+        ParseUserSocial helper = new ParseUserSocial(currUser);
+        helper.removeProfileFollowing(profileUser);
+        currUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Error saving follow", e);
+                    return;
+                }
+                Log.i(TAG, "Profile Followed: " + currUser.getUsername() + " unfollowed " + profileUser.getUsername() );
+                isFollowing = !isFollowing;
+                updateFollowButton();
+            }
+        });
+    }
 
 
     @Override

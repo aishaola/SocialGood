@@ -40,7 +40,11 @@ public class Post extends ParseObject {
         String categories = "";
         for (int i = 0; i < json.length(); i++) {
             try {
-                categories += json.getJSONObject(i).getString("category") + ",";
+                if(i != 0)
+                    categories += ", ";
+
+                categories += json.getJSONObject(i).getString("category");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -100,8 +104,9 @@ public class Post extends ParseObject {
         put(KEY_LINK, link);
     }
 
-    public String[] getLink(){
+    public Link getLink(){
         JSONObject linkPost = getJSONObject(KEY_LINK);
+        Link link1;
         if(linkPost == null)
             return null;
         String title = "";
@@ -112,8 +117,9 @@ public class Post extends ParseObject {
         } catch(JSONException e){
             e.printStackTrace();
         }
+        link1 = new Link(title, url);
         String[] link = {title, url};
-        return link;
+        return link1;
     }
 
     public ParseUser getUser(){

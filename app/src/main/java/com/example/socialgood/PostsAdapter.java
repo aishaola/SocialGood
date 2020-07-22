@@ -21,9 +21,13 @@ import com.bumptech.glide.Glide;
 import com.example.socialgood.activities.PostDetailActivity;
 import com.example.socialgood.fragments.FeedFragment;
 import com.example.socialgood.fragments.ProfileFragment;
+import com.example.socialgood.models.Link;
 import com.example.socialgood.models.Post;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import org.parceler.Parcel;
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -102,7 +106,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         private void goPostDetailsActivity(Post post) {
             Intent i = new Intent(context, PostDetailActivity.class);
-            i.putExtra("Post", post);
+            i.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
             context.startActivity(i);
         }
 
@@ -119,7 +123,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             });
 
             ParseFile image = post.getImage();
-            String[] link = post.getLink();
+            Link link = post.getLink();
 
             ParseFile profileImage = post.getUserSocial().getProfilePic();
 
@@ -136,7 +140,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 int margin = 0; // crop margin, set to 0 for corners with no crop
 
                 Glide.with(context).load(profileImage.getUrl()).transform(new RoundedCornersTransformation(radius, margin))
-                        .placeholder(R.drawable.profile_pic_default).into(ivProfileImage);
+                        .placeholder(R.drawable.action_profile).into(ivProfileImage);
             }
             else {
                 ivProfileImage.setImageResource(R.drawable.action_profile);
@@ -145,13 +149,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             // If there is an object in the link field, show link button that launches new activity
             // of the url in the browser
             if(link != null){
-                String title = link[0];
-                final String urlLink = link[1];
+                String title = link.getTitle();
+                final String urlLink = link.getUrl();
                 linkButton.setText(title);
                 linkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlLink)));
+                    }
+                });
+                tvCaption.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        goPostDetailsActivity(post);
                     }
                 });
             } else {

@@ -52,6 +52,7 @@ public class FeedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Feed");
         posts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), getFragmentManager(), posts);
         rvPosts = view.findViewById(R.id.rvPosts);
@@ -88,7 +89,7 @@ public class FeedFragment extends Fragment {
         query.include(Post.KEY_CAPTION);
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
-        query.setLimit(5);
+        query.setLimit(10);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
 
 

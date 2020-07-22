@@ -59,6 +59,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Search");
 
         etSearchQuery = view.findViewById(R.id.etSearchQuery);
         etSearchQuery.setOnEditorActionListener(this);
@@ -102,7 +103,8 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
                     Log.i(TAG, "getting post...." + post.getCategoriesDisplay());
 
                     for (String cat: categories) {
-                        if(cat.equalsIgnoreCase(text)){
+                        cat = cat.toLowerCase();
+                        if(cat.contains(text)){
                             posts.add(post);
                             Log.i(TAG, "Post has category!");
                         }
@@ -116,7 +118,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
     @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-            String text = textView.getText().toString();
+            String text = textView.getText().toString().toLowerCase();
             queryPosts(text);
             getActivity().getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
