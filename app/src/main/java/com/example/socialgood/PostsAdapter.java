@@ -12,10 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.socialgood.activities.PostDetailActivity;
+import com.example.socialgood.fragments.FeedFragment;
+import com.example.socialgood.fragments.ProfileFragment;
 import com.example.socialgood.models.Post;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -29,10 +34,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private Context context;
     private List<Post> posts;
     private ParseUser user;
+    private FragmentManager fm;
 
-    public PostsAdapter(Context context, List<Post> posts) {
+    public PostsAdapter(Context context, FragmentManager fm, List<Post> posts) {
         this.context = context;
         this.posts = posts;
+        this.fm = fm;
     }
 
     @NonNull
@@ -104,6 +111,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvCategories.setText(post.getCategoriesDisplay());
             tvTimestamp.setText(post.getRelativeTimeAgo());
             tvCaption.setText(post.getCaption());
+            tvUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goProfileFragment(post.getUser());
+                }
+            });
 
             ParseFile image = post.getImage();
             String[] link = post.getLink();
@@ -144,6 +157,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             } else {
                 linkButton.setVisibility(View.GONE);
             }
+        }
+
+        private void goProfileFragment(ParseUser user) {
+            // Create new fragment and transaction
+            Fragment newFragment = new ProfileFragment(user);
+            // consider using Java coding conventions (upper first char class names!!!)
+            FragmentTransaction transaction = fm.beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack
+            transaction.replace(R.id.frame_holder, newFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
         }
     }
 }

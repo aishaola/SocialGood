@@ -50,6 +50,7 @@ public class ProfileFragment extends FeedFragment {
     TextView tvCategories;
     ImageView ivProfilePic;
     ParseUser profileUser;
+    View buttons;
     boolean isCurrentUser;
 
     public ProfileFragment() {
@@ -73,6 +74,23 @@ public class ProfileFragment extends FeedFragment {
         super.onViewCreated(view, savedInstanceState);
 
         btnLogout = view.findViewById(R.id.btnLogout);
+        btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        ivProfilePic = view.findViewById(R.id.ivProfilePic);
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvCategories = view.findViewById(R.id.tvCategories);
+        buttons = view.findViewById(R.id.buttons);
+
+        ParseUserSocial userSocial = new ParseUserSocial(profileUser);
+
+        // fill in username and category textViews
+        tvUsername.setText(profileUser.getUsername());
+        tvCategories.setText(userSocial.getCategories());
+
+        // hide edit profile buttons if profile isn't current User's
+        if(!isCurrentUser)
+            buttons.setVisibility(View.GONE);
+
+        // log out when logout button pressed
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +98,7 @@ public class ProfileFragment extends FeedFragment {
             }
         });
 
-        btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        // launch edit profile when edit profile button pressed
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,15 +106,8 @@ public class ProfileFragment extends FeedFragment {
             }
         });
 
-        ivProfilePic = view.findViewById(R.id.ivProfilePic);
-        tvUsername = view.findViewById(R.id.tvUsername);
-        tvCategories = view.findViewById(R.id.tvCategories);
-
-        ParseUserSocial userSocial = new ParseUserSocial(profileUser);
-        tvUsername.setText(profileUser.getUsername());
-        tvCategories.setText(userSocial.getCategories());
+        // load user's profile pic or use default
         ParseFile image = userSocial.getProfilePic();
-
         if(image != null){
             Glide.with(getContext()).load(image.getUrl()).into(ivProfilePic);
         } else {

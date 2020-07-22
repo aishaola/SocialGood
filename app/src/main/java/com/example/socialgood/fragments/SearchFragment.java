@@ -64,7 +64,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         etSearchQuery.setOnEditorActionListener(this);
 
         posts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), posts);
+        adapter = new PostsAdapter(getContext(), getFragmentManager(), posts);
         rvPosts = view.findViewById(R.id.rvPosts);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
