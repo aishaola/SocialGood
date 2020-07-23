@@ -13,6 +13,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +55,7 @@ public class ParseUserSocial extends ParseUser {
 
     public void setProfilePic(File file){
         ParseFile pf = new ParseFile(file);
+        pf.saveInBackground();
         user.put(KEY_PROFILE_PIC, pf);
     }
 
@@ -128,5 +130,35 @@ public class ParseUserSocial extends ParseUser {
             }
         }
         return categories;
+    }
+
+    public List<String> getCategoriesList(){
+        JSONArray json = jsonArrayCategories;
+        List<String> listCat = new ArrayList<>();
+
+        if(json == null)
+            return listCat;
+
+        for (int i = 0; i < json.length(); i++) {
+            try {
+                listCat.add(json.getJSONObject(i).getString("category"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return listCat;
+    }
+
+
+
+    public void saveToDatabase(){
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e(ParseUserSocial.class.getSimpleName(), "ERROR SAVING", e);
+                }
+            }
+        });
     }
 }

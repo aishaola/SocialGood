@@ -2,6 +2,7 @@ package com.example.socialgood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -14,17 +15,25 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.socialgood.R;
+import com.example.socialgood.adapters.CategoriesAdapter;
 import com.example.socialgood.fragments.CreateFragment;
 import com.example.socialgood.models.ParseUserSocial;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,15 +56,17 @@ public class EditProfileActivity extends AppCompatActivity {
     RecyclerView rvCategories;
     EditText etAddCategory;
     List<String> categories;
-    ParseUserSocial currUser;
+    ParseUser currUser;
+    ParseUserSocial currUserSocial;
+    CategoriesAdapter categoriesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Edit Profile");
         setContentView(R.layout.activity_edit_profile);
-        currUser = ParseUserSocial.getCurrentUser();
-        categories = new ArrayList<>();
+        currUser = ParseUser.getCurrentUser();
+        currUserSocial = new ParseUserSocial(currUser);
 
         ivProfilePic = findViewById(R.id.ivProfilePic);
         btnLaunchCamera = findViewById(R.id.btnLaunchCamera);
@@ -64,7 +75,45 @@ public class EditProfileActivity extends AppCompatActivity {
         etAddCategory = findViewById(R.id.etAddCategory);
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
 
-        ParseFile image = currUser.getProfilePic();
+        CategoriesAdapter.OnLongClickListener onLongClickListener = new CategoriesAdapter.OnLongClickListener(){
+            @Override
+            public void onItemLongClicked(int position) {
+                // Delete the item from the model
+                categories.remove(position);
+                // Notify the adapter
+                categoriesAdapter.notifyItemRemoved(position);
+                Toast.makeText(getApplicationContext(), "Item was removed", Toast.LENGTH_SHORT).show();
+            }
+        };
+        categories = new ArrayList<>();
+
+        categories.addAll(currUserSocial.getCategoriesList());
+        categoriesAdapter = new CategoriesAdapter(categories, onLongClickListener);
+        rvCategories.setAdapter(categoriesAdapter);
+        rvCategories.setLayoutManager(new LinearLayoutManager( this));
+
+        etAddCategory.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_DONE) {
+                    String cat = etAddCategory.getText().toString();
+                    etAddCategory.setText("");
+                    if(userHasCategory(cat)){
+                        Toast.makeText(EditProfileActivity.this, "User already has this category", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                    categories.add(cat);
+                    categoriesAdapter.notifyDataSetChanged();
+                    getWindow().setSoftInputMode(
+                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    Toast.makeText(EditProfileActivity.this, cat + " added!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        ParseFile image = currUserSocial.getProfilePic();
         if(image == null)
             ivProfilePic.setImageResource(R.drawable.action_profile);
         else
@@ -93,8 +142,32 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void saveChanges() {
+        if(photoFile != null) {
+            currUserSocial.setProfilePic(photoFile);
+            currUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e != null){
+                        Log.e(TAG, "Can't save profile pic", e);
+                    }
+                    Toast.makeText(EditProfileActivity.this, "Profile Image Saved", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
+
+        //categoriesToRemove;
+        //categoriesToAdd;
     }
+
+    private boolean userHasCategory(String category){
+        for (String userCategory: categories) {
+            if(userCategory.equalsIgnoreCase(category))
+                return true;
+        }
+        return false;
+    }
+
 
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application

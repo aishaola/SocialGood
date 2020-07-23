@@ -98,10 +98,11 @@
         android:id="@+id/etAddCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:inputType="textPersonName"
         android:layout_below="@id/tvAddCategory"
         android:layout_marginStart="5dp"
+        android:imeOptions="actionDone"
+        android:ems="10"
         android:hint="e.t: Racial Justice..." />
 
     <Button
