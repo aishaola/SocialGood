@@ -43,6 +43,7 @@ An social media app that gives people a space to promote their social justice in
    * Pinch to scale images
    * Users can add comments
    * Links launch the url in a browser
+* Add preview image for link
 * Users can 'reshare' posts onto their own profile
 * Profiles followed will show up on their feed
 * Google Maps SDK allows for users to add location to their profile, allowong people who are close who care about local issues to organize
@@ -60,7 +61,9 @@ An social media app that gives people a space to promote their social justice in
 * User bio can be built on to include more types of information
 * Fundraising type of post can be created
 * Google maps API can be used to find issues local to user's area 
-* Google maps API can be used to create protest map/create events  
+* Google maps API can be used to create protest map/create events
+* Link reccomendations can be made for link posts
+
 
 ### 2. Screen Archetypes
 
