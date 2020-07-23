@@ -1,8 +1,7 @@
-package com.example.socialgood;
+package com.example.socialgood.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +17,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.socialgood.R;
 import com.example.socialgood.activities.PostDetailActivity;
-import com.example.socialgood.fragments.FeedFragment;
 import com.example.socialgood.fragments.ProfileFragment;
 import com.example.socialgood.models.Link;
 import com.example.socialgood.models.Post;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.util.List;

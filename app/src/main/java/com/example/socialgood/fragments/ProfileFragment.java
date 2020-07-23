@@ -1,15 +1,11 @@
 package com.example.socialgood.fragments;
 
-import android.app.MediaRouteButton;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.socialgood.PostsAdapter;
 import com.example.socialgood.activities.EditProfileActivity;
 import com.example.socialgood.activities.IntroActivity;
 import com.example.socialgood.R;
@@ -28,14 +23,12 @@ import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
 import com.parse.LogOutCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

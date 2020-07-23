@@ -14,8 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.socialgood.EndlessRecyclerViewScrollListener;
-import com.example.socialgood.PostsAdapter;
+import com.example.socialgood.adapters.PostsAdapter;
 import com.example.socialgood.R;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;

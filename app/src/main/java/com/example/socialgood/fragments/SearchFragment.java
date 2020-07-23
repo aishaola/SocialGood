@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,11 +17,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.socialgood.PostsAdapter;
+import com.example.socialgood.adapters.PostsAdapter;
 import com.example.socialgood.R;
-import com.example.socialgood.activities.MainActivity;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;

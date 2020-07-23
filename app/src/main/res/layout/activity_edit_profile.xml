@@ -7,11 +7,110 @@
     android:layout_height="match_parent"
     tools:context=".activities.EditProfileActivity">
 
-    <TextView
+
+    <ImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="60dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:foreground="@drawable/customborder"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
+
+    <Button
+        android:id="@+id/btnLaunchGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/ivProfilePic"
+        android:layout_alignTop="@id/ivProfilePic"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:text="Camera Roll" />
+
+    <Button
+        android:id="@+id/btnLaunchCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/ivProfilePic"
+        android:layout_below="@id/btnLaunchGallery"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:text="Take Picture" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Edit Profile Activity"/>
+        android:layout_marginTop="34dp"
+        android:text="Change Profile Picture"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvEditCategories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivProfilePic"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:text="Edit Categories:"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvLongClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvEditCategories"
+        android:layout_marginTop="3dp"
+        android:text="Long click to delete category" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCategories"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvLongClick"
+        android:layout_marginTop="20dp"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tvAddCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rvCategories"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:text="Add Category:" />
+
+    <EditText
+        android:id="@+id/etAddCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_below="@id/tvAddCategory"
+        android:layout_marginStart="5dp"
+        android:hint="e.t: Racial Justice..." />
+
+    <Button
+        android:id="@+id/btnSaveChanges"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etAddCategory"
+        android:layout_marginTop="20dp"
+        android:text="Save Changes"/>
+
 
 </RelativeLayout>
