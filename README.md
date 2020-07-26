@@ -26,27 +26,27 @@ An social media app that gives people a space to promote their social justice in
 **Required Must-have Stories**
 
 * [ ] User can create accounts/profiles and customize it to their liking
-   * [ ] User can add profile picture
-   * [ ] Can add affiliation between profile and certain social justice categories and be display on profile page
+   * [ ] User can add profile picture from gallery and camera
+   * [x] Can add affiliation between profile and certain social justice categories and be display on profile page
    * [ ] User can add bio
    * [ ] User can delete posts from profile
-   * [ ] User stays logged in once app terminates
-* [ ] Users can create posts
-   * [ ] Users can post images or links, and add a caption to the post
+   * [x] User stays logged in once app terminates
+* [x] Users can create posts
+   * [x] Users can post images or links, and add a caption to the post
    * [ ] Users can add categories to associate post with
-   * [ ] Posts show username, categories associated, timestamp, caption, and pictures/clickable links
-   * [ ] Clicking on posts will launch A Post Detail Activity.
+   * [x] Posts show username, categories associated, timestamp, caption, and pictures/clickable links
+   * [x] Clicking on posts will launch A Post Detail Activity.
 * [ ] Users can view posts on their homepage feed that they've subscribed to
    * [ ] Users can subscribe to categories of interest
-   * [ ] Users can follow other accounts
-   * [ ] Posts from categories subscibed and followed will show up on feed
+   * [x] Users can follow other accounts
+   * [x] Posts from categories subscribed and followed will show up on feed
    * [ ] Pinch to scale images
    * [ ] Users can add comments
-   * [ ] Links launch the url in a browser
+   * [x] Links launch the url in a browser
 * [ ] Add preview image for link
 * [ ] Users can 'reshare' posts onto their own profile
-* [ ] Profiles followed will show up on their feed
-* [ ] Google Maps SDK allows for users to add location to their profile, allowong people who are close who care about local issues to organize
+* [x] Profiles followed will show up on their feed
+* [ ] Google Maps SDK allows for users to add location to their profile, allowing people who are close who care about local issues to organize
 * [ ] Algorithm: Search for posts based on categories/interests 
 * [ ] App uses an animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
 * [ ] App incorporates an external library to add visual polish (Gideon)
