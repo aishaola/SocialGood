@@ -5,6 +5,7 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.example.socialgood.R;
 import com.example.socialgood.adapters.CategoriesAdapter;
 import com.example.socialgood.fragments.CreateFragment;
+import com.example.socialgood.fragments.ProfileFragment;
 import com.example.socialgood.models.ParseUserSocial;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -38,7 +41,10 @@ import com.parse.SaveCallback;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.example.socialgood.SocialGoodHelpers.hideKeyboard;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -56,6 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
     RecyclerView rvCategories;
     EditText etAddCategory;
     List<String> categories;
+    List<String> categoriesToChooseFrom;
     ParseUser currUser;
     ParseUserSocial currUserSocial;
     CategoriesAdapter categoriesAdapter;
@@ -67,6 +74,8 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
         currUser = ParseUser.getCurrentUser();
         currUserSocial = new ParseUserSocial(currUser);
+        // List of categories User can choose to associate account with
+        categoriesToChooseFrom = Arrays.asList("Racial Justice", "Yemen Crisis", "General", "Global Warming");
 
         ivProfilePic = findViewById(R.id.ivProfilePic);
         btnLaunchCamera = findViewById(R.id.btnLaunchCamera);
@@ -97,16 +106,8 @@ public class EditProfileActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(i == EditorInfo.IME_ACTION_DONE) {
                     String cat = etAddCategory.getText().toString();
-                    etAddCategory.setText("");
-                    if(userHasCategory(cat)){
-                        Toast.makeText(EditProfileActivity.this, "User already has this category", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                    categories.add(cat);
-                    categoriesAdapter.notifyDataSetChanged();
-                    getWindow().setSoftInputMode(
-                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                    Toast.makeText(EditProfileActivity.this, cat + " added!", Toast.LENGTH_SHORT).show();
+                    addCategory(cat);
+                    hideKeyboard(EditProfileActivity.this);
                     return true;
                 }
                 return false;
@@ -143,26 +144,60 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void saveChanges() {
         if(photoFile != null) {
-            currUserSocial.setProfilePic(photoFile);
-            currUser.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if(e != null){
-                        Log.e(TAG, "Can't save profile pic", e);
-                    }
-                    Toast.makeText(EditProfileActivity.this, "Profile Image Saved", Toast.LENGTH_SHORT).show();
-                }
-            });
+            currUserSocial.setProfilePic(new ParseFile(photoFile));
         }
 
+        currUserSocial.addNewListOfCategories(categories);
+        currUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Error saving categories", e);
+                    return;
+                }
+                Log.i(TAG, "Categories saved!");
+            }
+        });
 
-        //categoriesToRemove;
-        //categoriesToAdd;
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra(ProfileFragment.TAG, true);
+        startActivity(i);
+    }
+
+    private void addCategory(String cat){
+        etAddCategory.setText("");
+
+        // Checks if User already has the category
+        if(userHasCategory(cat)){
+            Toast.makeText(EditProfileActivity.this, "User already has this category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Checks if category is valid
+        if(!categoryExists(cat)){
+            Toast.makeText(EditProfileActivity.this, "Invalid Category! Enter another one", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Adds to list, does not save yet tho
+        categories.add(cat.trim());
+        categoriesAdapter.notifyDataSetChanged();
+        Toast.makeText(EditProfileActivity.this, cat + " added!", Toast.LENGTH_SHORT).show();
     }
 
     private boolean userHasCategory(String category){
+        String categoryCheck = category.toLowerCase().trim();
         for (String userCategory: categories) {
-            if(userCategory.equalsIgnoreCase(category))
+            if(userCategory.toLowerCase().trim().equals(categoryCheck))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean categoryExists(String category){
+        String categoryCheck = category.toLowerCase().trim();
+        for (String userCategory: categoriesToChooseFrom) {
+            if(userCategory.toLowerCase().trim().equals(categoryCheck))
                 return true;
         }
         return false;
@@ -273,6 +308,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         return file;
     }
+
+
 
 
 }

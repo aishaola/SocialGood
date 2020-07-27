@@ -56,6 +56,8 @@ public class ProfileFragment extends FeedFragment {
     }
 
     public ProfileFragment(ParseUser user) {
+        if(user == null)
+            profileUser = ParseUser.getCurrentUser();
         profileUser = user;
         isCurrentUser = user.getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
         isFollowing = ParseUserSocial.getCurrentUser().userIsFollowing(user);

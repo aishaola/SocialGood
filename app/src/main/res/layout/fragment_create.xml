@@ -8,20 +8,54 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
+        android:layout_height="match_parent">
 
+        <EditText
+            android:id="@+id/etAddCategory"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Enter A Category..." />
+
+        <Button
+            android:id="@+id/btnAddCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/etAddCategory"
+            android:text="ADD" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etAddCategory"
+            android:text="Categories:"
+            android:textStyle="bold"
+            android:id="@+id/tvCat"/>
+
+        <TextView
+            android:id="@+id/tvCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etAddCategory"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/tvCat"
+            android:textColor="#145A4A"
+            android:textStyle="italic"
+            tools:text="Racial Justice, Yemen Crisis" />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvCat"
+        android:layout_marginTop="20dp"
         android:id="@+id/addPicView">
 
         <ImageView
             android:id="@+id/ivAdd1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             app:srcCompat="@android:drawable/ic_input_add"></ImageView>
 
         <TextView
@@ -31,7 +65,7 @@
             android:layout_centerHorizontal="true"
             android:layout_toRightOf="@id/ivAdd1"
             android:text="Add From Camera"
-            android:textSize="36sp"></TextView>
+            android:textSize="25sp"></TextView>
 
     </RelativeLayout>
 
@@ -40,14 +74,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/addPicView"
-            android:layout_marginTop="30dp"
-            android:layout_centerHorizontal="true">
+            android:layout_marginTop="10dp">
 
             <ImageView
                 android:id="@+id/ivAdd2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 app:srcCompat="@android:drawable/ic_input_add"></ImageView>
 
             <TextView
@@ -56,34 +89,33 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/ivAdd2"
                 android:text="Add Pic from Gallery"
-                android:textSize="36sp"></TextView>
+                android:textSize="25sp"></TextView>
 
         </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/addLinkView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/addPicFromGalleryView"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true">
-
-        <ImageView
-            android:id="@+id/ivAdd3"
+        <RelativeLayout
+            android:id="@+id/addLinkView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:srcCompat="@android:drawable/ic_input_add"></ImageView>
+            android:layout_below="@id/addPicFromGalleryView"
+            android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/tvAddLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/ivAdd3"
-            android:text="Add Link"
-            android:textSize="36sp"></TextView>
+            <ImageView
+                android:id="@+id/ivAdd3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:srcCompat="@android:drawable/ic_input_add"></ImageView>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tvAddLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ivAdd3"
+                android:text="Add Link"
+                android:textSize="25sp"></TextView>
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/ivImage"
@@ -92,8 +124,7 @@
             android:layout_below="@id/addLinkView"
             android:layout_alignParentEnd="false"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="false"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="0dp"
             tools:srcCompat="@tools:sample/avatars"></ImageView>
 

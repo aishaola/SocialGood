@@ -1,5 +1,6 @@
 package com.example.socialgood.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.socialgood.SocialGoodHelpers.hideKeyboard;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,7 +83,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         query.include(Post.KEY_CAPTION);
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
-        query.setLimit(10);
+        query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
 
 
@@ -117,8 +120,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             String text = textView.getText().toString().toLowerCase();
             queryPosts(text);
-            getActivity().getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            hideKeyboard((Activity) getContext());
             //Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
             return true;
         }

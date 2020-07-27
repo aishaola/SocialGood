@@ -53,10 +53,8 @@ public class ParseUserSocial extends ParseUser {
         return new ParseUserSocial(ParseUser.getCurrentUser());
     }
 
-    public void setProfilePic(File file){
-        ParseFile pf = new ParseFile(file);
-        pf.saveInBackground();
-        user.put(KEY_PROFILE_PIC, pf);
+    public void setProfilePic(ParseFile file){
+        user.put(KEY_PROFILE_PIC, file);
     }
 
     public ParseFile getProfilePic(){
@@ -109,6 +107,14 @@ public class ParseUserSocial extends ParseUser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addNewListOfCategories(List<String> categories){
+        jsonArrayCategories = null;
+        for (String cat: categories) {
+            addCategory(cat);
+        }
+        saveCategories();
     }
 
     public void saveCategories(){

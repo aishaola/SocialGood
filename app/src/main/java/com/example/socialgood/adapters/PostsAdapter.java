@@ -78,6 +78,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvCaption;
         TextView tvCategories;
         TextView tvTimestamp;
+        TextView tvUserFollowCat;
         Button linkButton;
         ImageView ivProfileImage;
 
@@ -92,6 +93,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvCategories = itemView.findViewById(R.id.tvCategories);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             linkButton = itemView.findViewById(R.id.linkButton);
+            tvUserFollowCat = itemView.findViewById(R.id.tvFollowingCat);
+            itemView.findViewById(R.id.commentContainer).setVisibility(View.GONE);
 
             ivImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,6 +122,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     goProfileFragment(post.getUser());
                 }
             });
+
+            if(!post.isUserFollowsCat())
+                tvUserFollowCat.setVisibility(View.GONE);
+
 
             ParseFile image = post.getImage();
             Link link = post.getLink();

@@ -19,12 +19,20 @@
     android:layout_width="match_parent">
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category You Follow"
+        android:fontFamily="sans-serif-condensed-light"
+        android:id="@+id/tvFollowingCat"/>
+
     <ImageView
         android:id="@+id/ivProfilePic"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
+        android:layout_below="@id/tvFollowingCat"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -34,6 +42,7 @@
         android:layout_toEndOf="@id/ivProfilePic"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
+        android:layout_below="@id/tvFollowingCat"
         android:textStyle="bold"
         tools:text="ayisatpade" />
 
@@ -80,5 +89,36 @@
         android:layout_below="@id/tvCaption"
         android:layout_marginStart="10dp"
         tools:text="5h ago"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTimestamp"
+        android:id="@+id/commentContainer">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComments"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rvComments"
+            android:layout_marginTop="5dp"
+            android:layout_toStartOf="@id/btnComment"
+            android:hint="Enter Comment...." />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POST"
+            android:id="@+id/btnComment"
+            android:layout_alignTop="@id/etComment"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
 </RelativeLayout>
 </androidx.cardview.widget.CardView>

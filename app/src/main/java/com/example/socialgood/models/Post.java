@@ -1,9 +1,13 @@
 package com.example.socialgood.models;
 import android.text.format.DateUtils;
+import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -29,10 +33,12 @@ public class Post extends ParseObject {
     public static final String KEY_USER = "user";
 
     public List<String> listCategories;
+    public boolean userFollowsCat;
 
     public Post(){
         super();
         listCategories = new ArrayList<>();
+        userFollowsCat = false;
     }
 
     public String getCategoriesDisplay(){
@@ -63,6 +69,14 @@ public class Post extends ParseObject {
             }
         }
         return listCat;
+    }
+
+    public void setUserFollowsCat(boolean userFollowsCat) {
+        this.userFollowsCat = userFollowsCat;
+    }
+
+    public boolean isUserFollowsCat() {
+        return userFollowsCat;
     }
 
     public void addCategory(String category){
@@ -96,7 +110,8 @@ public class Post extends ParseObject {
         return getParseFile(KEY_IMAGE);
     }
 
-    public void setImage(ParseFile image){
+    public void setImage(ParseFile image) {
+        image.saveInBackground();
         put(KEY_IMAGE, image);
     }
 
@@ -150,6 +165,8 @@ public class Post extends ParseObject {
 
         return relativeDate;
     }
+
+
 
 
 }

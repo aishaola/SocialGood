@@ -16,10 +16,14 @@ import android.view.ViewGroup;
 
 import com.example.socialgood.adapters.PostsAdapter;
 import com.example.socialgood.R;
+import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,8 @@ public class FeedFragment extends Fragment {
     public SwipeRefreshLayout swipeContainer;
     public List<Post> posts;
     public PostsAdapter adapter;
+    public List<String> userCategories;
+    public List<ParseUser> following;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -52,6 +58,8 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Feed");
+        userCategories = ParseUserSocial.getCurrentUser().getCategoriesList();
+        following = ParseUserSocial.getCurrentUser().getProfilesFollowing();
         posts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), getFragmentManager(), posts);
         rvPosts = view.findViewById(R.id.rvPosts);
@@ -83,15 +91,29 @@ public class FeedFragment extends Fragment {
 
     public void queryPosts(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+
+        /*
+        List<String> categories = ParseUserSocial.getCurrentUser().getCategoriesList();
+        List<ParseUser> following = ParseUserSocial.getCurrentUser().getProfilesFollowing();
+        following.add(ParseUser.getCurrentUser());
+        q1.whereContainedIn(Post.KEY_USER, following);
+
+        List<ParseQuery<Post>> queries = new ArrayList<>();
+        queries.add(q1);
+        for(String cat : categories){
+            ParseQuery<Post> catQuery = ParseQuery.getQuery(Post.class);
+            catQuery.whereEqualTo(Post.KEY_CATEGORIES, cat);
+            queries.add(catQuery);
+        }
+        ParseQuery<Post> query = ParseQuery.or(queries);*/
+
         query.include(Post.KEY_USER);
         query.include(Post.KEY_CREATED_AT);
         query.include(Post.KEY_CAPTION);
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
-        query.setLimit(10);
+        query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
-
-
 
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -102,12 +124,35 @@ public class FeedFragment extends Fragment {
                 }
                 adapter.clear();
                 for(Post post: objects){
-                    posts.add(post);
+                    if(postMatchesFollowing(post)) {
+                        posts.add(post);
+                    } else if (postMatchesCategories(post)){
+                        post.setUserFollowsCat(true);
+                        posts.add(post);
+                    }
                 }
                 adapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
             }
         });
-        adapter.notifyDataSetChanged();
     }
+
+    private boolean postMatchesCategories(Post post) {
+        List<String> postCat = post.getListCategories();
+        for(String cat: userCategories){
+            if(postCat.contains(cat))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean postMatchesFollowing(Post post){
+        ParseUser postUser = post.getUser();
+        for(ParseUser user: following){
+            if(user.getObjectId().equals(postUser.getObjectId()))
+                return true;
+        }
+        return false;
+    }
+
 }

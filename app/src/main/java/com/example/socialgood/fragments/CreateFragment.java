@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.media.Image;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -214,6 +215,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
+
         File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
         // Create the storage directory if it does not exist
@@ -287,6 +289,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             if (resultCode == RESULT_OK) {
                 Uri photoUri = data.getData();
                 // Load the image located at photoUri into selectedImage
+                photoFile = new File(photoUri.getPath());
                 Bitmap selectedImage = loadFromUri(photoUri);
                 // Load the selected image into a preview
                 ivImage.setImageBitmap(selectedImage);
