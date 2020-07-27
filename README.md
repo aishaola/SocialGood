@@ -37,11 +37,11 @@ An social media app that gives people a space to promote their social justice in
    * [x] Posts show username, categories associated, timestamp, caption, and pictures/clickable links
    * [x] Clicking on posts will launch A Post Detail Activity.
 * [ ] Users can view posts on their homepage feed that they've subscribed to
-   * [ ] Users can subscribe to categories of interest
+   * [x] Users can subscribe to categories of interest
    * [x] Users can follow other accounts
    * [x] Posts from categories subscribed and followed will show up on feed
    * [ ] Pinch to scale images
-   * [ ] Users can add comments
+   * [x] Users can add comments
    * [x] Links launch the url in a browser
 * [ ] Add preview image for link
 * [ ] Users can 'reshare' posts onto their own profile
