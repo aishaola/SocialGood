@@ -33,7 +33,7 @@ An social media app that gives people a space to promote their social justice in
    * [x] User stays logged in once app terminates
 * [x] Users can create posts
    * [x] Users can post images or links, and add a caption to the post
-   * [ ] Users can add categories to associate post with
+   * [x] Users can add categories to associate post with
    * [x] Posts show username, categories associated, timestamp, caption, and pictures/clickable links
    * [x] Clicking on posts will launch A Post Detail Activity.
 * [ ] Users can view posts on their homepage feed that they've subscribed to
@@ -44,7 +44,7 @@ An social media app that gives people a space to promote their social justice in
    * [x] Users can add comments
    * [x] Links launch the url in a browser
 * [ ] Add preview image for link
-* [ ] Users can 'reshare' posts onto their own profile
+* [x] Users can 'reshare' posts onto their own profile
 * [x] Profiles followed will show up on their feed
 * [ ] Google Maps SDK allows for users to add location to their profile, allowing people who are close who care about local issues to organize
 * [ ] Algorithm: Search for posts based on categories/interests 
