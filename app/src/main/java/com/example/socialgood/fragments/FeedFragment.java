@@ -60,6 +60,7 @@ public class FeedFragment extends Fragment {
         getActivity().setTitle("Feed");
         userCategories = ParseUserSocial.getCurrentUser().getCategoriesList();
         following = ParseUserSocial.getCurrentUser().getProfilesFollowing();
+        following.add(ParseUser.getCurrentUser());
         posts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), getFragmentManager(), posts);
         rvPosts = view.findViewById(R.id.rvPosts);
@@ -112,6 +113,14 @@ public class FeedFragment extends Fragment {
         query.include(Post.KEY_CAPTION);
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
+        query.include(Post.KEY_IS_RESHARE);
+
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_CAPTION);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_USER);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_IMAGE);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_CAPTION);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_CREATED_AT);
+
         query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
 
@@ -125,8 +134,15 @@ public class FeedFragment extends Fragment {
                 adapter.clear();
                 for(Post post: objects){
                     if(postMatchesFollowing(post)) {
-                        posts.add(post);
-                    } else if (postMatchesCategories(post)){
+                        if(post.isPostReshare()){
+                            Post postReshared = post.getPostReshared();
+                            postReshared.setUserReshared(post.getUser());
+                            posts.add(postReshared);
+                        } else{
+                            posts.add(post);
+                        }
+
+                    } else if (!post.isPostReshare() && postMatchesCategories(post)){
                         post.setUserFollowsCat(true);
                         posts.add(post);
                     }

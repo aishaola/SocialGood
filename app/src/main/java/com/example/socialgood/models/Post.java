@@ -1,14 +1,18 @@
 package com.example.socialgood.models;
+import android.media.audiofx.DynamicsProcessing;
+import android.nfc.Tag;
 import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,14 +35,34 @@ public class Post extends ParseObject {
     public static final String KEY_LINK = "linkPost";
     public static final String KEY_CAPTION = "caption";
     public static final String KEY_USER = "user";
+    public static final String KEY_POST_RESHARED = "postReshared";
+    public static final String KEY_IS_RESHARE = "isReshare";
 
     public List<String> listCategories;
     public boolean userFollowsCat;
+    public ParseUser userReshared;
 
     public Post(){
         super();
         listCategories = new ArrayList<>();
         userFollowsCat = false;
+        userReshared = null;
+    }
+
+    public void setUserReshared(ParseUser userReshared) {
+        this.userReshared = userReshared;
+    }
+
+    public ParseUser getUserReshared() {
+        return userReshared;
+    }
+
+    public Post getPostReshared(){
+        return (Post) getParseObject(KEY_POST_RESHARED);
+    }
+
+    public boolean isPostReshare(){
+        return getBoolean(KEY_IS_RESHARE);
     }
 
     public String getCategoriesDisplay(){
@@ -58,6 +82,16 @@ public class Post extends ParseObject {
         return categories;
     }
 
+    public String getTempCategoriesDisplay(){
+        String categories = "";
+        for (int i = 0; i < listCategories.size(); i++) {
+            if(i != 0)
+                categories += ", ";
+            categories += listCategories.get(i);
+        }
+        return categories;
+    }
+
     public List<String> getListCategories(){
         JSONArray json = getJSONArray(KEY_CATEGORIES);
         List<String> listCat = new ArrayList<>();
@@ -71,6 +105,7 @@ public class Post extends ParseObject {
         return listCat;
     }
 
+
     public void setUserFollowsCat(boolean userFollowsCat) {
         this.userFollowsCat = userFollowsCat;
     }
@@ -81,6 +116,10 @@ public class Post extends ParseObject {
 
     public void addCategory(String category){
         listCategories.add(category);
+    }
+
+    public void addCategories(List<String> categories){
+        listCategories.addAll(categories);
     }
 
     public void saveCategories(){
@@ -145,6 +184,14 @@ public class Post extends ParseObject {
 
     public void setUser(ParseUser user){
         put(KEY_USER, user);
+    }
+
+    public static Post reshare(ParseUser otherUser, Post postToReshare){
+        Post post = new Post();
+        post.setUser(otherUser);
+        post.put(KEY_POST_RESHARED, postToReshare);
+        post.put(KEY_IS_RESHARE, true);
+        return post;
     }
 
 

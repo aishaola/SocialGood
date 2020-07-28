@@ -62,11 +62,12 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.action_home);
         }
 
+        /*
         if(ParseUser.getCurrentUser() != null){
             ParseUserSocial user = ParseUserSocial.getCurrentUser();
             String categories = user.getCategories();
-            //Toast.makeText(this, "User is logged in! Categories: " + categories, Toast.LENGTH_SHORT).show();
-        }
+            Toast.makeText(this, "User is logged in! Categories: " + categories, Toast.LENGTH_SHORT).show();
+        }*/
 
     }
 

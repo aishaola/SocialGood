@@ -194,6 +194,14 @@ public class ProfileFragment extends FeedFragment {
         query.include(Post.KEY_CAPTION);
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
+        query.include(Post.KEY_IS_RESHARE);
+
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_CAPTION);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_USER);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_IMAGE);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_CAPTION);
+        query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_CREATED_AT);
+
         query.whereEqualTo(Post.KEY_USER, profileUser);
         query.setLimit(5);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
@@ -209,7 +217,14 @@ public class ProfileFragment extends FeedFragment {
                 }
                 adapter.clear();
                 for(Post post: objects){
-                    posts.add(post);
+                    if(post.isPostReshare()){
+                        Post postReshared = post.getPostReshared();
+                        postReshared.setUserReshared(profileUser);
+                        posts.add(postReshared);
+                    } else {
+                        posts.add(post);
+                    }
+
                 }
                 adapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);

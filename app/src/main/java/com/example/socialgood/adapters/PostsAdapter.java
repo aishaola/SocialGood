@@ -3,12 +3,14 @@ package com.example.socialgood.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,8 +24,10 @@ import com.example.socialgood.activities.PostDetailActivity;
 import com.example.socialgood.fragments.ProfileFragment;
 import com.example.socialgood.models.Link;
 import com.example.socialgood.models.Post;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -79,14 +83,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvCategories;
         TextView tvTimestamp;
         TextView tvUserFollowCat;
+        TextView tvResharedUsername;
+        View rlReshare;
         Button linkButton;
         ImageView ivProfileImage;
+        ImageView ivReshare;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ivImage = itemView.findViewById(R.id.ivPostImage);
+            ivReshare = itemView.findViewById(R.id.ivReshare);
             ivProfileImage = itemView.findViewById(R.id.ivProfilePic);
             tvCaption = itemView.findViewById(R.id.tvCaption);
             tvUsername = itemView.findViewById(R.id.tvUsername);
@@ -94,6 +102,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             linkButton = itemView.findViewById(R.id.linkButton);
             tvUserFollowCat = itemView.findViewById(R.id.tvFollowingCat);
+            tvResharedUsername = itemView.findViewById(R.id.tvResharedUsername);
+            rlReshare = itemView.findViewById(R.id.rlReshare);
             itemView.findViewById(R.id.commentContainer).setVisibility(View.GONE);
 
             ivImage.setOnClickListener(new View.OnClickListener() {
@@ -122,9 +132,32 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     goProfileFragment(post.getUser());
                 }
             });
+            ivReshare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Post resharedPost = Post.reshare(ParseUser.getCurrentUser(), post);
+                    resharedPost.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e != null){
+                                Log.e("Reshare", "User cannot reshare", e);
+                                return;
+                            }
+                            Toast.makeText(context, "Post was reshared!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
 
             if(!post.isUserFollowsCat())
                 tvUserFollowCat.setVisibility(View.GONE);
+
+            if(post.getUserReshared() != null) {
+                rlReshare.setVisibility(View.VISIBLE);
+                tvResharedUsername.setText(post.getUserReshared().getUsername());
+            } else{
+                rlReshare.setVisibility(View.GONE);
+            }
 
 
             ParseFile image = post.getImage();

@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.socialgood.SocialGoodHelpers.SG_CATEGORIES;
+import static com.example.socialgood.SocialGoodHelpers.categoryExists;
 import static com.example.socialgood.SocialGoodHelpers.hideKeyboard;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -75,7 +77,7 @@ public class EditProfileActivity extends AppCompatActivity {
         currUser = ParseUser.getCurrentUser();
         currUserSocial = new ParseUserSocial(currUser);
         // List of categories User can choose to associate account with
-        categoriesToChooseFrom = Arrays.asList("Racial Justice", "Yemen Crisis", "General", "Global Warming");
+        categoriesToChooseFrom = SG_CATEGORIES;
 
         ivProfilePic = findViewById(R.id.ivProfilePic);
         btnLaunchCamera = findViewById(R.id.btnLaunchCamera);
@@ -188,15 +190,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private boolean userHasCategory(String category){
         String categoryCheck = category.toLowerCase().trim();
         for (String userCategory: categories) {
-            if(userCategory.toLowerCase().trim().equals(categoryCheck))
-                return true;
-        }
-        return false;
-    }
-
-    private boolean categoryExists(String category){
-        String categoryCheck = category.toLowerCase().trim();
-        for (String userCategory: categoriesToChooseFrom) {
             if(userCategory.toLowerCase().trim().equals(categoryCheck))
                 return true;
         }

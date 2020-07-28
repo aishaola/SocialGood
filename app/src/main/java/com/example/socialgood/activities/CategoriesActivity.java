@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.example.socialgood.R;
+import com.example.socialgood.SocialGoodHelpers;
 import com.example.socialgood.models.ParseUserSocial;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -42,7 +43,7 @@ public class CategoriesActivity extends AppCompatActivity {
         checkBoxes = Arrays.asList(cb1, cb2, cb3);
 
         // List of categories User can choose to associate account with
-        List<String> categories = Arrays.asList("Racial Justice", "Yemen Crisis", "General", "Global Warming");
+        List<String> categories = SocialGoodHelpers.SG_CATEGORIES;
 
         // Sets the text of each of the checkboxes to a category
         for (int i = 0; i < checkBoxes.size(); i++) {

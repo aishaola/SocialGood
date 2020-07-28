@@ -1,5 +1,6 @@
 package com.example.socialgood.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,9 +21,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,16 +47,19 @@ import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.socialgood.SocialGoodHelpers.categoryExists;
+import static com.example.socialgood.SocialGoodHelpers.hideKeyboard;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CreateFragment} factory method to
  * create an instance of this fragment.
  */
-public class CreateFragment extends Fragment implements LinkEntryDialogFragment.LinkEntryDialogListener {
+public class CreateFragment extends Fragment implements LinkEntryDialogFragment.LinkEntryDialogListener  {
 
     public static final String TAG = CreateFragment.class.getSimpleName();
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 43;
@@ -71,8 +77,13 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     Link link;
     ImageView ivImage;
     EditText etCaption;
+    EditText etAddCategory;
+    Button btnAddCategory;
     Button btnSubmit;
     TextView tvLinkDisplay;
+    TextView tvCategories;
+
+    List<String> categories;
     int postType;
     private File photoFile;
 
@@ -99,8 +110,11 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         addPickFromGalleryView = view.findViewById(R.id.addPicFromGalleryView);
         addLinkView = view.findViewById(R.id.addLinkView);
         btnSubmit = view.findViewById(R.id.btnCreatePost);
+        btnAddCategory = view.findViewById(R.id.btnAddCategory);
         etCaption = view.findViewById(R.id.etCaption);
+        etAddCategory = view.findViewById(R.id.etAddCategory);
         tvLinkDisplay = view.findViewById(R.id.tvLinkView);
+        tvCategories = view.findViewById(R.id.tvCategories);
         postType = TYPE_IMAGE;
 
         addPicView.setOnClickListener(new View.OnClickListener() {
@@ -131,8 +145,40 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             }
         });
 
+        btnAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCategory();
+            }
+        });
+
+        etAddCategory.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                return action(i);
+            }
+        });
+
+        categories = new ArrayList<>();
         post = new Post();
 
+    }
+
+    private void addCategory() {
+        String cat = etAddCategory.getText().toString().trim();
+        etAddCategory.setText("");
+        if(cat.isEmpty()){
+            Toast.makeText(getContext(), "Please enter a category!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!categoryExists(cat)){
+            Toast.makeText(getContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        categories.add(cat);
+        post.addCategory(cat);
+        Toast.makeText(getContext(), "Category Added!", Toast.LENGTH_SHORT).show();
+        tvCategories.setText(post.getTempCategoriesDisplay());
     }
 
     private void onSubmitPost() {
@@ -149,11 +195,11 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             Toast.makeText(getContext(), "Caption is null!!", Toast.LENGTH_SHORT).show();
             return;
         }
-        savePost(link, photoFile, ParseUser.getCurrentUser(), "Racial Justice", caption);
+        savePost(link, photoFile, ParseUser.getCurrentUser(), caption);
 
     }
 
-    public void savePost(Link link, File photo, ParseUser user, String category, String caption){
+    public void savePost(Link link, File photo, ParseUser user, String caption){
         if(postType == TYPE_LINK)
             post.setLink(link.toJSON());
         else
@@ -161,7 +207,6 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
 
         post.setCaption(caption);
         post.setUser(ParseUser.getCurrentUser());
-        post.addCategory(category);
         post.saveCategories();
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -315,5 +360,14 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             e.printStackTrace();
         }
         return image;
+    }
+
+
+    public boolean action(int actionId) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            hideKeyboard((Activity) getContext());
+            return true;
+        }
+        return false;
     }
 }
