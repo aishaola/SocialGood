@@ -67,6 +67,14 @@
                 android:layout_height="wrap_content"
                 android:text="Edit Profile" />
 
+            <Button
+                android:id="@+id/btnDonate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#4867A6"
+                android:drawableEnd="@drawable/action_social_good1"
+                android:layout_below="@id/btnLogout"
+                android:text="donate to social good  " />
         </RelativeLayout>
 
         <RelativeLayout

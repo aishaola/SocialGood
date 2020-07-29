@@ -32,12 +32,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.socialgood.ImageSupport;
 import com.example.socialgood.R;
 
 import java.io.File;
 // PICK_PHOTO_CODE is a constant integer
 
 import com.example.socialgood.R;
+import com.example.socialgood.SocialGoodHelpers;
 import com.example.socialgood.models.Link;
 import com.example.socialgood.models.Post;
 import com.parse.ParseException;
@@ -84,8 +86,10 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     TextView tvCategories;
 
     List<String> categories;
+    byte[] galleryPhotoBitmap;
     int postType;
     private File photoFile;
+    ImageSupport imageSupport;
 
 
 
@@ -116,6 +120,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         tvLinkDisplay = view.findViewById(R.id.tvLinkView);
         tvCategories = view.findViewById(R.id.tvCategories);
         postType = TYPE_IMAGE;
+        imageSupport = new ImageSupport(getContext(), photoFile, photoFileName, TAG);
 
         addPicView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,24 +166,8 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
 
         categories = new ArrayList<>();
         post = new Post();
+        galleryPhotoBitmap = null;
 
-    }
-
-    private void addCategory() {
-        String cat = etAddCategory.getText().toString().trim();
-        etAddCategory.setText("");
-        if(cat.isEmpty()){
-            Toast.makeText(getContext(), "Please enter a category!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(!categoryExists(cat)){
-            Toast.makeText(getContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        categories.add(cat);
-        post.addCategory(cat);
-        Toast.makeText(getContext(), "Category Added!", Toast.LENGTH_SHORT).show();
-        tvCategories.setText(post.getTempCategoriesDisplay());
     }
 
     private void onSubmitPost() {
@@ -202,8 +191,10 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     public void savePost(Link link, File photo, ParseUser user, String caption){
         if(postType == TYPE_LINK)
             post.setLink(link.toJSON());
-        else
+        else if(galleryPhotoBitmap == null)
             post.setImage(new ParseFile(photoFile));
+        else
+            post.setImage(new ParseFile(galleryPhotoBitmap));
 
         post.setCaption(caption);
         post.setUser(ParseUser.getCurrentUser());
@@ -220,6 +211,23 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             }
         });
 
+    }
+
+    private void addCategory() {
+        String cat = etAddCategory.getText().toString().trim();
+        etAddCategory.setText("");
+        if(cat.isEmpty()){
+            Toast.makeText(getContext(), "Please enter a category!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!categoryExists(cat)){
+            Toast.makeText(getContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        categories.add(cat);
+        post.addCategory(cat);
+        Toast.makeText(getContext(), "Category Added!", Toast.LENGTH_SHORT).show();
+        tvCategories.setText(post.getTempCategoriesDisplay());
     }
 
     private void goFeedFragment() {
@@ -255,30 +263,11 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         //Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();
     }
 
-    // Returns the File for a photo stored on disk given the fileName
-    public File getPhotoFileUri(String fileName) {
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
-
-        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG, "failed to create directory");
-        }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
-        return file;
-    }
-
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
+        photoFile = imageSupport.getPhotoFileUri();
 
         // wrap File object into a content provider
         // required for API >= 24
@@ -300,7 +289,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        photoFile = getPhotoFileUri(photoFileName);
+        photoFile = imageSupport.getPhotoFileUri();
 
         // wrap File object into a content provider
         // required for API >= 24
@@ -333,9 +322,8 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         if ((data != null) && requestCode == PICK_PHOTO_CODE) {
             if (resultCode == RESULT_OK) {
                 Uri photoUri = data.getData();
-                // Load the image located at photoUri into selectedImage
-                photoFile = new File(photoUri.getPath());
-                Bitmap selectedImage = loadFromUri(photoUri);
+                Bitmap selectedImage = imageSupport.loadFromUri(photoUri);
+                galleryPhotoBitmap = imageSupport.bitmapToByteArray(selectedImage);
                 // Load the selected image into a preview
                 ivImage.setImageBitmap(selectedImage);
             } else { // Result was a failure
@@ -344,23 +332,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         }
     }
 
-    private Bitmap loadFromUri(Uri photoUri) {
-        Bitmap image = null;
-        try {
-            // check version of Android on device
-            if(Build.VERSION.SDK_INT > 27){
-                // on newer versions of Android, use the new decodeBitmap method
-                ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), photoUri);
-                image = ImageDecoder.decodeBitmap(source);
-            } else {
-                // support older versions of Android by using getBitmap
-                image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
+
 
 
     public boolean action(int actionId) {

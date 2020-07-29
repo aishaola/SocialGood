@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +44,7 @@ public class ProfileFragment extends FeedFragment {
     Button btnLogout;
     Button btnEditProfile;
     Button btnFollow;
+    Button btnDonate;
     TextView tvUsername;
     TextView tvCategories;
     ImageView ivProfilePic;
@@ -83,6 +86,7 @@ public class ProfileFragment extends FeedFragment {
         buttons = view.findViewById(R.id.buttons);
         buttonsForOtherProfiles = view.findViewById(R.id.buttonsForOtherProfiles);
         btnFollow = view.findViewById(R.id.btnFollow);
+        btnDonate = view.findViewById(R.id.btnDonate);
         
         ParseUserSocial userSocial = new ParseUserSocial(profileUser);
 
@@ -124,7 +128,30 @@ public class ProfileFragment extends FeedFragment {
             ivProfilePic.setImageResource(R.drawable.action_profile);
         }
 
+        btnDonate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goDonateFragment();
+            }
+        });
+
     }
+
+    private void goDonateFragment() {
+        // Create new fragment and transaction
+        Fragment newFragment = new DonateAppFragment();
+        // consider using Java coding conventions (upper first char class names!!!)
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.frame_holder, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
+
 
     public void updateFollowButton(){
         if(isFollowing){

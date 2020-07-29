@@ -1,9 +1,20 @@
 package com.example.socialgood;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +30,8 @@ public class SocialGoodHelpers {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+
 
     public static final List<String> SG_CATEGORIES = Arrays.asList("Racial Justice", "Yemen Crisis", "General", "Global Warming");
 

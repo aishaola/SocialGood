@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.socialgood.ImageSupport;
 import com.example.socialgood.R;
 import com.example.socialgood.adapters.CategoriesAdapter;
 import com.example.socialgood.fragments.CreateFragment;
@@ -56,6 +57,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
     public String photoFileName = "photo.jpg";
     private File photoFile;
+    ImageSupport imageSupport;
+    byte[] galleryPhotoBitmap;
 
     ImageView ivProfilePic;
     Button btnLaunchCamera;
@@ -69,6 +72,8 @@ public class EditProfileActivity extends AppCompatActivity {
     ParseUserSocial currUserSocial;
     CategoriesAdapter categoriesAdapter;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,7 @@ public class EditProfileActivity extends AppCompatActivity {
         currUserSocial = new ParseUserSocial(currUser);
         // List of categories User can choose to associate account with
         categoriesToChooseFrom = SG_CATEGORIES;
+        imageSupport = new ImageSupport(this, photoFile, photoFileName, TAG);
 
         ivProfilePic = findViewById(R.id.ivProfilePic);
         btnLaunchCamera = findViewById(R.id.btnLaunchCamera);
@@ -142,11 +148,15 @@ public class EditProfileActivity extends AppCompatActivity {
                 saveChanges();
             }
         });
+
+        galleryPhotoBitmap = null;
     }
 
     private void saveChanges() {
-        if(photoFile != null) {
+        if(photoFile != null && galleryPhotoBitmap == null) {
             currUserSocial.setProfilePic(new ParseFile(photoFile));
+        } else if(galleryPhotoBitmap != null){
+            currUserSocial.setProfilePic(new ParseFile(galleryPhotoBitmap));
         }
 
         currUserSocial.addNewListOfCategories(categories);
@@ -201,7 +211,7 @@ public class EditProfileActivity extends AppCompatActivity {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
+        photoFile = imageSupport.getPhotoFileUri();
 
         // wrap File object into a content provider
         // required for API >= 24
@@ -223,7 +233,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        photoFile = getPhotoFileUri(photoFileName);
+        photoFile = imageSupport.getPhotoFileUri();
 
         // wrap File object into a content provider
         // required for API >= 24
@@ -256,8 +266,8 @@ public class EditProfileActivity extends AppCompatActivity {
         if ((data != null) && requestCode == PICK_PHOTO_CODE) {
             if (resultCode == RESULT_OK) {
                 Uri photoUri = data.getData();
-                // Load the image located at photoUri into selectedImage
-                Bitmap selectedImage = loadFromUri(photoUri);
+                Bitmap selectedImage = imageSupport.loadFromUri(photoUri);
+                galleryPhotoBitmap = imageSupport.bitmapToByteArray(selectedImage);
                 // Load the selected image into a preview
                 ivProfilePic.setImageBitmap(selectedImage);
             } else { // Result was a failure
@@ -265,44 +275,5 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         }
     }
-
-    private Bitmap loadFromUri(Uri photoUri) {
-        Bitmap image = null;
-        try {
-            // check version of Android on device
-            if(Build.VERSION.SDK_INT > 27){
-                // on newer versions of Android, use the new decodeBitmap method
-                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
-                image = ImageDecoder.decodeBitmap(source);
-            } else {
-                // support older versions of Android by using getBitmap
-                image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
-
-    // Returns the File for a photo stored on disk given the fileName
-    public File getPhotoFileUri(String fileName) {
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG, "failed to create directory");
-        }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
-        return file;
-    }
-
-
-
 
 }

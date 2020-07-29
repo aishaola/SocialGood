@@ -126,8 +126,21 @@ public class PaypalTesterActivity extends Activity {
     }
 
     private void savePayment(){
-        Fundraiser f = getFundraiser();
-        Donation donation = new Donation(ParseUser.getCurrentUser(), f, (double) amount);
+        ParseQuery<Fundraiser> query = ParseQuery.getQuery(Fundraiser.class);
+        query.getFirstInBackground(new GetCallback<Fundraiser>() {
+            @Override
+            public void done(Fundraiser object, ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Error finding fundraiser", e);
+                    return;
+                }
+                saveDonation(object);
+            }
+        });
+    }
+
+    private void saveDonation(Fundraiser fundraiser){
+        Donation donation = new Donation(ParseUser.getCurrentUser(), fundraiser, (double) amount);
         donation.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -138,22 +151,6 @@ public class PaypalTesterActivity extends Activity {
                 Log.i(TAG, "Saved Donation");
             }
         });
-    }
-
-    private Fundraiser getFundraiser(){
-        final Fundraiser[] list = new Fundraiser[2];
-        ParseQuery<Fundraiser> query = ParseQuery.getQuery(Fundraiser.class);
-        query.getFirstInBackground(new GetCallback<Fundraiser>() {
-            @Override
-            public void done(Fundraiser object, ParseException e) {
-                if(e != null){
-                    Log.e(TAG, "Error finding fundraiser", e);
-                    return;
-                }
-                list[0] = object;
-            }
-        });
-        return list[0];
     }
 
     /*
