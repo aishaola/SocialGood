@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.PaypalTesterActivity">
 
+        </activity>
         <!-- make sure within the application tag, otherwise app will crash with XmlResourceParser errors -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -28,7 +30,7 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <activity android:name=".activities.CategoriesActivity"></activity>
+        <activity android:name=".activities.CategoriesActivity" />
         <activity android:name=".activities.EditProfileActivity" />
         <activity android:name=".activities.PostDetailActivity" />
         <activity android:name=".activities.IntroActivity">

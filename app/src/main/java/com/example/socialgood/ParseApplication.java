@@ -3,6 +3,8 @@ package com.example.socialgood;
 import android.app.Application;
 
 import com.example.socialgood.models.Comment;
+import com.example.socialgood.models.Donation;
+import com.example.socialgood.models.Fundraiser;
 import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.parse.Parse;
@@ -38,6 +40,8 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Post.class);
         ParseObject.registerSubclass(ParseUserSocial.class);
         ParseObject.registerSubclass(Comment.class);
+        ParseObject.registerSubclass(Donation.class);
+        ParseObject.registerSubclass(Fundraiser.class);
         ParseUser.registerSubclass(ParseUserSocial.class);
 
         // set applicationId, and server server based on the values in the Heroku settings.
