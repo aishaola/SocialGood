@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import kotlin.reflect.KType;
+
 @Parcel(analyze ={Post.class})
 @ParseClassName("Post")
 public class Post extends ParseObject {
@@ -37,6 +39,9 @@ public class Post extends ParseObject {
     public static final String KEY_USER = "user";
     public static final String KEY_POST_RESHARED = "postReshared";
     public static final String KEY_IS_RESHARE = "isReshare";
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_DONATION = "donation";
+    public static final String DONATION_TYPE = "donation";
 
     public List<String> listCategories;
     public boolean userFollowsCat;
@@ -95,6 +100,8 @@ public class Post extends ParseObject {
     public List<String> getListCategories(){
         JSONArray json = getJSONArray(KEY_CATEGORIES);
         List<String> listCat = new ArrayList<>();
+        if(json == null)
+            return listCat;
         for (int i = 0; i < json.length(); i++) {
             try {
                 listCat.add(json.getJSONObject(i).getString("category"));
@@ -214,6 +221,19 @@ public class Post extends ParseObject {
     }
 
 
+    public void setDonation(Donation donation) {
+        put(KEY_DONATION, donation);
+    }
 
+    public Donation getDonation() {
+        return (Donation) getParseObject (KEY_DONATION);
+    }
+
+    public void setType(String type) {
+        put(KEY_TYPE, type);
+    }
+    public String getType() {
+        return getString(KEY_TYPE);
+    }
 
 }

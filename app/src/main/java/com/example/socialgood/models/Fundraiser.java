@@ -1,8 +1,12 @@
 package com.example.socialgood.models;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcel;
 
@@ -16,6 +20,7 @@ public class Fundraiser extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_TARGET = "amountTarget";
     public static final String KEY_AMOUNT_RAISED = "amountRaised";
+    private static final String TAG = Fundraiser.class.getSimpleName();
 
 
     public Fundraiser(){
@@ -29,15 +34,33 @@ public class Fundraiser extends ParseObject {
         put(KEY_DESCRIPTION, description);
     }
 
-    public void getOwner(){
-        getParseUser(KEY_OWNER);
+    public ParseUser getOwner(){
+        return getParseUser(KEY_OWNER);
     }
 
-    public void getTitle(){
-        getParseObject(KEY_TITLE);
+    public String getTitle(){
+        return getString(KEY_TITLE);
     }
 
-    public void getDescription(){
-        getString(KEY_DESCRIPTION);
+    public String getDescription(){
+        return getString(KEY_DESCRIPTION);
+    }
+
+    public double getAmountRaised(){
+        return getDouble(KEY_AMOUNT_RAISED);
+    }
+
+    public void addToFunds(double donationAmount){
+        put(KEY_AMOUNT_RAISED, getAmountRaised() + donationAmount);
+        saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e(TAG, "Couldn't add funds to fundraiser", e);
+                    return;
+                }
+                Log.i(TAG, "Saved Donation Post");
+            }
+        });
     }
 }

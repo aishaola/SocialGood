@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import com.example.socialgood.adapters.PostsAdapter;
 import com.example.socialgood.R;
+import com.example.socialgood.models.Donation;
+import com.example.socialgood.models.Fundraiser;
 import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
@@ -114,6 +116,11 @@ public class FeedFragment extends Fragment {
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
         query.include(Post.KEY_IS_RESHARE);
+        query.include(Post.KEY_TYPE);
+        query.include(Post.KEY_DONATION);
+
+        query.include(Post.KEY_DONATION + "." + Donation.KEY_FUNDRAISER);
+        query.include(Post.KEY_DONATION + "." + Donation.KEY_FUNDRAISER + "." + Fundraiser.KEY_TITLE);
 
         query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_CAPTION);
         query.include(Post.KEY_POST_RESHARED + "." + Post.KEY_USER);

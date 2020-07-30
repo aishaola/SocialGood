@@ -1,6 +1,7 @@
 package com.example.socialgood.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -12,6 +13,7 @@ public class Donation extends ParseObject {
     public static final String KEY_FUNDRAISER = "fundraiser";
     public static final String KEY_AMOUNT = "amountDonated";
     public static final String KEY_MESSAGE = "message";
+
 
     public Donation(){
         super();
@@ -27,11 +29,16 @@ public class Donation extends ParseObject {
         getParseUser(KEY_USER);
     }
 
-    public void getFundraiser(){
-        getParseObject(KEY_FUNDRAISER);
+    public Fundraiser getFundraiser(){
+        try {
+            return (Fundraiser) getParseObject(KEY_FUNDRAISER).fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void getAmountDonated(){
-        getDouble(KEY_AMOUNT);
+    public double getAmountDonated(){
+        return getDouble(KEY_AMOUNT);
     }
 }

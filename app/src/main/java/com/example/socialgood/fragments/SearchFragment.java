@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.socialgood.adapters.PostsAdapter;
 import com.example.socialgood.R;
@@ -25,10 +26,12 @@ import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.socialgood.SocialGoodHelpers.categoryExists;
 import static com.example.socialgood.SocialGoodHelpers.hideKeyboard;
 
 /**
@@ -76,7 +79,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
     }
 
 
-    public void queryPosts(final String text){
+    public void queryPosts(final String textQuery){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.include(Post.KEY_CREATED_AT);
@@ -85,6 +88,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         query.include(Post.KEY_IMAGE);
         query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.whereDoesNotExist(Post.KEY_TYPE);
 
 
 
@@ -103,8 +107,8 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
                     Log.i(TAG, "getting post...." + post.getCategoriesDisplay());
 
                     for (String cat: categories) {
-                        cat = cat.toLowerCase();
-                        if(cat.contains(text)){
+                        cat = cat.toLowerCase().trim();
+                        if(compareStringsAlgorithm(cat, textQuery, 4)){
                             posts.add(post);
                             Log.i(TAG, "Post has category!");
                         }
@@ -115,13 +119,56 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         adapter.notifyDataSetChanged();
     }
 
+    public void queryUsers(final String textQuery){
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.include(Post.KEY_USER);
+        query.include(Post.KEY_CREATED_AT);
+        query.include(Post.KEY_CAPTION);
+        query.include(Post.KEY_CATEGORIES);
+        query.include(Post.KEY_IMAGE);
+        query.setLimit(20);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.whereDoesNotExist(Post.KEY_TYPE);
+
+        adapter.notifyDataSetChanged();
+    }
+
+    private boolean compareStringsAlgorithm(String cat, String textQuery, int errorMax) {
+        String[] categoryWordsArray = cat.split(" ");
+        String[] queryWordsArray = textQuery.split(" ");
+        String catNoSpaces = cat.replaceAll("\\s","");
+        String queryNoSpaces = textQuery.replaceAll("\\s","");
+        char[] catChars = catNoSpaces.toCharArray();
+        char[] queryChars = queryNoSpaces.toCharArray();
+
+        // 1. return true if query contains the query
+        if(catNoSpaces.contains(queryNoSpaces) || queryNoSpaces.contains(catNoSpaces))
+            return true;
+
+        // 2. return true if the first word matches the first word of category and query match any other category better than show
+        if(!categoryExists(textQuery) && categoryWordsArray[0].equals(queryWordsArray[0]))
+            return true;
+
+        // 3. return true if query is just a couple of letters off (remove the spaces) OR
+        int errorCount = 0;
+        for (int i = 0; i < Math.min(catChars.length, queryChars.length) && errorCount < errorMax; i++) {
+            if(catChars[i] != queryChars[i])
+                errorCount++;
+        }
+        if(errorCount < errorMax)
+            return true;
+
+
+        return false;
+    }
+
     @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-            String text = textView.getText().toString().toLowerCase();
+            String text = textView.getText().toString().toLowerCase().trim();
             queryPosts(text);
             hideKeyboard((Activity) getContext());
-            //Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), toRomanNumeral(17), Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;

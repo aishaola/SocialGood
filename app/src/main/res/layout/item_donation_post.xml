@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvRoot"
+
+    android:layout_width="match_parent"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="8dp">
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rlReshare"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvReshare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:text="Reshared by"
+                android:textStyle="italic" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/tvReshare"
+                android:id="@+id/tvResharedUsername"
+                android:layout_marginStart="5dp"
+                tools:text ="ayisatpade"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/ivReshare"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignTop="@id/tvUsername"
+            android:layout_alignParentEnd="true"
+            android:background="#FFFFFF"
+            card_view:srcCompat="@drawable/action_reshare" />
+
+        <ImageView
+            android:id="@+id/ivProfilePic"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_below="@id/tvFollowingCat"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvFollowingCat"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/ivProfilePic"
+            android:textStyle="bold"
+            tools:text="ayisatpade" />
+
+
+        <TextView
+            android:id="@+id/tvDonationAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvUsername"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textSize="24sp"
+            tools:text="Donated $7 to:" />
+
+        <TextView
+            android:id="@+id/tvFundraiserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDonationAmount"
+            android:layout_centerHorizontal="true"
+            android:textColor="#2196F3"
+            android:textSize="30sp"
+            tools:text="SocialGood Fund" />
+
+        <Button
+            android:id="@+id/btnDonate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvFundraiserName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Donate" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvTimestamp"
+            android:layout_below="@id/btnDonate"
+            android:layout_marginStart="10dp"
+            tools:text="5h ago"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTimestamp"
+            android:id="@+id/commentContainer">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComments"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp" />
+
+            <EditText
+                android:id="@+id/etComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rvComments"
+                android:layout_marginTop="5dp"
+                android:layout_toStartOf="@id/btnComment"
+                android:hint="Enter Comment...." />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="POST"
+                android:id="@+id/btnComment"
+                android:layout_alignTop="@id/etComment"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
