@@ -17,6 +17,11 @@ public class Donation extends ParseObject {
 
     public Donation(){
         super();
+        try {
+            fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
     public Donation(ParseUser user, Fundraiser fundraiser, Double amountDonated){
         super();
@@ -30,12 +35,7 @@ public class Donation extends ParseObject {
     }
 
     public Fundraiser getFundraiser(){
-        try {
-            return (Fundraiser) getParseObject(KEY_FUNDRAISER).fetchIfNeeded();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return (Fundraiser) getParseObject(KEY_FUNDRAISER);
     }
 
     public double getAmountDonated(){

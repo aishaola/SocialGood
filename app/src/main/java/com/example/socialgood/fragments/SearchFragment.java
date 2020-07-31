@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.example.socialgood.adapters.PostsAdapter;
 import com.example.socialgood.R;
+import com.example.socialgood.adapters.ProfilesAdapter;
+import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -43,10 +45,14 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
 
     public static final String TAG = FeedFragment.class.getSimpleName();
     public RecyclerView rvPosts;
+    public RecyclerView rvProfiles;
     //public SwipeRefreshLayout swipeContainer;
     public EditText etSearchQuery;
     public List<Post> posts;
+    public List<ParseUser> profiles;
     public PostsAdapter adapter;
+    public ProfilesAdapter profilesAdapter;
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -68,13 +74,20 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         etSearchQuery.setOnEditorActionListener(this);
 
         posts = new ArrayList<>();
+        profiles = new ArrayList<>();
+
         adapter = new PostsAdapter(getContext(), getFragmentManager(), posts);
+        profilesAdapter = new ProfilesAdapter(getContext(), getFragmentManager(), profiles);
+
         rvPosts = view.findViewById(R.id.rvPosts);
+        rvProfiles = view.findViewById(R.id.rvProfiles);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         rvPosts.setAdapter(adapter);
-
         rvPosts.setLayoutManager(linearLayoutManager);
+
+        rvProfiles.setAdapter(profilesAdapter);
+        rvProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
 
@@ -111,6 +124,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
                         if(compareStringsAlgorithm(cat, textQuery, 4)){
                             posts.add(post);
                             Log.i(TAG, "Post has category!");
+                            break;
                         }
                     }
                 }
@@ -121,16 +135,31 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
 
     public void queryUsers(final String textQuery){
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.include(Post.KEY_USER);
-        query.include(Post.KEY_CREATED_AT);
-        query.include(Post.KEY_CAPTION);
-        query.include(Post.KEY_CATEGORIES);
-        query.include(Post.KEY_IMAGE);
-        query.setLimit(20);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
-        query.whereDoesNotExist(Post.KEY_TYPE);
+        query.include(ParseUserSocial.KEY_PROFILE_PIC);
+        query.include(ParseUserSocial.KEY_CATEGORIES);
 
-        adapter.notifyDataSetChanged();
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                profilesAdapter.clear();
+
+                // For each post in db, check if categories list contains text entered in etSearchQuery
+                for(ParseUser userFound: objects){
+                    ParseUserSocial userFoundSocial = new ParseUserSocial(userFound);
+                    List<String> categories = userFoundSocial.getCategoriesList();
+
+                    for (String cat: categories) {
+                        cat = cat.toLowerCase().trim();
+                        if(compareStringsAlgorithm(cat, textQuery, 4)){
+                            profiles.add(userFound);
+                            Log.i(TAG, "Post has category!");
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        profilesAdapter.notifyDataSetChanged();
     }
 
     private boolean compareStringsAlgorithm(String cat, String textQuery, int errorMax) {
@@ -141,19 +170,24 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         char[] catChars = catNoSpaces.toCharArray();
         char[] queryChars = queryNoSpaces.toCharArray();
 
-        // 1. return true if query contains the query
+        // 1. return true if query contains the category
         if(catNoSpaces.contains(queryNoSpaces) || queryNoSpaces.contains(catNoSpaces))
             return true;
 
-        // 2. return true if the first word matches the first word of category and query match any other category better than show
+        // 2. return true if the first word matches the first word of category and query match any other category better than show OR
         if(!categoryExists(textQuery) && categoryWordsArray[0].equals(queryWordsArray[0]))
             return true;
 
-        // 3. return true if query is just a couple of letters off (remove the spaces) OR
+        // 3. return true if query is just a couple of letters off (remove the spaces) BUT return false if it's consecutive
         int errorCount = 0;
-        for (int i = 0; i < Math.min(catChars.length, queryChars.length) && errorCount < errorMax; i++) {
-            if(catChars[i] != queryChars[i])
+        int consecErrorCount = 0;
+        for (int i = 0; i < Math.min(catChars.length, queryChars.length) && errorCount < errorMax && consecErrorCount < errorMax; i++) {
+            if(catChars[i] != queryChars[i]){
                 errorCount++;
+                //consecErrorCount++;
+            } else{
+                //consecErrorCount = 0;
+            }
         }
         if(errorCount < errorMax)
             return true;
@@ -167,6 +201,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             String text = textView.getText().toString().toLowerCase().trim();
             queryPosts(text);
+            queryUsers(text);
             hideKeyboard((Activity) getContext());
             //Toast.makeText(getContext(), toRomanNumeral(17), Toast.LENGTH_SHORT).show();
             return true;

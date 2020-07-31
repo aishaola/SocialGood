@@ -26,8 +26,11 @@ import com.example.socialgood.models.Donation;
 import com.example.socialgood.models.Fundraiser;
 import com.example.socialgood.models.Link;
 import com.example.socialgood.models.Post;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -113,7 +116,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivImage;
+        PhotoView ivImage;
         TextView tvUsername;
         TextView tvCaption;
         TextView tvCategories;
@@ -121,6 +124,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvUserFollowCat;
         TextView tvResharedUsername;
         View rlReshare;
+        View cvRoot;
         Button linkButton;
         ImageView ivProfileImage;
         ImageView ivReshare;
@@ -129,7 +133,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ivImage = itemView.findViewById(R.id.ivPostImage);
+            ivImage = (PhotoView) itemView.findViewById(R.id.ivPostImage);
             ivReshare = itemView.findViewById(R.id.ivReshare);
             ivProfileImage = itemView.findViewById(R.id.ivProfilePic);
             tvCaption = itemView.findViewById(R.id.tvCaption);
@@ -140,15 +144,10 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvUserFollowCat = itemView.findViewById(R.id.tvFollowingCat);
             tvResharedUsername = itemView.findViewById(R.id.tvResharedUsername);
             rlReshare = itemView.findViewById(R.id.rlReshare);
+            cvRoot = itemView.findViewById(R.id.cvRoot);
             itemView.findViewById(R.id.commentContainer).setVisibility(View.GONE);
 
-            ivImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(getAdapterPosition() > -1)
-                        goPostDetailsActivity(posts.get(getAdapterPosition()));
-                }
-            });
+
 
         }
 
@@ -169,6 +168,14 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     goProfileFragment(post.getUser());
                 }
             });
+
+            cvRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goPostDetailsActivity(post);
+                }
+            });
+
             ivReshare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -292,10 +299,16 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void bind(final Post post) {
             Donation donation = post.getDonation();
-            Fundraiser fundraiser = donation.getFundraiser();
+            final Fundraiser fundraiser = donation.getFundraiser();
             // elements specific to the donation post
             tvDonationAmount.setText("Donated $"  + donation.getAmountDonated() + ": ");
-            tvFundraiserName.setText(fundraiser.getTitle());
+            fundraiser.fetchIfNeededInBackground(new GetCallback<Fundraiser>() {
+                @Override
+                public void done(Fundraiser object, ParseException e) {
+                    tvFundraiserName.setText(object.getTitle());
+                }
+            });
+
 
             // All post views have elements below
             tvUsername.setText(post.getUser().getUsername());

@@ -18,9 +18,9 @@
         android:layout_width="match_parent">
 
         <RelativeLayout
+            android:id="@+id/rlReshare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rlReshare"
             android:visibility="gone">
 
             <TextView
@@ -30,13 +30,14 @@
                 android:fontFamily="sans-serif-condensed-light"
                 android:text="Reshared by"
                 android:textStyle="italic" />
+
             <TextView
+                android:id="@+id/tvResharedUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/tvReshare"
-                android:id="@+id/tvResharedUsername"
                 android:layout_marginStart="5dp"
-                tools:text ="ayisatpade"/>
+                android:layout_toEndOf="@id/tvReshare"
+                tools:text="ayisatpade" />
 
         </RelativeLayout>
 
@@ -55,14 +56,14 @@
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:layout_below="@id/tvFollowingCat"
+            android:layout_below="@id/rlReshare"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvFollowingCat"
+            android:layout_below="@id/rlReshare"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/ivProfilePic"

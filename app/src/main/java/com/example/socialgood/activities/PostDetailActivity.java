@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.socialgood.R;
@@ -39,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static com.example.socialgood.SocialGoodHelpers.hideKeyboard;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -91,6 +94,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userComment = etComment.getText().toString();
                 addComment(userComment);
+                hideKeyboard(PostDetailActivity.this);
             }
         });
 
@@ -103,6 +107,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e != null){
                     Log.e(TAG, "addComment(): Comment couldn't post", e);
+                    Toast.makeText(PostDetailActivity.this, "Could not post comment!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 etComment.setText("");

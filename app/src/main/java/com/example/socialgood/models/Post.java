@@ -73,6 +73,8 @@ public class Post extends ParseObject {
     public String getCategoriesDisplay(){
         JSONArray json = getJSONArray(KEY_CATEGORIES);
         String categories = "";
+        if(json == null)
+            return categories;
         for (int i = 0; i < json.length(); i++) {
             try {
                 if(i != 0)
