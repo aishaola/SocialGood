@@ -25,11 +25,9 @@ An social media app that gives people a space to promote their social justice in
 
 **Required Must-have Stories**
 
-* [ ] User can create accounts/profiles and customize it to their liking
-   * [ ] User can add profile picture from gallery and camera
+* [x] User can create accounts/profiles and customize it to their liking
+   * [x] User can add profile picture from gallery and camera
    * [x] Can add affiliation between profile and certain social justice categories and be display on profile page
-   * [ ] User can add bio
-   * [ ] User can delete posts from profile
    * [x] User stays logged in once app terminates
 * [x] Users can create posts
    * [x] Users can post images or links, and add a caption to the post
@@ -46,8 +44,8 @@ An social media app that gives people a space to promote their social justice in
 * [ ] Add preview image for link
 * [x] Users can 'reshare' posts onto their own profile
 * [x] Profiles followed will show up on their feed
-* [ ] Google Maps SDK allows for users to add location to their profile, allowing people who are close who care about local issues to organize
-* [ ] Algorithm: Search for posts based on categories/interests 
+* [x] Paypal SDK allows users to donate to the app
+* [x] Algorithm: Search for posts based on categories/interests 
 * [ ] App uses an animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
 * [ ] App incorporates an external library to add visual polish (Gideon)
 
@@ -60,7 +58,10 @@ An social media app that gives people a space to promote their social justice in
 * [ ] Users can fundraise through the app
 * [ ] Google maps API can be used to find issues local to user's area 
 * [ ] Google maps API can be used to create protest map/create events
+* [ ] User can add bio
+* [ ] User can delete posts from profile
 * [ ] Link reccomendations can be made for link posts
+
 
 
 ### 2. Screen Archetypes
