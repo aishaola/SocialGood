@@ -4,6 +4,7 @@ import android.nfc.Tag;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseClassName;
@@ -52,6 +53,10 @@ public class Post extends ParseObject {
         listCategories = new ArrayList<>();
         userFollowsCat = false;
         userReshared = null;
+    }
+
+    public boolean isPostCurrUsers(){
+        return getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
     }
 
     public void setUserReshared(ParseUser userReshared) {
@@ -200,6 +205,7 @@ public class Post extends ParseObject {
         post.setUser(otherUser);
         post.put(KEY_POST_RESHARED, postToReshare);
         post.put(KEY_IS_RESHARE, true);
+        post.setType("link");
         return post;
     }
 
@@ -222,6 +228,18 @@ public class Post extends ParseObject {
         return relativeDate;
     }
 
+    public void removePost() {
+        deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null) {
+                    Log.e("removePost():", "Delete error", e);
+                    return;
+                }
+                Log.i("removePost():", "Post deleted");
+            }
+        });
+    }
 
     public void setDonation(Donation donation) {
         put(KEY_DONATION, donation);

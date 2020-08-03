@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.socialgood.R;
 import com.example.socialgood.activities.PostDetailActivity;
+import com.example.socialgood.fragments.DonateAppFragment;
 import com.example.socialgood.fragments.ProfileFragment;
 import com.example.socialgood.models.Donation;
 import com.example.socialgood.models.Fundraiser;
@@ -35,6 +36,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -123,6 +125,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvTimestamp;
         TextView tvUserFollowCat;
         TextView tvResharedUsername;
+        TextView tvDeletePost;
         View rlReshare;
         View cvRoot;
         Button linkButton;
@@ -140,6 +143,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvCategories = itemView.findViewById(R.id.tvCategories);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            tvDeletePost = itemView.findViewById(R.id.tvDeletePost);
             linkButton = itemView.findViewById(R.id.linkButton);
             tvUserFollowCat = itemView.findViewById(R.id.tvFollowingCat);
             tvResharedUsername = itemView.findViewById(R.id.tvResharedUsername);
@@ -203,6 +207,17 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 rlReshare.setVisibility(View.GONE);
             }
 
+            /*if(post.isPostCurrUsers())
+                tvDeletePost.setVisibility(View.VISIBLE);
+            else**/
+                tvDeletePost.setVisibility(View.GONE);
+
+            tvDeletePost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    post.removePost();
+                }
+            });
 
             ParseFile image = post.getImage();
             Link link = post.getLink();
@@ -309,6 +324,13 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             });
 
+            btnDonate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goDonateFragment();
+                }
+            });
+
 
             // All post views have elements below
             tvUsername.setText(post.getUser().getUsername());
@@ -354,6 +376,21 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ivProfileImage.setImageResource(R.drawable.action_profile);
             }
 
+        }
+
+        private void goDonateFragment() {
+            // Create new fragment and transaction
+            Fragment newFragment = new DonateAppFragment();
+            // consider using Java coding conventions (upper first char class names!!!)
+            FragmentTransaction transaction = fm.beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack
+            transaction.replace(R.id.frame_holder, newFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
         }
 
         private void goProfileFragment(ParseUser user) {

@@ -121,7 +121,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
 
                     for (String cat: categories) {
                         cat = cat.toLowerCase().trim();
-                        if(compareStringsAlgorithm(cat, textQuery, 4)){
+                        if(compareStringsAlgorithm(cat, textQuery, 3)){
                             posts.add(post);
                             Log.i(TAG, "Post has category!");
                             break;
@@ -150,7 +150,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
 
                     for (String cat: categories) {
                         cat = cat.toLowerCase().trim();
-                        if(compareStringsAlgorithm(cat, textQuery, 4)){
+                        if(compareStringsAlgorithm(cat, textQuery, 3)){
                             profiles.add(userFound);
                             Log.i(TAG, "Post has category!");
                             break;
@@ -181,12 +181,12 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         // 3. return true if query is just a couple of letters off (remove the spaces) BUT return false if it's consecutive
         int errorCount = 0;
         int consecErrorCount = 0;
-        for (int i = 0; i < Math.min(catChars.length, queryChars.length) && errorCount < errorMax && consecErrorCount < errorMax; i++) {
+        for (int i = 0; i < Math.min(catChars.length, queryChars.length) && errorCount < errorMax; i++) {
             if(catChars[i] != queryChars[i]){
                 errorCount++;
-                //consecErrorCount++;
+                // consecErrorCount++;
             } else{
-                //consecErrorCount = 0;
+                // consecErrorCount = 0;
             }
         }
         if(errorCount < errorMax)
