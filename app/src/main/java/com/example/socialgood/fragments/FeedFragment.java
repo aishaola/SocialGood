@@ -40,7 +40,7 @@ public class FeedFragment extends Fragment {
     public static final String TAG = FeedFragment.class.getSimpleName();
     public RecyclerView rvPosts;
     public SwipeRefreshLayout swipeContainer;
-    public List<Post> posts;
+    public List<ParseObject> posts;
     public PostsAdapter adapter;
     public List<String> userCategories;
     public List<ParseUser> following;
@@ -115,7 +115,6 @@ public class FeedFragment extends Fragment {
         query.include(Post.KEY_CAPTION);
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
-        query.include(Post.KEY_IS_RESHARE);
         query.include(Post.KEY_TYPE);
         query.include(Post.KEY_DONATION);
 
@@ -141,14 +140,7 @@ public class FeedFragment extends Fragment {
                 adapter.clear();
                 for(Post post: objects){
                     if(postMatchesFollowing(post)) {
-                        if(post.isPostReshare()){
-                            Post postReshared = post.getPostReshared();
-                            postReshared.setUserReshared(post.getUser());
-                            posts.add(postReshared);
-                        } else{
-                            posts.add(post);
-                        }
-
+                        posts.add(post);
                     } else if (!post.isPostReshare() && postMatchesCategories(post)){
                         post.setUserFollowsCat(true);
                         posts.add(post);
