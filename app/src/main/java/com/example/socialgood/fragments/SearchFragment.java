@@ -14,15 +14,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.socialgood.adapters.PostsAdapter;
 import com.example.socialgood.R;
-import com.example.socialgood.adapters.ProfilesAdapter;
 import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
@@ -52,7 +49,6 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
     public List<ParseObject> posts;
     public List<ParseUser> profiles;
     public PostsAdapter adapter;
-    public ProfilesAdapter profilesAdapter;
 
 
     public SearchFragment() {

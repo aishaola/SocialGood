@@ -177,7 +177,6 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvDeletePost;
         View rlReshare;
         View cvRoot;
-        Button linkButton;
         ImageView ivProfileImage;
         ImageView ivReshare;
         LinearLayout llButtons;
@@ -194,16 +193,12 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvCategories = itemView.findViewById(R.id.tvCategories);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             tvDeletePost = itemView.findViewById(R.id.tvDeletePost);
-            linkButton = itemView.findViewById(R.id.linkButton);
             tvUserFollowCat = itemView.findViewById(R.id.tvFollowingCat);
             tvResharedUsername = itemView.findViewById(R.id.tvResharedUsername);
             rlReshare = itemView.findViewById(R.id.rlReshare);
             llButtons = itemView.findViewById(R.id.llButtons);
             cvRoot = itemView.findViewById(R.id.cvRoot);
             itemView.findViewById(R.id.commentContainer).setVisibility(View.GONE);
-
-
-
         }
 
         private void goPostDetailsActivity(Post post) {
@@ -295,12 +290,11 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
             ParseFile image = post.getImage();
-            Link link = post.getLink();
 
             ParseFile profileImage = post.getUserSocial().getProfilePic();
 
             // If there is an image in the Image field, show image
-            if(image != null) {
+            if(post.getType().equals(Post.IMAGE_TYPE)) {
                 Glide.with(context).load(image.getUrl()).into(ivImage);
             }
             else {
@@ -320,7 +314,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             // If there is an object in the link field, show link button that launches new activity
             // of the url in the browser
-            if(post.getType()!= null && post.getType().equals(Post.LINK_TYPE)) {
+            if(post.isLink()) {
                 llButtons.setVisibility(View.VISIBLE);
                 showLinkDisplay(post);
             } else {
@@ -329,42 +323,28 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         private void showLinkDisplay(Post post){
-            final Link singleLink = post.getLink();
             List<Link> links = post.getLinks();
-            if(singleLink != null){
-                String title = singleLink.getTitle();
-                final String urlLink = singleLink.getUrl();
-                linkButton.setText(title);
+            // Loops through all the links in the post links, creates a button, and adds it to the view
+            llButtons.removeAllViews();
+            for (int i = 0; i < links.size(); i++) {
+                final Link link = links.get(i);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
+                        (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                final Button linkButton = new Button(context);
+                linkButton.setText(link.getTitle());
                 linkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlLink)));
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link.getUrl())));
                     }
                 });
-            } else {
-                //final List<Button> buttonsList = new ArrayList<Button>();
-                linkButton.setVisibility(View.GONE);
-                // Loops through all the links in the post links, creates a button, and adds it to the view
-                for (int i = 0; i < links.size(); i++) {
-                    final Link link = links.get(i);
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
-                            (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    final Button linkButton = new Button(context);
-                    linkButton.setText(link.getTitle());
-                    linkButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link.getUrl())));
-                        }
-                    });
-                    lp.width = 850;
-                    linkButton.setLayoutParams(lp);
-                    llButtons.addView(linkButton);
-                }
+                lp.width = 850;
+                linkButton.setLayoutParams(lp);
+                llButtons.addView(linkButton);
             }
 
-
         }
+
 
         private void goProfileFragment(ParseUser user) {
             // Create new fragment and transaction

@@ -16,6 +16,7 @@ import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,8 @@ public class PostDetailActivity extends AppCompatActivity {
     EditText etComment;
     Button btnComment;
     TextView tvUserFollowCat;
+    LinearLayout llButtons;
+
     CommentsAdapter adapter;
     List<Comment> comments;
     Post post;
@@ -81,6 +84,7 @@ public class PostDetailActivity extends AppCompatActivity {
         rvComments = findViewById(R.id.rvComments);
         btnComment = findViewById(R.id.btnComment);
         etComment = findViewById(R.id.etComment);
+        llButtons = findViewById(R.id.llButtons);
 
         bind(post);
 
@@ -155,7 +159,6 @@ public class PostDetailActivity extends AppCompatActivity {
         });*/
 
         ParseFile image = post.getImage();
-        Link link = post.getLink();
 
         ParseFile profileImage = post.getUserSocial().getProfilePic();
 
@@ -183,19 +186,34 @@ public class PostDetailActivity extends AppCompatActivity {
 
         // If there is an object in the link field, show link button that launches new activity
         // of the url in the browser
-        if(link != null){
-            String title = link.getTitle();
-            final String urlLink = link.getUrl();
-            linkButton.setText(title);
+        if(post.isLink()) {
+            llButtons.setVisibility(View.VISIBLE);
+            showLinkDisplay(post);
+        } else {
+            llButtons.setVisibility(View.GONE);
+        }
+    }
+
+    private void showLinkDisplay(Post post){
+        List<Link> links = post.getLinks();
+        // Loops through all the links in the post links, creates a button, and adds it to the view
+        for (int i = 0; i < links.size(); i++) {
+            final Link link = links.get(i);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
+                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            final Button linkButton = new Button(this);
+            linkButton.setText(link.getTitle());
             linkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlLink)));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link.getUrl())));
                 }
             });
-        } else {
-            linkButton.setVisibility(View.GONE);
+            lp.width = 850;
+            linkButton.setLayoutParams(lp);
+            llButtons.addView(linkButton);
         }
+
     }
 
     /*

@@ -29,6 +29,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,8 +84,8 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     EditText etAddCategory;
     Button btnAddCategory;
     Button btnSubmit;
-    TextView tvLinkDisplay;
     TextView tvCategories;
+    LinearLayout llLinkDisplay;
 
     List<String> categories;
     byte[] galleryPhotoBitmap;
@@ -118,8 +119,9 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         btnAddCategory = view.findViewById(R.id.btnAddCategory);
         etCaption = view.findViewById(R.id.etCaption);
         etAddCategory = view.findViewById(R.id.etAddCategory);
-        tvLinkDisplay = view.findViewById(R.id.tvLinkView);
         tvCategories = view.findViewById(R.id.tvCategories);
+        llLinkDisplay = view.findViewById(R.id.llUrlDisplays);
+
         postType = TYPE_IMAGE;
         imageSupport = new ImageSupport(getContext(), photoFile, photoFileName, TAG);
 
@@ -266,7 +268,12 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         postType = TYPE_LINK;
         link = new Link(title, url);
         links.add(link);
-        tvLinkDisplay.setText("Title: " + title + ", Url: " + url);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView tvUrlView = new TextView(getContext());
+        tvUrlView.setLayoutParams(lp);
+        tvUrlView.setText("Title: " + title + ", Url: " + url);
+        llLinkDisplay.addView(tvUrlView);
         ivImage.setVisibility(View.GONE);
         //Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();
     }

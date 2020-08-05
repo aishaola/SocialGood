@@ -63,6 +63,9 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    compile 'com.android.support:support-compat:25.1.1'
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
 
     implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
 

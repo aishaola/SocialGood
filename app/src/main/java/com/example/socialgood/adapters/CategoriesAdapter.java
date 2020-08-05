@@ -3,10 +3,15 @@ package com.example.socialgood.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.example.socialgood.R;
 
 import java.util.List;
 
@@ -15,22 +20,22 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
 
     List<String> categories;
-    OnLongClickListener longClickListener;
+    OnClickListener clickListener;
 
-    public CategoriesAdapter(List<String> categories, OnLongClickListener longClickListener) {
+    public CategoriesAdapter(List<String> categories, OnClickListener clickListener) {
         this.categories = categories;
-        this.longClickListener = longClickListener;
+        this.clickListener = clickListener;
     }
 
-    public interface OnLongClickListener {
-        void onItemLongClicked(int position);
+    public interface OnClickListener {
+        void onItemClicked(int position);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Use layout inflator to inflate a view
-        View todoView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View todoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
         // wrap it inside a View Holder and return it
         return new ViewHolder(todoView);
     }
@@ -52,23 +57,25 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     //Container to provide easy access to views that represent each row in list
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvItem;
+        ImageView btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvItem = itemView.findViewById(android.R.id.text1);
+            tvItem = itemView.findViewById(R.id.tvCategory);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
 
         // Update the view inside of the view holder with this data
         public void bind(String item) {
             tvItem.setText(item);
-            tvItem.setOnLongClickListener(new View.OnLongClickListener() {
+            btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View view) {
+                public void onClick(View view) {
                     // notifies the listener which position was long pressed
-                    longClickListener.onItemLongClicked(getAdapterPosition());
-                    return true;
+                    clickListener.onItemClicked(getAdapterPosition());
                 }
             });
+            YoYo.with(Techniques.Wobble).repeat(1000).playOn(btnDelete);
         }
     }
 }

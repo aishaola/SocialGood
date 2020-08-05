@@ -35,11 +35,9 @@ import kotlin.reflect.KType;
 public class Post extends ParseObject {
     public static final String KEY_CATEGORIES = "categoriesPost";
     public static final String KEY_IMAGE = "image";
-    public static final String KEY_LINK = "linkPost";
     public static final String KEY_CAPTION = "caption";
     public static final String KEY_USER = "user";
     public static final String KEY_POST_RESHARED = "postReshared";
-    public static final String KEY_IS_RESHARE = "isReshare";
     public static final String KEY_TYPE = "type";
     public static final String KEY_DONATION = "donation";
     public static final String KEY_LINK_LIST = "linkList";
@@ -67,6 +65,14 @@ public class Post extends ParseObject {
 
     public boolean isPostReshare(){
         return getType() != null && getType().equals(Post.RESHARE_TYPE);
+    }
+
+    public boolean isLink() {
+        return getType() != null && getType().equals(Post.LINK_TYPE);
+    }
+
+    public boolean isImage(){
+        return getType() != null && getType().equals(Post.IMAGE_TYPE);
     }
 
     public Post getPostReshared(){
@@ -166,19 +172,6 @@ public class Post extends ParseObject {
         put(KEY_IMAGE, image);
     }
 
-    public void setLink(JSONObject link){
-        put(KEY_LINK, link);
-    }
-
-    public Link getLink(){
-        JSONObject linkPost = getJSONObject(KEY_LINK);
-
-        if(linkPost == null)
-            return null;
-
-        return Link.fromJSON(linkPost);
-    }
-
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
@@ -253,4 +246,6 @@ public class Post extends ParseObject {
         }
         return links;
     }
+
+
 }

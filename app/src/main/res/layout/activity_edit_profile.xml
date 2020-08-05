@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".activities.EditProfileActivity">
 
 
@@ -16,33 +16,32 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="60dp"
-        app:srcCompat="@mipmap/ic_launcher"
         android:foreground="@drawable/customborder"
+        app:srcCompat="@mipmap/ic_launcher"
         tools:srcCompat="@tools:sample/avatars" />
-
 
 
     <Button
         android:id="@+id/btnLaunchGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_toEndOf="@id/ivProfilePic"
         android:layout_alignTop="@id/ivProfilePic"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@id/ivProfilePic"
         android:text="Camera Roll" />
 
     <Button
         android:id="@+id/btnLaunchCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_toEndOf="@id/ivProfilePic"
         android:layout_below="@id/btnLaunchGallery"
-        android:layout_marginTop="10dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@id/ivProfilePic"
         android:text="Take Picture" />
 
     <TextView
@@ -53,35 +52,26 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="34dp"
         android:text="Change Profile Picture"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvEditCategories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivProfilePic"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:text="Edit Categories:"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/tvLongClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvEditCategories"
-        android:layout_marginTop="3dp"
-        android:text="Long click to delete category" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Edit Categories:"
+        android:textStyle="bold" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/tvLongClick"
-        android:layout_marginTop="20dp"
-        >
+        android:layout_below="@+id/tvEditCategories"
+        android:layout_marginTop="20dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -98,12 +88,24 @@
         android:id="@+id/etAddCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:layout_below="@id/tvAddCategory"
         android:layout_marginStart="5dp"
-        android:imeOptions="actionDone"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@id/btnAddCategory"
         android:ems="10"
-        android:hint="e.t: Racial Justice..." />
+        android:hint="e.t: Racial Justice..."
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName" />
+
+    <ImageView
+        android:id="@+id/btnAddCategory"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@id/etAddCategory"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
     <Button
         android:id="@+id/btnSaveChanges"
@@ -111,7 +113,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etAddCategory"
         android:layout_marginTop="20dp"
-        android:text="Save Changes"/>
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="Save Changes" />
 
 
 </RelativeLayout>

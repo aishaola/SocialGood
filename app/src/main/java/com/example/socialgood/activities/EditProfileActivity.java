@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.socialgood.ImageSupport;
 import com.example.socialgood.R;
 import com.example.socialgood.adapters.CategoriesAdapter;
@@ -61,6 +63,7 @@ public class EditProfileActivity extends AppCompatActivity {
     byte[] galleryPhotoBitmap;
 
     ImageView ivProfilePic;
+    ImageView btnAddCategory;
     Button btnLaunchCamera;
     Button btnLaunchGallery;
     Button btnSaveChanges;
@@ -91,11 +94,14 @@ public class EditProfileActivity extends AppCompatActivity {
         rvCategories = findViewById(R.id.rvCategories);
         etAddCategory = findViewById(R.id.etAddCategory);
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
+        btnAddCategory = findViewById(R.id.btnAddCategory);
 
-        CategoriesAdapter.OnLongClickListener onLongClickListener = new CategoriesAdapter.OnLongClickListener(){
+
+        CategoriesAdapter.OnClickListener onClickListener = new CategoriesAdapter.OnClickListener(){
             @Override
-            public void onItemLongClicked(int position) {
+            public void onItemClicked(int position) {
                 // Delete the item from the model
+                YoYo.with(Techniques.Pulse).repeat(1000).playOn(btnSaveChanges);
                 categories.remove(position);
                 // Notify the adapter
                 categoriesAdapter.notifyItemRemoved(position);
@@ -105,7 +111,7 @@ public class EditProfileActivity extends AppCompatActivity {
         categories = new ArrayList<>();
 
         categories.addAll(currUserSocial.getCategoriesList());
-        categoriesAdapter = new CategoriesAdapter(categories, onLongClickListener);
+        categoriesAdapter = new CategoriesAdapter(categories, onClickListener);
         rvCategories.setAdapter(categoriesAdapter);
         rvCategories.setLayoutManager(new LinearLayoutManager( this));
 
@@ -150,6 +156,10 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         galleryPhotoBitmap = null;
+
+        //Add animation for adding button
+        YoYo.with(Techniques.Wobble).repeat(1000).playOn(btnAddCategory);
+
     }
 
     private void saveChanges() {
@@ -177,6 +187,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void addCategory(String cat){
+        YoYo.with(Techniques.Wobble).repeat(1000).playOn(btnSaveChanges);
         etAddCategory.setText("");
 
         // Checks if User already has the category
@@ -209,6 +220,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
+        YoYo.with(Techniques.Wobble).repeat(1000).playOn(btnSaveChanges);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
         photoFile = imageSupport.getPhotoFileUri();
@@ -229,6 +241,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     // Trigger gallery selection for a photo
     public void launchGallery() {
+        YoYo.with(Techniques.Wobble).repeat(1000).playOn(btnSaveChanges);
         // Create intent for picking a photo from the gallery
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
