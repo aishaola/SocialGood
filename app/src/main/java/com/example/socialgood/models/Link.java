@@ -41,6 +41,20 @@ public class Link {
         return linkJson;
     }
 
+    public static Link fromJSON(JSONObject linkPost){
+        Link link;
+        String title = "";
+        String url = "";
+        try {
+            title = linkPost.getString("title");
+            url = linkPost.getString("url");
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+        link = new Link(title, url);
+        return link;
+    }
+
     public static JSONObject linkToJSON(Link link){
         JSONObject linkJson = new JSONObject();
 

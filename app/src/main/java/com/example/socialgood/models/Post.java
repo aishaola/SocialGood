@@ -42,7 +42,13 @@ public class Post extends ParseObject {
     public static final String KEY_IS_RESHARE = "isReshare";
     public static final String KEY_TYPE = "type";
     public static final String KEY_DONATION = "donation";
+    public static final String KEY_LINK_LIST = "linkList";
+
     public static final String DONATION_TYPE = "donation";
+    public static final String RESHARE_TYPE = "reshare";
+    public static final String LINK_TYPE = "link";
+    public static final String IMAGE_TYPE = "image";
+
 
     public List<String> listCategories;
     public boolean userFollowsCat;
@@ -59,20 +65,12 @@ public class Post extends ParseObject {
         return getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
     }
 
-    public void setUserReshared(ParseUser userReshared) {
-        this.userReshared = userReshared;
-    }
-
-    public ParseUser getUserReshared() {
-        return userReshared;
+    public boolean isPostReshare(){
+        return getType() != null && getType().equals(Post.RESHARE_TYPE);
     }
 
     public Post getPostReshared(){
         return (Post) getParseObject(KEY_POST_RESHARED);
-    }
-
-    public boolean isPostReshare(){
-        return getBoolean(KEY_IS_RESHARE);
     }
 
     public String getCategoriesDisplay(){
@@ -174,20 +172,11 @@ public class Post extends ParseObject {
 
     public Link getLink(){
         JSONObject linkPost = getJSONObject(KEY_LINK);
-        Link link1;
+
         if(linkPost == null)
             return null;
-        String title = "";
-        String url = "";
-        try {
-            title = linkPost.getString("title");
-            url = linkPost.getString("url");
-        } catch(JSONException e){
-            e.printStackTrace();
-        }
-        link1 = new Link(title, url);
-        String[] link = {title, url};
-        return link1;
+
+        return Link.fromJSON(linkPost);
     }
 
     public ParseUser getUser(){
@@ -204,8 +193,7 @@ public class Post extends ParseObject {
         Post post = new Post();
         post.setUser(otherUser);
         post.put(KEY_POST_RESHARED, postToReshare);
-        post.put(KEY_IS_RESHARE, true);
-        post.setType("link");
+        post.setType(Post.RESHARE_TYPE);
         return post;
     }
 
@@ -228,19 +216,6 @@ public class Post extends ParseObject {
         return relativeDate;
     }
 
-    public void removePost() {
-        deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                if(e != null) {
-                    Log.e("removePost():", "Delete error", e);
-                    return;
-                }
-                Log.i("removePost():", "Post deleted");
-            }
-        });
-    }
-
     public void setDonation(Donation donation) {
         put(KEY_DONATION, donation);
     }
@@ -256,4 +231,26 @@ public class Post extends ParseObject {
         return getString(KEY_TYPE);
     }
 
+    public void setLinks(List<Link> links) {
+        JSONArray linkJsonArray = new JSONArray();
+        for(Link link: links){
+            linkJsonArray.put(link.toJSON());
+        }
+        put(KEY_LINK_LIST, linkJsonArray);
+    }
+
+    public List<Link> getLinks() {
+        JSONArray jsonLinks = getJSONArray(KEY_LINK_LIST);
+        List<Link> links = new ArrayList<>();
+        if(jsonLinks == null)
+            return links;
+        for (int i = 0; i < jsonLinks.length(); i++) {
+            try {
+                links.add(Link.fromJSON(jsonLinks.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return links;
+    }
 }

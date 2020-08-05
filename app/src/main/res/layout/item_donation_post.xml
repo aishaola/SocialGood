@@ -108,10 +108,18 @@
             android:layout_marginStart="10dp"
             tools:text="5h ago"/>
 
+        <TextView
+            android:id="@+id/tvDeletePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTimestamp"
+            android:text="Delete Post"
+            android:textStyle="bold" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTimestamp"
+            android:layout_below="@id/tvDeletePost"
             android:id="@+id/commentContainer">
 
             <androidx.recyclerview.widget.RecyclerView

@@ -27,6 +27,7 @@ import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -48,7 +49,7 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
     public RecyclerView rvProfiles;
     //public SwipeRefreshLayout swipeContainer;
     public EditText etSearchQuery;
-    public List<Post> posts;
+    public List<ParseObject> posts;
     public List<ParseUser> profiles;
     public PostsAdapter adapter;
     public ProfilesAdapter profilesAdapter;
@@ -74,20 +75,16 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         etSearchQuery.setOnEditorActionListener(this);
 
         posts = new ArrayList<>();
-        profiles = new ArrayList<>();
+        // profiles = new ArrayList<>();
 
         adapter = new PostsAdapter(getContext(), getFragmentManager(), posts);
-        profilesAdapter = new ProfilesAdapter(getContext(), getFragmentManager(), profiles);
 
         rvPosts = view.findViewById(R.id.rvPosts);
-        rvProfiles = view.findViewById(R.id.rvProfiles);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(linearLayoutManager);
 
-        rvProfiles.setAdapter(profilesAdapter);
-        rvProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
 
@@ -102,8 +99,6 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         query.setLimit(20);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.whereDoesNotExist(Post.KEY_TYPE);
-
-
 
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -128,20 +123,22 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
                         }
                     }
                 }
+                adapter.notifyDataSetChanged();
+                queryUsers(textQuery);
             }
         });
-        adapter.notifyDataSetChanged();
+
     }
 
     public void queryUsers(final String textQuery){
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.setLimit(15);
         query.include(ParseUserSocial.KEY_PROFILE_PIC);
         query.include(ParseUserSocial.KEY_CATEGORIES);
 
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
-                profilesAdapter.clear();
 
                 // For each post in db, check if categories list contains text entered in etSearchQuery
                 for(ParseUser userFound: objects){
@@ -151,15 +148,16 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
                     for (String cat: categories) {
                         cat = cat.toLowerCase().trim();
                         if(compareStringsAlgorithm(cat, textQuery, 3)){
-                            profiles.add(userFound);
+                            posts.add(userFound);
                             Log.i(TAG, "Post has category!");
                             break;
                         }
                     }
                 }
+                adapter.notifyDataSetChanged();
             }
         });
-        profilesAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     private boolean compareStringsAlgorithm(String cat, String textQuery, int errorMax) {
@@ -201,7 +199,6 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             String text = textView.getText().toString().toLowerCase().trim();
             queryPosts(text);
-            queryUsers(text);
             hideKeyboard((Activity) getContext());
             //Toast.makeText(getContext(), toRomanNumeral(17), Toast.LENGTH_SHORT).show();
             return true;

@@ -77,6 +77,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
 
     Post post;
     Link link;
+    List<Link> links;
     ImageView ivImage;
     EditText etCaption;
     EditText etAddCategory;
@@ -164,6 +165,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             }
         });
 
+        links = new ArrayList<>();
         categories = new ArrayList<>();
         post = new Post();
         galleryPhotoBitmap = null;
@@ -189,12 +191,17 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     }
 
     public void savePost(Link link, File photo, ParseUser user, String caption){
-        if(postType == TYPE_LINK)
-            post.setLink(link.toJSON());
-        else if(galleryPhotoBitmap == null)
-            post.setImage(new ParseFile(photoFile));
-        else
-            post.setImage(new ParseFile(galleryPhotoBitmap));
+        if(postType == TYPE_LINK){
+            //post.setLink(link.toJSON());
+            post.setLinks(links);
+            post.setType(Post.LINK_TYPE);
+        } else{
+            post.setType(Post.IMAGE_TYPE);
+            if(galleryPhotoBitmap == null)
+                post.setImage(new ParseFile(photoFile));
+            else
+                post.setImage(new ParseFile(galleryPhotoBitmap));
+        }
 
         post.setCaption(caption);
         post.setUser(ParseUser.getCurrentUser());
@@ -258,6 +265,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     public void onFinishEditDialog(String title, String url) {
         postType = TYPE_LINK;
         link = new Link(title, url);
+        links.add(link);
         tvLinkDisplay.setText("Title: " + title + ", Url: " + url);
         ivImage.setVisibility(View.GONE);
         //Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();

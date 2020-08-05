@@ -36,7 +36,8 @@
         </provider>
 
         <activity android:name=".activities.CategoriesActivity" />
-        <activity android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.EditProfileActivity"
+                android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activities.PostDetailActivity" />
         <activity android:name=".activities.IntroActivity">
             <intent-filter>

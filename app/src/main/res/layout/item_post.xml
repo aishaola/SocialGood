@@ -106,20 +106,29 @@
                 android:layout_marginTop="20dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <Button
-                android:id="@+id/linkButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/llButtons"
+                android:orientation="vertical"
                 android:layout_below="@id/ivPostImage"
-                android:layout_centerHorizontal="true"
-                android:clickable="true"
-                tools:text="Petition to get justice" />
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/linkButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="true"
+                    tools:text="Petition to get justice" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/linkButton"
+                android:layout_below="@id/llButtons"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 tools:text="Look at this freaking graphic up here woooo!" />
@@ -136,7 +145,7 @@
                 android:id="@+id/commentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvTimestamp">
+                android:layout_below="@id/tvDeletePost">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvComments"
@@ -167,10 +176,7 @@
                 android:id="@+id/tvDeletePost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/ivReshare"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="10dp"
+                android:layout_below="@id/tvTimestamp"
                 android:text="Delete Post"
                 android:textStyle="bold" />
         </RelativeLayout>

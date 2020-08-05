@@ -117,6 +117,7 @@ public class FeedFragment extends Fragment {
         query.include(Post.KEY_IMAGE);
         query.include(Post.KEY_TYPE);
         query.include(Post.KEY_DONATION);
+        query.include(Post.KEY_LINK_LIST);
 
         query.include(Post.KEY_DONATION + "." + Donation.KEY_FUNDRAISER);
         query.include(Post.KEY_DONATION + "." + Donation.KEY_FUNDRAISER + "." + Fundraiser.KEY_TITLE);
