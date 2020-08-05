@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvFollowingCat"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_toEndOf="@id/ivProfilePic"
                 android:textStyle="bold"
                 tools:text="ayisatpade" />
@@ -131,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvCaption"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 tools:text="5h ago" />
 
             <RelativeLayout
@@ -169,6 +170,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvTimestamp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
                 android:text="Delete Post"
                 android:textStyle="bold" />
         </RelativeLayout>

@@ -55,7 +55,7 @@
             android:id="@+id/ivAdd1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             app:srcCompat="@android:drawable/ic_input_add"></ImageView>
 
         <TextView
@@ -64,8 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_toRightOf="@id/ivAdd1"
-            android:text="Add From Camera"
-            android:textSize="25sp"></TextView>
+            android:text="Picture from camera"
+            android:textSize="22sp"></TextView>
 
     </RelativeLayout>
 
@@ -74,13 +74,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/addPicView"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:id="@+id/ivAdd2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 app:srcCompat="@android:drawable/ic_input_add"></ImageView>
 
             <TextView
@@ -88,8 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/ivAdd2"
-                android:text="Add Pic from Gallery"
-                android:textSize="25sp"></TextView>
+                android:text="Picture from gallery"
+                android:textSize="22sp"></TextView>
 
         </RelativeLayout>
 
@@ -98,13 +98,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/addPicFromGalleryView"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:id="@+id/ivAdd3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 app:srcCompat="@android:drawable/ic_input_add"></ImageView>
 
             <TextView
@@ -112,8 +112,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/ivAdd3"
-                android:text="Add Link"
-                android:textSize="25sp"></TextView>
+                android:text="Link"
+                android:textSize="22sp"></TextView>
 
         </RelativeLayout>
 
