@@ -1,5 +1,6 @@
 package com.example.socialgood.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class FeedFragment extends Fragment {
     public PostsAdapter adapter;
     public List<String> userCategories;
     public List<ParseUser> following;
+    public ProgressDialog pd;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -84,31 +86,20 @@ public class FeedFragment extends Fragment {
 
         // *** Swipe to REFRESH feature ends here: ***
 
-
-
+        // Show Progress dialog when posts are first loading
+        pd = new ProgressDialog(getContext());
+        pd.setMessage("Loading...");
+        pd.setCancelable(false);
+        pd.show();
         rvPosts.setAdapter(adapter);
         queryPosts();
 
         rvPosts.setLayoutManager(linearLayoutManager);
+
     }
 
     public void queryPosts(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-
-        /*
-        List<String> categories = ParseUserSocial.getCurrentUser().getCategoriesList();
-        List<ParseUser> following = ParseUserSocial.getCurrentUser().getProfilesFollowing();
-        following.add(ParseUser.getCurrentUser());
-        q1.whereContainedIn(Post.KEY_USER, following);
-
-        List<ParseQuery<Post>> queries = new ArrayList<>();
-        queries.add(q1);
-        for(String cat : categories){
-            ParseQuery<Post> catQuery = ParseQuery.getQuery(Post.class);
-            catQuery.whereEqualTo(Post.KEY_CATEGORIES, cat);
-            queries.add(catQuery);
-        }
-        ParseQuery<Post> query = ParseQuery.or(queries);*/
 
         query.include(Post.KEY_USER);
         query.include(Post.KEY_CREATED_AT);
@@ -147,6 +138,7 @@ public class FeedFragment extends Fragment {
                         posts.add(post);
                     }
                 }
+                pd.dismiss();
                 adapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
             }

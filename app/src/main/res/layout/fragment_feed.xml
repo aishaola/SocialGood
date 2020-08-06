@@ -11,8 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/llDonate"
-        android:visibility="gone">
+        android:id="@+id/llDonate">
 
         <Button
             android:id="@+id/btnDonate"
@@ -21,6 +20,7 @@
             android:layout_alignParentEnd="true"
             android:background="@color/colorPrimary"
             android:text="Donate"
+            android:visibility="gone"
             android:textColor="#F8FBFB" />
 
     </RelativeLayout>

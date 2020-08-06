@@ -43,18 +43,7 @@ import java.util.List;
 public class ProfileFragment extends FeedFragment {
 
     public static final String TAG = ProfileFragment.class.getSimpleName();
-    Button btnLogout;
-    Button btnEditProfile;
-    Button btnFollow;
-    Button btnDonate;
-    TextView tvUsername;
-    TextView tvCategories;
-    ImageView ivProfilePic;
     ParseUser profileUser;
-    View buttons;
-    View buttonsForOtherProfiles;
-    boolean isCurrentUser;
-    boolean isFollowing;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -110,6 +99,7 @@ public class ProfileFragment extends FeedFragment {
                 }
                 adapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
+                pd.dismiss();
             }
         });
         adapter.notifyDataSetChanged();

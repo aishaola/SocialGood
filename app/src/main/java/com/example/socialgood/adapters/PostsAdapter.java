@@ -104,7 +104,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         Post post = (Post) parseObject;
         String type = post.getType();
-        if(type != null && type.equals(Post.RESHARE_TYPE))
+        if(post.isPostReshare())
             type = post.getPostReshared().getType();
 
         if(type != null && type.equals(Post.DONATION_TYPE))
@@ -174,9 +174,9 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvTimestamp;
         TextView tvUserFollowCat;
         TextView tvResharedUsername;
-        TextView tvDeletePost;
         View rlReshare;
         View cvRoot;
+        ImageView tvDeletePost;
         ImageView ivProfileImage;
         ImageView ivReshare;
         LinearLayout llButtons;
@@ -229,6 +229,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             notifyItemRemoved(position);
                         }
                     });
+                    Post.removeAllReshares(post);
                 }
             });
         }
@@ -295,6 +296,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             // If there is an image in the Image field, show image
             if(post.getType().equals(Post.IMAGE_TYPE)) {
+                ivImage.setVisibility(View.VISIBLE);
                 Glide.with(context).load(image.getUrl()).into(ivImage);
             }
             else {
@@ -369,9 +371,9 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvFundraiserName;
         TextView tvTimestamp;
         TextView tvResharedUsername;
-        TextView tvDeletePost;
         View rlReshare;
         Button btnDonate;
+        ImageView tvDeletePost;
         ImageView ivProfileImage;
         ImageView ivReshare;
 

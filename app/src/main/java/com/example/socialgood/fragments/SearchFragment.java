@@ -92,9 +92,12 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         query.include(Post.KEY_CAPTION);
         query.include(Post.KEY_CATEGORIES);
         query.include(Post.KEY_IMAGE);
+        query.include(Post.KEY_TYPE);
+        query.include(Post.KEY_LINK_LIST);
         query.setLimit(20);
+        query.whereDoesNotExist(Post.KEY_DONATION);
+        query.whereDoesNotExist(Post.KEY_POST_RESHARED);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
-        query.whereDoesNotExist(Post.KEY_TYPE);
 
         query.findInBackground(new FindCallback<Post>() {
             @Override

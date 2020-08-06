@@ -1,6 +1,7 @@
 package com.example.socialgood.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -208,6 +209,12 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         post.setCaption(caption);
         post.setUser(ParseUser.getCurrentUser());
         post.saveCategories();
+
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setTitle("Posting.");
+        pd.setMessage("Please wait while the post is being created...");
+        pd.setCancelable(false);
+        pd.show();
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -216,9 +223,13 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                     return;
                 }
                 Toast.makeText(getContext(), "Post Created!", Toast.LENGTH_SHORT).show();
+                pd.dismiss();
                 goFeedFragment();
             }
         });
+
+
+
 
     }
 

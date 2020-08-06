@@ -53,6 +53,7 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView tvCaption;
     TextView tvCategories;
     TextView tvTimestamp;
+    ImageView tvDeletePost;
     Button linkButton;
     ImageView ivProfileImage;
     RecyclerView rvComments;
@@ -79,6 +80,7 @@ public class PostDetailActivity extends AppCompatActivity {
         tvUsername = findViewById(R.id.tvUsername);
         tvCategories = findViewById(R.id.tvCategories);
         tvTimestamp = findViewById(R.id.tvTimestamp);
+        tvDeletePost = findViewById(R.id.tvDeletePost);
         tvUserFollowCat = findViewById(R.id.tvFollowingCat);
         linkButton = findViewById(R.id.linkButton);
         rvComments = findViewById(R.id.rvComments);
@@ -157,6 +159,11 @@ public class PostDetailActivity extends AppCompatActivity {
                 goProfileFragment(post.getUser());
             }
         });*/
+
+        if(post.isPostCurrUsers())
+            tvDeletePost.setVisibility(View.VISIBLE);
+        else
+            tvDeletePost.setVisibility(View.GONE);
 
         ParseFile image = post.getImage();
 

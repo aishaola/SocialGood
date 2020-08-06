@@ -248,4 +248,21 @@ public class Post extends ParseObject {
     }
 
 
+    public static void removeAllReshares(Post post) {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.whereEqualTo(Post.KEY_POST_RESHARED, post);
+        query.whereEqualTo(Post.KEY_TYPE, Post.RESHARE_TYPE);
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                if(e != null){
+                    Log.e("Post", "Error retreiving reshares of this post", e);
+                    return;
+                }
+                for (Post obj: objects) {
+                    obj.deleteInBackground();
+                }
+            }
+        });
+    }
 }

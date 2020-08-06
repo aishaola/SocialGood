@@ -75,22 +75,14 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <TextView
-        android:id="@+id/tvAddCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rvCategories"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
-        android:text="Add Category:" />
-
     <EditText
         android:id="@+id/etAddCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvAddCategory"
+        android:layout_below="@id/rvCategories"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
         android:layout_toStartOf="@id/btnAddCategory"
         android:ems="10"
         android:hint="e.t: Racial Justice..."
@@ -115,7 +107,7 @@
         android:layout_marginTop="20dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:text="Save Changes" />
+        android:text="Save" />
 
 
 </RelativeLayout>
