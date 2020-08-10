@@ -3,42 +3,105 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlSignUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     tools:context=".activities.LoginActivity">
 
-
-    <EditText
-        android:id="@+id/etUsername"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="237dp"
-        android:ems="10"
-        android:hint="username"
-        android:inputType="textPersonName" />
+        android:layout_marginTop="50dp"
+        android:id="@+id/ivLogo"
+        app:srcCompat="@drawable/ic_launcher_foreground"></ImageView>
 
-    <EditText
-        android:id="@+id/etPassword"
+    <TextView
+        android:id="@+id/tvApp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:text="Social Good"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="33sp"
+        android:textStyle="bold" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etUsernameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etUsername"
+        app:errorEnabled="true"
+        android:hint="@string/labelUsername"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPassword" />
+        android:layout_below="@id/tvApp"
+        android:layout_marginTop="20dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsername"
+            android:layout_width="@dimen/et_width_1"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            />
 
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPasswordLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        android:hint="@string/labelPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/between_et"
+        android:layout_below="@id/etUsernameLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="@dimen/et_width_1"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etConfirmPasswordLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/labelConfirmPassword"
+        android:layout_centerHorizontal="true"
+        app:errorEnabled="true"
+        android:layout_marginTop="@dimen/between_et"
+        android:layout_below="@id/etPasswordLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etConfirmPassword"
+            android:layout_width="@dimen/et_width_1"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/et_width_1"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etPassword"
-        android:layout_marginTop="30dp"
+        android:layout_below="@id/etConfirmPasswordLayout"
+        android:layout_marginTop="@dimen/between_et"
         android:layout_centerHorizontal="true"
-        android:text="Sign Up" />
+        android:text="Sign Up"/>
 
 </RelativeLayout>

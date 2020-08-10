@@ -3,35 +3,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.DonateAppFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please Donate to the app, how much would you like to donate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:id="@+id/ivLogo"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:id="@+id/tvApp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivLogo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:text="Social Good"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="33sp"></TextView>
+
+        <TextView
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="How much would you like to donate?"
+            android:layout_below="@id/tvApp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:id="@+id/tvDonate"/>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextFieldDonation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:id="@+id/etDonation"
-            android:hint="Enter amount to donate"
+            android:hint="@string/labelDonate"
             android:layout_below="@id/tvDonate"
-            android:imeOptions="actionDone"
-            android:ems="10"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDonation"
+                android:layout_width="@dimen/et_width_1"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Donate"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
             android:id="@+id/btnDonate"
-            android:layout_below="@id/etDonation"/>
+            android:layout_below="@id/outlinedTextFieldDonation"
+            android:layout_centerHorizontal="true"/>
+
+        <CheckBox
+            android:id="@+id/cbDonate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnDonate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Show donation on feed"
+            android:textSize="15sp" />
+
 
 
     </RelativeLayout>

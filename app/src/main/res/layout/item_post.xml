@@ -9,15 +9,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvRoot"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="4dp"
         android:clickable="true"
-        android:layout_marginBottom="10dp"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
+        android:layout_marginBottom="3dp"
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="8dp">
 
@@ -29,12 +28,14 @@
                 android:id="@+id/rlReshare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="5dp"
                 android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvReshare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:fontFamily="sans-serif-condensed-light"
                     android:text="Reshared by"
                     android:textStyle="italic" />
@@ -49,14 +50,7 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/ivReshare"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignTop="@id/tvUsername"
-                android:layout_alignParentEnd="true"
-                android:background="#FFFFFF"
-                card_view:srcCompat="@drawable/action_reshare" />
+
 
             <TextView
                 android:id="@+id/tvFollowingCat"
@@ -64,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rlReshare"
                 android:fontFamily="sans-serif-condensed-light"
+                android:layout_marginStart="5dp"
                 android:text="Category You Follow"
                 android:textStyle="italic" />
 
@@ -73,7 +68,7 @@
                 android:layout_height="30dp"
                 android:layout_below="@id/tvFollowingCat"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
@@ -82,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvFollowingCat"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/ivProfilePic"
                 android:textStyle="bold"
                 tools:text="ayisatpade" />
@@ -103,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvCategories"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
@@ -122,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llButtons"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 tools:text="Look at this freaking graphic up here woooo!" />
 
             <TextView
@@ -132,13 +127,34 @@
                 android:layout_below="@id/tvCaption"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
                 tools:text="5h ago" />
+
+            <ImageView
+                android:id="@+id/tvDeletePost"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                card_view:srcCompat="@drawable/delete_1"
+                android:layout_marginTop="0dp"
+                android:layout_toLeftOf="@id/ivReshare"
+                android:layout_alignTop="@id/tvTimestamp"
+                />
+
+            <ImageView
+                android:id="@+id/ivReshare"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_alignTop="@id/tvTimestamp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp"
+                card_view:srcCompat="@drawable/action_reshare1" />
 
             <RelativeLayout
                 android:id="@+id/commentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvDeletePost">
+                android:visibility="gone"
+                android:layout_below="@id/tvTimestamp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvComments"
@@ -165,16 +181,76 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/tvDeletePost"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                card_view:srcCompat="@drawable/delete_1"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="5dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@id/tvTimestamp"
-                />
+            <RelativeLayout
+                android:id="@+id/commentContainerPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTimestamp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvViewAllComments"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="View all comments..."/>
+
+                <RelativeLayout
+                    android:id="@+id/rlComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvViewAllComments"
+                    android:layout_marginTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/tvCommentUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        tools:text="ayisatpade"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_toRightOf="@id/tvCommentUsername"
+                        tools:text="Sample Comment! I love this post so much I could marry it."/>
+                </RelativeLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etAddCommentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Comment...."
+                    android:layout_below="@id/rlComment"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/btnAddComment"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAddComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btnAddComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/etAddCommentLayout"
+                    android:layout_alignParentEnd="true"
+                    android:text="POST" />
+
+            </RelativeLayout>
+
+
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </ScrollView>

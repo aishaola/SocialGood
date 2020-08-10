@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import com.example.socialgood.R;
 import com.example.socialgood.SocialGoodHelpers;
@@ -16,6 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +26,9 @@ public class CategoriesActivity extends AppCompatActivity {
     CheckBox cb2;
     CheckBox cb3;
     List<CheckBox> checkBoxes;
+    List<CheckBox> checkBoxes1;
     Button btnSaveCategories;
+    LinearLayout llCheckboxes;
     ParseUserSocial helper;
     ParseUser user;
 
@@ -36,18 +40,23 @@ public class CategoriesActivity extends AppCompatActivity {
         user = ParseUser.getCurrentUser();
         helper = new ParseUserSocial(user);
 
-        // Add the checkboxes into a list so they can be accessed easily
-        cb1 = findViewById(R.id.cbCat1);
-        cb2 = findViewById(R.id.cbCat2);
-        cb3 = findViewById(R.id.cbCat3);
-        checkBoxes = Arrays.asList(cb1, cb2, cb3);
+        // Initialize linear layout to add buttons to
+        llCheckboxes = findViewById(R.id.llCheckboxes);
+        checkBoxes = new ArrayList<>();
 
-        // List of categories User can choose to associate account with
+        // List of categories User can choose to associate account with, add a checkbox to each view
         List<String> categories = SocialGoodHelpers.SG_CATEGORIES;
 
-        // Sets the text of each of the checkboxes to a category
-        for (int i = 0; i < checkBoxes.size(); i++) {
-            checkBoxes.get(i).setText(categories.get(i));
+        // For each category, add a checkbox to LinearLayout View
+        for (String cat: categories) {
+            CheckBox cb = new CheckBox(this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
+                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            cb.setLayoutParams(lp);
+            lp.topMargin = 10;
+            cb.setText(cat);
+            llCheckboxes.addView(cb);
+            checkBoxes.add(cb);
         }
 
         btnSaveCategories = findViewById(R.id.btnSaveCategories);

@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/between_et">
 
     <ImageView
         android:layout_width="30dp"
@@ -20,6 +21,17 @@
         android:layout_toRightOf="@id/ivProfilePic"
         tools:text="ayisatpade"
         android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUsername"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/ivProfilePic"
+        android:textColor="#888080"
+        android:textSize="10sp"
+        tools:text="5h" />
 
     <TextView
         android:id="@+id/tvComment"

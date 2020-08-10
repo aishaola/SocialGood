@@ -53,11 +53,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         TextView tvUsername;
         TextView tvComment;
+        TextView tvTimestamp;
         ImageView ivProfilePic;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             tvComment = itemView.findViewById(R.id.tvComment);
             ivProfilePic = itemView.findViewById(R.id.ivProfilePic);
         }
@@ -66,6 +68,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             ParseUserSocial user = new ParseUserSocial(comment.getUser());
             tvUsername.setText(comment.getUser().getUsername());
             tvComment.setText(comment.getComment());
+            tvTimestamp.setText(comment.getRelativeTimeAgo());
             ParseFile image = user.getProfilePic();
             if(image == null)
                 ivProfilePic.setImageResource(R.drawable.action_profile);

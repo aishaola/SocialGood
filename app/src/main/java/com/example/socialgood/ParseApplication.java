@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class ParseApplication extends Application {
+    boolean userHasClicked;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -53,5 +54,16 @@ public class ParseApplication extends Application {
                 .clientBuilder(builder)
                 .server("https://social-good-app.herokuapp.com/parse/").build());
 
+        // Creating global variable so donate button disappears
+        userHasClicked = false;
+
+    }
+
+    public void setUserHasClicked(){
+        userHasClicked = true;
+    }
+
+    public boolean getUserHasClicked(){
+        return userHasClicked;
     }
 }

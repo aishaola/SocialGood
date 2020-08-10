@@ -28,6 +28,7 @@ import com.example.socialgood.fragments.ProfileFragment;
 import com.example.socialgood.models.Comment;
 import com.example.socialgood.models.Link;
 import com.example.socialgood.models.Post;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -49,6 +50,7 @@ public class PostDetailActivity extends AppCompatActivity {
     public final String TAG = this.getClass().getSimpleName();
 
     ImageView ivImage;
+    ImageView ivReshare;
     TextView tvUsername;
     TextView tvCaption;
     TextView tvCategories;
@@ -60,6 +62,8 @@ public class PostDetailActivity extends AppCompatActivity {
     EditText etComment;
     Button btnComment;
     TextView tvUserFollowCat;
+    RelativeLayout commentContainer;
+    RelativeLayout commentContainerPost;
     LinearLayout llButtons;
 
     CommentsAdapter adapter;
@@ -76,6 +80,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
         ivImage = findViewById(R.id.ivPostImage);
         ivProfileImage = findViewById(R.id.ivProfilePic);
+        ivReshare = findViewById(R.id.ivReshare);
         tvCaption = findViewById(R.id.tvCaption);
         tvUsername = findViewById(R.id.tvUsername);
         tvCategories = findViewById(R.id.tvCategories);
@@ -87,9 +92,13 @@ public class PostDetailActivity extends AppCompatActivity {
         btnComment = findViewById(R.id.btnComment);
         etComment = findViewById(R.id.etComment);
         llButtons = findViewById(R.id.llButtons);
+        commentContainer = findViewById(R.id.commentContainer);
+        commentContainerPost = findViewById(R.id.commentContainerPost);
+        commentContainerPost.setVisibility(View.GONE);
 
         bind(post);
 
+        commentContainer.setVisibility(View.VISIBLE);
         adapter = new CommentsAdapter(comments, this);
         rvComments.setAdapter(adapter);
         rvComments.setLayoutManager(new LinearLayoutManager(this));
@@ -124,13 +133,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     public void getPostComments(){
-        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
-
-        query.include(Comment.KEY_USER);
-        query.include(Comment.KEY_USER_COMMENT);
-        query.include(Comment.KEY_POST);
-
-        query.whereEqualTo(Comment.KEY_POST, post);
+        ParseQuery<Comment> query = post.getCommentQuery();
 
         query.findInBackground(new FindCallback<Comment>() {
             @Override
@@ -199,6 +202,51 @@ public class PostDetailActivity extends AppCompatActivity {
         } else {
             llButtons.setVisibility(View.GONE);
         }
+
+        // Deleting button
+        if(post.isPostCurrUsers())
+            tvDeletePost.setVisibility(View.VISIBLE);
+        else
+            tvDeletePost.setVisibility(View.GONE);
+
+        tvDeletePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               deletePost(post);
+            }
+        });
+
+        // Reshare button functionality
+        ivReshare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Post resharedPost = Post.reshare(ParseUser.getCurrentUser(), post);
+                resharedPost.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e != null){
+                            Log.e("Reshare", "User cannot reshare", e);
+                            return;
+                        }
+                        Toast.makeText(PostDetailActivity.this, "Post was reshared!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void deletePost(Post post){
+        post.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e("Issue", "done: Error deleting post", e);
+                    return;
+                }
+                Toast.makeText(PostDetailActivity.this, "Post deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Post.removeAllReshares(post);
     }
 
     private void showLinkDisplay(Post post){

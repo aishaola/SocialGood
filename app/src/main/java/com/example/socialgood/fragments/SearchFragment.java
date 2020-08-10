@@ -1,6 +1,7 @@
 package com.example.socialgood.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.socialgood.adapters.PostsAdapter;
@@ -46,9 +48,12 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
     public RecyclerView rvProfiles;
     //public SwipeRefreshLayout swipeContainer;
     public EditText etSearchQuery;
+    public TextView tvEmptyFeedText;
     public List<ParseObject> posts;
     public List<ParseUser> profiles;
     public PostsAdapter adapter;
+    public RelativeLayout rlEmpty;
+    public ProgressDialog pd;
 
 
     public SearchFragment() {
@@ -67,6 +72,8 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Search");
 
+        rlEmpty = view.findViewById(R.id.rlEmptyFeed);
+        tvEmptyFeedText = view.findViewById(R.id.tvEmptyFeedText);
         etSearchQuery = view.findViewById(R.id.etSearchQuery);
         etSearchQuery.setOnEditorActionListener(this);
 
@@ -99,10 +106,16 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
         query.whereDoesNotExist(Post.KEY_POST_RESHARED);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
 
+        pd = new ProgressDialog(getContext());
+        pd.setMessage("Loading...");
+        pd.setCancelable(false);
+        pd.show();
+
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if(e != null){
+                    pd.dismiss();
                     Log.e(TAG, "Network error: Issue with getting posts!", e);
                     return;
                 }
@@ -139,6 +152,11 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
 
+                if(e != null){
+                    Log.e(TAG, "done: ", e);
+                    pd.dismiss();
+                    return;
+                }
                 // For each post in db, check if categories list contains text entered in etSearchQuery
                 for(ParseUser userFound: objects){
                     ParseUserSocial userFoundSocial = new ParseUserSocial(userFound);
@@ -153,7 +171,15 @@ public class SearchFragment extends Fragment implements EditText.OnEditorActionL
                         }
                     }
                 }
+
+                if(posts.size() > 0){
+                    rlEmpty.setVisibility(View.GONE);
+                } else {
+                    rlEmpty.setVisibility(View.VISIBLE);
+                    tvEmptyFeedText.setText("No posts or profiles found. Try another keyword!");
+                }
                 adapter.notifyDataSetChanged();
+                pd.dismiss();
             }
         });
         adapter.notifyDataSetChanged();

@@ -2,4 +2,9 @@
     <string name="app_name">SocialGood</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="labelUsername">Username</string>
+    <string name="labelPassword">Password</string>
+    <string name="labelConfirmPassword">Confirm Password</string>
+    <string name="labelDonate">Donation amount...</string>
+    <string name="fieldRequired">Field is required</string>
 </resources>

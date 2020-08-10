@@ -73,7 +73,7 @@ public class PaypalClient{
                 PayPalPayment.PAYMENT_INTENT_SALE);
     }
 
-    public void savePayment(){
+    public void savePayment(final boolean makePost){
         ParseQuery<Fundraiser> query = ParseQuery.getQuery(Fundraiser.class);
         query.include(Fundraiser.KEY_OWNER);
         query.include(Fundraiser.KEY_TITLE);
@@ -86,12 +86,12 @@ public class PaypalClient{
                     Log.e(TAG, "Error finding fundraiser", e);
                     return;
                 }
-                saveDonation(object);
+                saveDonation(object, makePost);
             }
         });
     }
 
-    private void saveDonation(final Fundraiser fundraiser){
+    private void saveDonation(final Fundraiser fundraiser, final boolean makePost){
         final Donation donation = new Donation(ParseUser.getCurrentUser(), fundraiser, amount);
         donation.saveInBackground(new SaveCallback() {
             @Override
@@ -102,7 +102,8 @@ public class PaypalClient{
                 }
                 Log.i(TAG, "Saved Donation");
                 fundraiser.addToFunds(amount);
-                saveDonationPost(donation);
+                if(makePost)
+                    saveDonationPost(donation);
             }
         });
     }

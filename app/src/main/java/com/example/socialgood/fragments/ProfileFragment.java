@@ -61,7 +61,7 @@ public class ProfileFragment extends FeedFragment {
 
 
     @Override
-    public void queryPosts(){
+    public void queryPosts(int page, final boolean isRefresh){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.include(Post.KEY_CREATED_AT);
@@ -82,9 +82,8 @@ public class ProfileFragment extends FeedFragment {
 
         query.whereEqualTo(Post.KEY_USER, profileUser);
         query.setLimit(10);
+        query.setSkip(page * 10);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
-
-
 
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -93,10 +92,15 @@ public class ProfileFragment extends FeedFragment {
                     Log.e(TAG, "Network error: Issue with getting posts!", e);
                     return;
                 }
-                adapter.clearAllButHeader(profileUser);
+                if(isRefresh)
+                    adapter.clearAllButHeader(profileUser);
                 for(Post post: objects){
                     posts.add(post);
                 }
+                if(posts.size()>1)
+                    rlEmpty.setVisibility(View.GONE);
+                else
+                    rlEmpty.setVisibility(View.VISIBLE);
                 adapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
                 pd.dismiss();

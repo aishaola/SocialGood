@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class DonateAppFragment extends Fragment {
     private EditText etDonation;
     private Button btnDonate;
     public PaypalClient paypalClient;
+    public CheckBox checkBox;
 
     public DonateAppFragment() {
         // Required empty public constructor
@@ -60,6 +62,8 @@ public class DonateAppFragment extends Fragment {
 
         etDonation = view.findViewById(R.id.etDonation);
         btnDonate = view.findViewById(R.id.btnDonate);
+        checkBox = view.findViewById(R.id.cbDonate);
+        checkBox.setChecked(true);
         paypalClient = new PaypalClient();
 
         btnDonate.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +102,7 @@ public class DonateAppFragment extends Fragment {
                     try {
                         Log.i(TAG, confirm.toJSONObject().toString(4));
                         Log.i(TAG, confirm.getPayment().toJSONObject().toString(4));
-                        paypalClient.savePayment();
+                        paypalClient.savePayment(checkBox.isChecked());
                         Toast.makeText(getContext(), "Donation was made successfully!", Toast.LENGTH_SHORT).show();
                         etDonation.setText("");
                         /**

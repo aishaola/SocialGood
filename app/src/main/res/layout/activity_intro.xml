@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,53 +9,87 @@
     tools:context=".activities.IntroActivity">
 
 
-    <TextView
-        android:id="@+id/tvAppIntro"
+
+
+    <androidx.cardview.widget.CardView
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        android:text="Social Good is an app that people can use to change the world. "
-        android:textAlignment="center" />
+        android:layout_height="450dp"
+        android:id="@+id/cvRoot"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="3dp"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="8dp">
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvAppIntro"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:text="Sign up" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvOr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnSignUp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="OR" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:id="@+id/ivLogo"
+                app:srcCompat="@drawable/ic_launcher_foreground"></ImageView>
 
-    <TextView
-        android:id="@+id/tvQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvOr"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="Already have an account?" />
+            <TextView
+                android:id="@+id/tvApp"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivLogo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:text="Social Good"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="33sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvQuestion"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:text="login"
-        android:textAllCaps="true"
-        android:textColor="#040000" />
+            <TextView
+                android:id="@+id/tvAppIntro"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvApp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="is an app people are using to change the world "
+                android:textAlignment="center"
+                android:textSize="17sp" />
+
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAppIntro"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Sign up"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tvQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnSignUp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Already have an account?" />
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvQuestion"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:text="login"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="17sp" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>

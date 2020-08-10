@@ -75,6 +75,20 @@ public class Post extends ParseObject {
         return getType() != null && getType().equals(Post.IMAGE_TYPE);
     }
 
+    public ParseQuery<Comment> getCommentQuery(){
+        ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
+
+        query.include(Comment.KEY_USER);
+        query.include(Comment.KEY_USER_COMMENT);
+        query.include(Comment.KEY_POST);
+        query.include(Comment.KEY_CREATED_AT);
+        query.addDescendingOrder(Comment.KEY_CREATED_AT);
+
+        query.whereEqualTo(Comment.KEY_POST, this);
+
+        return query;
+    }
+
     public Post getPostReshared(){
         return (Post) getParseObject(KEY_POST_RESHARED);
     }

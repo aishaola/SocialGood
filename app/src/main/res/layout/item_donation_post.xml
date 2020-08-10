@@ -42,15 +42,6 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/ivReshare"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignTop="@id/tvUsername"
-            android:layout_alignParentEnd="true"
-            android:background="#FFFFFF"
-            card_view:srcCompat="@drawable/action_reshare" />
-
-        <ImageView
             android:id="@+id/ivProfilePic"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -87,7 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvDonationAmount"
             android:layout_centerHorizontal="true"
-            android:textColor="#2196F3"
+
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp"
             tools:text="SocialGood Fund" />
 
@@ -101,12 +93,14 @@
             android:text="Donate" />
 
         <TextView
+            android:id="@+id/tvTimestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvTimestamp"
             android:layout_below="@id/btnDonate"
             android:layout_marginStart="10dp"
-            tools:text="5h ago"/>
+            android:layout_marginBottom="0dp"
+            android:paddingBottom="10dp"
+            tools:text="5h ago" />
 
         <ImageView
             android:id="@+id/tvDeletePost"
@@ -114,15 +108,24 @@
             android:layout_height="20dp"
             card_view:srcCompat="@drawable/delete_1"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="5dp"
+            android:layout_toLeftOf="@id/ivReshare"
+            android:layout_alignTop="@id/tvTimestamp"
+            />
+
+        <ImageView
+            android:id="@+id/ivReshare"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_alignTop="@id/tvTimestamp"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@id/tvTimestamp"/>
+            android:layout_marginEnd="5dp"
+            card_view:srcCompat="@drawable/action_reshare1" />
 
         <RelativeLayout
+            android:id="@+id/commentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvDeletePost"
-            android:id="@+id/commentContainer">
+            android:layout_below="@id/tvTimestamp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvComments"
@@ -140,12 +143,12 @@
                 android:hint="Enter Comment...." />
 
             <Button
+                android:id="@+id/btnComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="POST"
-                android:id="@+id/btnComment"
                 android:layout_alignTop="@id/etComment"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                android:text="POST" />
 
         </RelativeLayout>
     </RelativeLayout>

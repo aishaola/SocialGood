@@ -105,7 +105,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 categories.remove(position);
                 // Notify the adapter
                 categoriesAdapter.notifyItemRemoved(position);
-                Toast.makeText(getApplicationContext(), "Item was removed", Toast.LENGTH_SHORT).show();
             }
         };
         categories = new ArrayList<>();

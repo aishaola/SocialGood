@@ -1,5 +1,6 @@
 package com.example.socialgood.adapters;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +23,15 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.example.socialgood.R;
+import com.example.socialgood.SocialGoodHelpers;
 import com.example.socialgood.activities.EditProfileActivity;
 import com.example.socialgood.activities.IntroActivity;
 import com.example.socialgood.activities.PostDetailActivity;
 import com.example.socialgood.fragments.DonateAppFragment;
 import com.example.socialgood.fragments.ProfileFragment;
+import com.example.socialgood.models.Comment;
 import com.example.socialgood.models.Donation;
 import com.example.socialgood.models.Fundraiser;
 import com.example.socialgood.models.Link;
@@ -38,6 +44,7 @@ import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -49,6 +56,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static android.content.ContentValues.TAG;
 
 public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -174,6 +183,12 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvTimestamp;
         TextView tvUserFollowCat;
         TextView tvResharedUsername;
+        TextView tvCommentUsername;
+        TextView tvComment;
+        TextView tvViewAllComments;
+        EditText etComment;
+        RelativeLayout rlComment;
+        Button btnPostComment;
         View rlReshare;
         View cvRoot;
         ImageView tvDeletePost;
@@ -199,6 +214,15 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             llButtons = itemView.findViewById(R.id.llButtons);
             cvRoot = itemView.findViewById(R.id.cvRoot);
             itemView.findViewById(R.id.commentContainer).setVisibility(View.GONE);
+
+            // Comment part
+            tvCommentUsername = itemView.findViewById(R.id.tvCommentUsername);
+            tvComment = itemView.findViewById(R.id.tvComment);
+            tvViewAllComments = itemView.findViewById(R.id.tvViewAllComments);
+            etComment = itemView.findViewById(R.id.etAddComment);
+            btnPostComment = itemView.findViewById(R.id.btnAddComment);
+            rlComment = itemView.findViewById(R.id.rlComment);
+
         }
 
         private void goPostDetailsActivity(Post post) {
@@ -217,19 +241,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvDeletePost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    post.deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if(e != null){
-                                Log.e("Issue", "done: Error deleting post", e);
-                                return;
-                            }
-                            Toast.makeText(context, "Post deleted", Toast.LENGTH_SHORT).show();
-                            posts.remove(post);
-                            notifyItemRemoved(position);
-                        }
-                    });
-                    Post.removeAllReshares(post);
+                    deletePost(post);
                 }
             });
         }
@@ -297,7 +309,10 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // If there is an image in the Image field, show image
             if(post.getType().equals(Post.IMAGE_TYPE)) {
                 ivImage.setVisibility(View.VISIBLE);
-                Glide.with(context).load(image.getUrl()).into(ivImage);
+                Glide.with(context).load(image.getUrl())
+                        .override(1100, 900)
+                        .centerCrop()
+                        .into(ivImage);
             }
             else {
                 ivImage.setVisibility(View.GONE);
@@ -308,7 +323,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 int margin = 0; // crop margin, set to 0 for corners with no crop
 
                 Glide.with(context).load(profileImage.getUrl()).transform(new RoundedCornersTransformation(radius, margin))
-                        .placeholder(R.drawable.action_profile).into(ivProfileImage);
+                        .centerCrop().placeholder(R.drawable.action_profile).into(ivProfileImage);
             }
             else {
                 ivProfileImage.setImageResource(R.drawable.action_profile);
@@ -322,6 +337,74 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 llButtons.setVisibility(View.GONE);
             }
+
+            // Show latest comment if any and add functionality to commenting button
+            showFirstComment(post);
+            addCommenting(post);
+        }
+
+        private void addCommenting(final Post post) {
+            btnPostComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String comment = etComment.getText().toString();
+                    if(!comment.isEmpty()){
+                        addComment(post, comment);
+                    }
+
+                }
+            });
+        }
+
+        private void addComment(Post post, final String userComment){
+            final Comment comment = new Comment(ParseUser.getCurrentUser(),  userComment, post);
+            comment.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e != null){
+                        Log.e(TAG, "addComment(): Comment couldn't post", e);
+                        Toast.makeText(context, "Could not post comment!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    etComment.setText("");
+
+                    rlComment.setVisibility(View.VISIBLE);
+                    tvCommentUsername.setText(ParseUser.getCurrentUser().getUsername());
+                    tvComment.setText(userComment);
+
+                }
+            });
+        }
+
+        private void showFirstComment(Post post) {
+            ParseQuery<Comment> query = post.getCommentQuery();
+            query.getFirstInBackground(new GetCallback<Comment>() {
+                @Override
+                public void done(Comment object, ParseException e) {
+                    if(e != null){
+                        Log.e(TAG, "done: ", e);
+                        rlComment.setVisibility(View.GONE);
+                        tvViewAllComments.setVisibility(View.GONE);
+                        return;
+                    }
+                    tvCommentUsername.setText(object.getUser().getUsername());
+                    tvComment.setText(object.getComment());
+                }
+            });
+        }
+
+        private void deletePost(Post post){
+            post.deleteInBackground(new DeleteCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e != null){
+                        Log.e("Issue", "done: Error deleting post", e);
+                        return;
+                    }
+                    Toast.makeText(context, "Post deleted", Toast.LENGTH_SHORT).show();
+                }
+            });
+            Post.removeAllReshares(post);
         }
 
         private void showLinkDisplay(Post post){
@@ -683,7 +766,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void updateFollowButton(){
             if(isFollowing){
-                btnFollow.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                btnFollow.setTextColor(context.getResources().getColor(R.color.design_default_color_on_secondary));
                 btnFollow.setText("Unfollow");
                 btnFollow.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -692,7 +775,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 });
             } else {
-                btnFollow.setTextColor(context.getResources().getColor(R.color.design_default_color_primary));
+                btnFollow.setTextColor(context.getResources().getColor(R.color.design_default_color_on_primary));
                 btnFollow.setText("Follow");
                 btnFollow.setOnClickListener(new View.OnClickListener() {
                     @Override
