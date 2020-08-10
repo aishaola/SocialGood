@@ -41,17 +41,17 @@ An social media app that gives people a space to promote their social justice in
    * [ ] Pinch to scale images
    * [x] Users can add comments
    * [x] Links launch the url in a browser
-* [ ] Add preview image for link
 * [x] Users can 'reshare' posts onto their own profile
 * [x] Profiles followed will show up on their feed
 * [x] Paypal SDK allows users to donate to the app
 * [x] Algorithm: Search for posts based on categories/interests 
-* [ ] App uses an animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
-* [ ] App incorporates an external library to add visual polish (Gideon)
+* [x] App uses an animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
+* [X] App incorporates an external library to add visual polish (Gideon)
 
 **Optional Nice-to-have Stories**
 
 * [ ] Users can make mixed media posts
+* [ ] Add preview image for link
 * [ ] Users can have pinned content
 * [ ] Users can save posts to refer back to later
 * [ ] New users are taken to a page that prompts them to follow accounts listed under categorires they are interested in 
