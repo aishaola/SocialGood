@@ -1,5 +1,6 @@
 package com.example.socialgood.adapters;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -357,6 +358,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         private void addComment(Post post, final String userComment){
+            SocialGoodHelpers.hideKeyboard((Activity)context);
             final Comment comment = new Comment(ParseUser.getCurrentUser(),  userComment, post);
             comment.saveInBackground(new SaveCallback() {
                 @Override

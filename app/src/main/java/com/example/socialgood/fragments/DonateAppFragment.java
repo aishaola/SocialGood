@@ -105,6 +105,7 @@ public class DonateAppFragment extends Fragment {
                         paypalClient.savePayment(checkBox.isChecked());
                         Toast.makeText(getContext(), "Donation was made successfully!", Toast.LENGTH_SHORT).show();
                         etDonation.setText("");
+                        goProfileFragment(ParseUser.getCurrentUser());
                         /**
                          *  TODO: send 'confirm' (and possibly confirm.getPayment() to your server for verification
                          * or consent completion.

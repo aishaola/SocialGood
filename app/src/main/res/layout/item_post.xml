@@ -90,6 +90,8 @@
                 android:layout_below="@id/tvUsername"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
+                android:textStyle="bold"
+                android:typeface="normal"
                 tools:text="Racial Justice, Global Warming" />
 
 
@@ -118,6 +120,7 @@
                 android:layout_below="@id/llButtons"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
+                android:typeface="normal"
                 tools:text="Look at this freaking graphic up here woooo!" />
 
             <TextView
@@ -216,35 +219,32 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_toRightOf="@id/tvCommentUsername"
-                        tools:text="Sample Comment! I love this post so much I could marry it."/>
+                        android:typeface="normal"
+                        tools:text="Sample Comment! I love this post so much I could marry it." />
                 </RelativeLayout>
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etAddCommentLayout"
+                <EditText
+                    android:id="@+id/etAddComment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter Comment...."
+                    android:layout_height="38dp"
                     android:layout_below="@id/rlComment"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@id/btnAddComment"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    android:hint="Enter Comment...."
+                    android:textSize="14sp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etAddComment"
-                        android:layout_width="match_parent"
-                        android:layout_height="38dp"
-                        android:textSize="14sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                </EditText>
 
                 <Button
                     android:id="@+id/btnAddComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/etAddCommentLayout"
+                    android:layout_alignTop="@id/etAddComment"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginTop="-7dp"
                     android:text="POST" />
 
             </RelativeLayout>

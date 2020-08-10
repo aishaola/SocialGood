@@ -14,10 +14,11 @@
             android:id="@+id/etAddCategory"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
+            android:capitalize="words"
             android:ems="10"
-            android:inputType="text"
-            android:hint="Enter A Category..." />
+            android:hint="Enter A Category..."
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|text" />
 
         <Button
             android:id="@+id/btnAddCategory"
