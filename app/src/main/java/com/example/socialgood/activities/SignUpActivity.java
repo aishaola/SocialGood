@@ -2,6 +2,7 @@ package com.example.socialgood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
     TextInputLayout etUsernameLayout;
     TextInputLayout etPasswordLayout;
     TextInputLayout etConfirmPasswordLayout;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,11 @@ public class SignUpActivity extends AppCompatActivity {
         SocialGoodHelpers.removeErrorWhenClicked(etUsername, etUsernameLayout);
         SocialGoodHelpers.removeErrorWhenClicked(etPassword, etPasswordLayout);
         SocialGoodHelpers.removeErrorWhenClicked(etConfirmPassword, etConfirmPasswordLayout);
+
+        // Show Progress dialog when posts are first loading
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
+        pd.setCancelable(false);
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void signUp(String username, final String password) {
+        pd.show();
         ParseUserSocial user = new ParseUserSocial();
         user.setUsername(username);
         user.setPassword(password);
@@ -111,9 +119,11 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.e(TAG, "done: Error Signing up", e);
                         Toast.makeText(SignUpActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
                     }
+                    pd.dismiss();
                     YoYo.with(Techniques.Shake).playOn(btnSignUp);
                     return;
                 }
+                pd.dismiss();
                 Intent i = new Intent(SignUpActivity.this, CategoriesActivity.class);
                 startActivity(i);
                 finish();
