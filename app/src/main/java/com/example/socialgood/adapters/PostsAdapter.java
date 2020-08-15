@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
@@ -36,6 +37,7 @@ import com.example.socialgood.models.Comment;
 import com.example.socialgood.models.Donation;
 import com.example.socialgood.models.Fundraiser;
 import com.example.socialgood.models.Link;
+import com.example.socialgood.models.Page;
 import com.example.socialgood.models.ParseUserSocial;
 import com.example.socialgood.models.Post;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -196,12 +198,13 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ImageView ivProfileImage;
         ImageView ivReshare;
         LinearLayout llButtons;
+        ViewPager vpMedia;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ivImage = (PhotoView) itemView.findViewById(R.id.ivPostImage);
+            ivImage = itemView.findViewById(R.id.ivPostImage);
             ivReshare = itemView.findViewById(R.id.ivReshare);
             ivProfileImage = itemView.findViewById(R.id.ivProfilePic);
             tvCaption = itemView.findViewById(R.id.tvCaption);
@@ -224,6 +227,8 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             btnPostComment = itemView.findViewById(R.id.btnAddComment);
             rlComment = itemView.findViewById(R.id.rlComment);
 
+            // Loading multiple images
+            vpMedia = itemView.findViewById(R.id.vpMedia);
         }
 
         private void goPostDetailsActivity(Post post) {
@@ -308,7 +313,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ParseFile profileImage = post.getUserSocial().getProfilePic();
 
             // If there is an image in the Image field, show image
-            if(post.getType().equals(Post.IMAGE_TYPE)) {
+            if(post.isImage()) {
                 ivImage.setVisibility(View.VISIBLE);
                 Glide.with(context).load(image.getUrl())
                         .override(1100, 900)
@@ -317,6 +322,23 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
             else {
                 ivImage.setVisibility(View.GONE);
+            }
+
+            // If there is an object in the link field, show link button that launches new activity
+            // of the url in the browser
+            if(post.isLink()) {
+                llButtons.setVisibility(View.VISIBLE);
+                showLinkDisplay(post);
+            } else {
+                llButtons.setVisibility(View.GONE);
+            }
+
+            // If post has multiple media then show the viewpager and load the images up
+            if(post.isMediaList()){
+                vpMedia.setVisibility(View.VISIBLE);
+                loadToViewPager(post);
+            } else{
+                vpMedia.setVisibility(View.GONE);
             }
 
             if(profileImage != null) {
@@ -330,18 +352,14 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ivProfileImage.setImageResource(R.drawable.action_profile);
             }
 
-            // If there is an object in the link field, show link button that launches new activity
-            // of the url in the browser
-            if(post.isLink()) {
-                llButtons.setVisibility(View.VISIBLE);
-                showLinkDisplay(post);
-            } else {
-                llButtons.setVisibility(View.GONE);
-            }
-
             // Show latest comment if any and add functionality to commenting button
             showFirstComment(post);
             addCommenting(post);
+        }
+
+        private void loadToViewPager(Post post) {
+            List<Page> pages = post.getPagesFromMediaList();
+            vpMedia.setAdapter(new SlidingImage_Adapter(context, pages));
         }
 
         private void addCommenting(final Post post) {

@@ -8,6 +8,7 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseClassName;
+import com.parse.ParseDecoder;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -23,6 +24,7 @@ import org.parceler.Parcel;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -41,11 +43,13 @@ public class Post extends ParseObject {
     public static final String KEY_TYPE = "type";
     public static final String KEY_DONATION = "donation";
     public static final String KEY_LINK_LIST = "linkList";
+    public static final String KEY_MEDIA_LIST = "mediaList";
 
     public static final String DONATION_TYPE = "donation";
     public static final String RESHARE_TYPE = "reshare";
     public static final String LINK_TYPE = "link";
     public static final String IMAGE_TYPE = "image";
+    public static final String LIST_TYPE = "mediaList";
 
 
     public List<String> listCategories;
@@ -58,6 +62,8 @@ public class Post extends ParseObject {
         userFollowsCat = false;
         userReshared = null;
     }
+
+
 
     public boolean isPostCurrUsers(){
         return getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
@@ -72,7 +78,11 @@ public class Post extends ParseObject {
     }
 
     public boolean isImage(){
-        return getType() != null && getType().equals(Post.IMAGE_TYPE);
+        return getType() == null || getType().equals(Post.IMAGE_TYPE);
+    }
+
+    public boolean isMediaList() {
+        return getType() != null && getType().equals(Post.LIST_TYPE);
     }
 
     public ParseQuery<Comment> getCommentQuery(){
@@ -186,6 +196,36 @@ public class Post extends ParseObject {
         put(KEY_IMAGE, image);
     }
 
+    public JSONArray getMediaList(){
+        return getJSONArray(KEY_MEDIA_LIST);
+    }
+
+    public void addImageToMediaList(ParseFile image){
+        image.saveInBackground();
+        add(KEY_MEDIA_LIST, image);
+    }
+
+    public List<Page> getPagesFromMediaList() {
+        JSONArray mediaList = getMediaList();
+        List<Page> pages = new ArrayList<>();
+        for (int i = 0; i < mediaList.length(); i++) {
+            JSONObject obj = null;
+            try {
+                obj = mediaList.getJSONObject(i);
+                String type = obj.getString("__type");
+                if(type.equals("File")){
+                    String url = obj.getString("url");
+                    pages.add(new Page(i, IMAGE_TYPE, url));
+                } else if(type.equals(LINK_TYPE)){
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return pages;
+    }
+
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
@@ -279,4 +319,5 @@ public class Post extends ParseObject {
             }
         });
     }
+
 }

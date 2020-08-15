@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"
+    <uses-permission
+        android:name="android.permission.CAMERA"
         android:required="true"
-        android:requiredFeature="true"/>
-
+        android:requiredFeature="true" />
 
     <application
         android:name=".ParseApplication"
@@ -19,12 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.PaypalTesterActivity">
+        <activity android:name=".ViewPagerTester">
 
         </activity>
-        <!-- make sure within the application tag, otherwise app will crash with XmlResourceParser errors -->
+        <activity android:name=".activities.PaypalTesterActivity"></activity> <!-- make sure within the application tag, otherwise app will crash with XmlResourceParser errors -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.fileprovider"
@@ -36,9 +35,11 @@
         </provider>
 
         <activity android:name=".activities.CategoriesActivity" />
-        <activity android:name=".activities.EditProfileActivity"
-                android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.PostDetailActivity" />
+
         <activity android:name=".activities.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.MainActivity" />

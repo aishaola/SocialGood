@@ -77,8 +77,10 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     View addPickFromGalleryView;
     View addLinkView;
 
+
     Post post;
     Link link;
+    List<ParseFile> images;
     List<Link> links;
     ImageView ivImage;
     EditText etCaption;
@@ -168,6 +170,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             }
         });
 
+        images = new ArrayList<>();
         links = new ArrayList<>();
         categories = new ArrayList<>();
         post = new Post();
@@ -195,15 +198,18 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
 
     public void savePost(Link link, File photo, ParseUser user, String caption){
         if(postType == TYPE_LINK){
-            //post.setLink(link.toJSON());
             post.setLinks(links);
             post.setType(Post.LINK_TYPE);
         } else{
-            post.setType(Post.IMAGE_TYPE);
-            if(galleryPhotoBitmap == null)
-                post.setImage(new ParseFile(photoFile));
-            else
-                post.setImage(new ParseFile(galleryPhotoBitmap));
+            if(images.size() > 1) {
+                post.setType(Post.LIST_TYPE);
+                for (ParseFile image : images) {
+                    post.addImageToMediaList(image);
+                }
+            } else{
+                post.setType(Post.IMAGE_TYPE);
+                post.setImage(images.get(images.size()-1));
+            }
         }
 
         post.setCaption(caption);
@@ -341,6 +347,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
                 ivImage.setImageBitmap(takenImage);
+                images.add(new ParseFile(photoFile));
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
@@ -352,6 +359,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                 galleryPhotoBitmap = imageSupport.bitmapToByteArray(selectedImage);
                 // Load the selected image into a preview
                 ivImage.setImageBitmap(selectedImage);
+                images.add(new ParseFile(galleryPhotoBitmap));
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't chosen!", Toast.LENGTH_SHORT).show();
             }
