@@ -14,7 +14,6 @@
             android:id="@+id/etAddCategory"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:capitalize="words"
             android:ems="10"
             android:hint="Enter A Category..."
             android:imeOptions="actionDone"
@@ -118,23 +117,20 @@
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/ivImage"
-            android:layout_width="wrap_content"
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_below="@id/addLinkView"
-            android:layout_alignParentEnd="false"
-            android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="0dp"
-            tools:srcCompat="@tools:sample/avatars"></ImageView>
+            android:id="@+id/vpMedia"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/llUrlDisplays"
             android:orientation="vertical"
-            android:layout_below="@id/ivImage" />
+            android:layout_below="@id/vpMedia" />
 
 
 

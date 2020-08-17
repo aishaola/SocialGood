@@ -18,6 +18,8 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -42,7 +44,9 @@ import java.io.File;
 
 import com.example.socialgood.R;
 import com.example.socialgood.SocialGoodHelpers;
+import com.example.socialgood.adapters.SlidingImage_Adapter;
 import com.example.socialgood.models.Link;
+import com.example.socialgood.models.Page;
 import com.example.socialgood.models.Post;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -82,7 +86,6 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     Link link;
     List<ParseFile> images;
     List<Link> links;
-    ImageView ivImage;
     EditText etCaption;
     EditText etAddCategory;
     Button btnAddCategory;
@@ -90,14 +93,16 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     TextView tvCategories;
     LinearLayout llLinkDisplay;
 
+    List<Page> pages;
+    ViewPager vpMedia;
+    PagerAdapter adapter;
+    int currentPagePos;
+
     List<String> categories;
     byte[] galleryPhotoBitmap;
     int postType;
     private File photoFile;
     ImageSupport imageSupport;
-
-
-
 
     public CreateFragment() {
         // Required empty public constructor
@@ -114,7 +119,6 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Create Post");
-        ivImage = view.findViewById(R.id.ivImage);
         addPicView = view.findViewById(R.id.addPicView);
         addPickFromGalleryView = view.findViewById(R.id.addPicFromGalleryView);
         addLinkView = view.findViewById(R.id.addLinkView);
@@ -124,6 +128,7 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
         etAddCategory = view.findViewById(R.id.etAddCategory);
         tvCategories = view.findViewById(R.id.tvCategories);
         llLinkDisplay = view.findViewById(R.id.llUrlDisplays);
+        vpMedia = view.findViewById(R.id.vpMedia);
 
         postType = TYPE_IMAGE;
         imageSupport = new ImageSupport(getContext(), photoFile, photoFileName, TAG);
@@ -170,7 +175,12 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             }
         });
 
-        images = new ArrayList<>();
+        // Multiple Image display
+        pages = new ArrayList<>();
+        adapter = new SlidingImage_Adapter(getContext(), pages);
+        vpMedia.setAdapter(adapter);
+        currentPagePos = 0;
+
         links = new ArrayList<>();
         categories = new ArrayList<>();
         post = new Post();
@@ -201,14 +211,16 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
             post.setLinks(links);
             post.setType(Post.LINK_TYPE);
         } else{
-            if(images.size() > 1) {
+            if(pages.size() > 1) {
                 post.setType(Post.LIST_TYPE);
-                for (ParseFile image : images) {
-                    post.addImageToMediaList(image);
+                for (Page page : pages) {
+                    byte[] bmp = imageSupport.bitmapToByteArray(page.getBitmap());
+                    post.addImageToMediaList(new ParseFile(bmp));
                 }
             } else{
                 post.setType(Post.IMAGE_TYPE);
-                post.setImage(images.get(images.size()-1));
+                byte[] bmp = imageSupport.bitmapToByteArray(pages.get(0).getBitmap());
+                post.setImage(new ParseFile(bmp));
             }
         }
 
@@ -233,9 +245,6 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                 goFeedFragment();
             }
         });
-
-
-
 
     }
 
@@ -272,6 +281,14 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     }
 
     private void showLinkEditDialog() {
+        if(links.size() == 0) {
+            links.add(new Link("REsource", "https://www.google.com"));
+            links.add(new Link("REsource2", "https://www.google.com"));
+            Page page = new Page(currentPagePos, "links", links);
+            pages.add(page);
+            adapter.notifyDataSetChanged();
+            vpMedia.setCurrentItem(currentPagePos, true);
+        }
         FragmentManager fm = getFragmentManager();
         LinkEntryDialogFragment linkEntryDialogFragment = LinkEntryDialogFragment.newInstance("Some Title");
         // SETS the target fragment for use later when sending results
@@ -283,15 +300,12 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
     @Override
     public void onFinishEditDialog(String title, String url) {
         postType = TYPE_LINK;
+
         link = new Link(title, url);
         links.add(link);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        TextView tvUrlView = new TextView(getContext());
-        tvUrlView.setLayoutParams(lp);
-        tvUrlView.setText("Title: " + title + ", Url: " + url);
-        llLinkDisplay.addView(tvUrlView);
-        ivImage.setVisibility(View.GONE);
+        pages.remove(currentPagePos);
+        //pages.add(new Page(currentPagePos, "links", links));
+        adapter.notifyDataSetChanged();
         //Toast.makeText(getContext(), "Title: " + title + ", Url: " + url, Toast.LENGTH_SHORT).show();
     }
 
@@ -346,8 +360,11 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
-                ivImage.setImageBitmap(takenImage);
-                images.add(new ParseFile(photoFile));
+                // Load image into ViewPager
+                pages.add(new Page(currentPagePos, Page.TYPE_BITMAP, takenImage));
+                adapter.notifyDataSetChanged();
+                vpMedia.setCurrentItem(currentPagePos, true);
+                currentPagePos++;
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
@@ -358,8 +375,11 @@ public class CreateFragment extends Fragment implements LinkEntryDialogFragment.
                 Bitmap selectedImage = imageSupport.loadFromUri(photoUri);
                 galleryPhotoBitmap = imageSupport.bitmapToByteArray(selectedImage);
                 // Load the selected image into a preview
-                ivImage.setImageBitmap(selectedImage);
-                images.add(new ParseFile(galleryPhotoBitmap));
+                // Load image into ViewPager
+                pages.add(new Page(currentPagePos, Page.TYPE_BITMAP, selectedImage));
+                currentPagePos++;
+                adapter.notifyDataSetChanged();
+
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't chosen!", Toast.LENGTH_SHORT).show();
             }
